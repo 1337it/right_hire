@@ -1,3 +1,128 @@
+/* ============================================
+   Frappe Sidebar - Complete Minimal Icon Set
+   ============================================ */
+
+/* Hide original SVG icons */
+.sidebar-item-icon svg {
+  display: none !important;
+}
+
+/* Icon container styling */
+.sidebar-item-icon {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+}
+
+.sidebar-item-icon::after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  display: block;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+/* Hover effect */
+.sidebar-item-container:hover .sidebar-item-icon::after {
+  opacity: 1;
+}
+
+/* ============================================
+   Custom Menu Icons
+   ============================================ */
+
+/* Fleet Icon - Stacked Keys */
+.sidebar-item-container[data-item-label="Fleet"] .sidebar-item-icon::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 271' fill='%23303030'%3E%3Cg transform='translate(0,271) scale(0.1,-0.1)'%3E%3Cpath d='M974 2631 c-89 -65 -201 -204 -248 -309 l-19 -42 -138 0 c-128 0 -139 -1 -149 -20 -31 -58 54 -178 143 -202 l46 -12 -38 -41 c-21 -23 -48 -67 -60 -99 -20 -53 -21 -75 -21 -367 0 -334 1 -338 55 -389 26 -25 30 -25 210 -28 177 -3 184 -2 195 17 7 15 8 27 0 40 -9 18 -24 20 -173 23 -122 2 -168 7 -181 17 -15 13 -17 44 -14 337 l3 322 30 43 c17 23 46 50 65 60 53 27 60 36 60 79 0 59 52 211 101 293 23 39 75 104 115 144 l73 73 479 0 c358 0 481 3 490 12 18 18 14 56 -7 68 -13 6 -188 10 -499 10 l-479 0 -39 -29z m-334 -471 c0 -35 -10 -37 -66 -11 -65 30 -64 41 5 41 l61 0 0 -30z'/%3E%3Cpath d='M1499 2193 c-81 -77 -156 -177 -193 -261 l-19 -42 -138 0 c-128 0 -139 -1 -149 -20 -15 -28 5 -92 44 -136 18 -20 55 -44 88 -58 l57 -23 -34 -33 c-18 -18 -44 -56 -57 -84 -22 -49 -23 -61 -26 -371 -3 -353 -1 -363 61 -409 25 -19 45 -21 189 -24 89 -2 171 -1 184 2 31 8 40 42 18 67 -15 17 -32 19 -175 19 -132 0 -160 3 -174 16 -14 14 -15 53 -13 334 l3 318 30 43 c17 23 50 55 75 69 44 25 45 28 53 88 18 148 97 303 213 420 l72 72 472 0 c306 0 478 4 491 10 21 12 25 50 7 68 -9 9 -135 12 -504 12 l-492 0 -83 -77z m-279 -417 l0 -34 -37 10 c-42 11 -83 36 -83 49 0 5 27 9 60 9 l60 0 0 -34z'/%3E%3Cpath d='M2132 1861 c-79 -66 -135 -131 -192 -224 l-48 -78 -159 -2 -158 -2 -3 -37 c-6 -76 66 -161 160 -187 l44 -12 -40 -42 c-80 -84 -81 -88 -84 -477 -3 -395 -3 -396 78 -437 44 -23 46 -23 516 -23 443 0 472 1 487 18 21 23 21 36 1 56 -13 14 -61 16 -368 16 l-352 0 -16 28 c-10 16 -62 77 -117 136 -138 149 -142 158 -143 353 -1 173 7 211 60 266 55 58 46 57 495 57 391 0 416 1 438 19 21 16 22 22 11 45 l-12 26 -405 0 c-223 0 -405 4 -405 8 0 5 9 35 20 67 43 124 144 275 234 349 l44 36 250 0 c215 0 253 2 266 16 21 20 20 37 -2 57 -16 15 -51 17 -280 17 l-261 0 -59 -49z m-322 -416 c0 -31 -3 -35 -25 -35 -33 0 -101 34 -108 55 -5 13 5 15 63 15 l70 0 0 -35z m20 -925 l82 -90 -69 0 c-90 0 -101 11 -107 108 -2 40 -1 72 4 72 4 0 45 -40 90 -90z'/%3E%3Cpath d='M1900 1158 c-160 -81 -88 -323 90 -306 58 6 104 37 130 88 26 51 25 95 -2 150 -26 50 -89 90 -143 90 -17 0 -51 -10 -75 -22z m127 -90 c49 -46 16 -128 -52 -128 -45 0 -75 29 -75 72 0 68 78 102 127 56z'/%3E%3Cpath d='M2312 1088 c-7 -7 -12 -21 -12 -33 0 -42 14 -45 221 -45 166 0 200 2 213 16 19 18 20 28 6 55 -10 18 -23 19 -213 19 -145 0 -206 -3 -215 -12z'/%3E%3Cpath d='M2123 818 c-69 -68 -129 -131 -135 -141 -13 -24 24 -78 104 -153 80 -74 108 -88 137 -68 34 24 25 48 -40 100 -34 27 -70 62 -81 77 l-21 29 94 94 94 94 228 0 227 0 12 26 c11 23 10 29 -11 45 -21 17 -43 19 -254 19 l-230 0 -124 -122z'/%3E%3C/g%3E%3C/svg%3E");
+  filter: brightness(0.85);
+  opacity: 1;
+}
+
+/* Drivers Icon */
+.sidebar-item-container[data-item-label="Drivers"] .sidebar-item-icon::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23404040' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2'/%3E%3Cpath d='M16 3.13a4 4 0 010 7.75'/%3E%3C/svg%3E");
+}
+
+/* Insurance Icon */
+.sidebar-item-container[data-item-label="Insurance"] .sidebar-item-icon::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23404040' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/%3E%3Cpath d='M9 12l2 2 4-4'/%3E%3C/svg%3E");
+}
+
+/* Rate Plan Icon */
+.sidebar-item-container[data-item-label="Rate Plan"] .sidebar-item-icon::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23404040' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='12' y1='1' x2='12' y2='23'/%3E%3Cpath d='M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6'/%3E%3C/svg%3E");
+}
+
+/* Violations Icon */
+.sidebar-item-container[data-item-label="Violations"] .sidebar-item-icon::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23404040' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z'/%3E%3Cline x1='12' y1='9' x2='12' y2='13'/%3E%3Cline x1='12' y1='17' x2='12.01' y2='17'/%3E%3C/svg%3E");
+}
+
+/* Service Entry Icon */
+.sidebar-item-container[data-item-label="Service Entry"] .sidebar-item-icon::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23404040' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z'/%3E%3C/svg%3E");
+}
+
+/* Vehicle Movements Icon */
+.sidebar-item-container[data-item-label="Vehicle Movements"] .sidebar-item-icon::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23404040' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='23 4 23 10 17 10'/%3E%3Cpolyline points='1 20 1 14 7 14'/%3E%3Cpath d='M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15'/%3E%3C/svg%3E");
+}
+
+/* Utilization Snapshot Icon */
+.sidebar-item-container[data-item-label="Utilization Snapshot"] .sidebar-item-icon::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23404040' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21.21 15.89A10 10 0 118 2.83'/%3E%3Cpath d='M22 12A10 10 0 0012 2v10z'/%3E%3C/svg%3E");
+}
+
+/* Rental Agreements Icon */
+.sidebar-item-container[data-item-label="Rental Agreements"] .sidebar-item-icon::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23404040' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z'/%3E%3Cpath d='M14 2v6h6M16 13H8m8 4H8m2-8H8'/%3E%3C/svg%3E");
+}
+
+/* Lease Contracts Icon */
+.sidebar-item-container[data-item-label="Lease Contracts"] .sidebar-item-icon::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23404040' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z'/%3E%3Cpath d='M14 2v6h6M10 12.5l2 2 4-4'/%3E%3C/svg%3E");
+}
+
+/* Customers Icon */
+.sidebar-item-container[data-item-label="Customers"] .sidebar-item-icon::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23404040' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2'/%3E%3Ccircle cx='9' cy='7' r='4'/%3E%3Cpath d='M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75'/%3E%3C/svg%3E");
+}
+
+/* Reservations Icon */
+.sidebar-item-container[data-item-label="Reservations"] .sidebar-item-icon::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23404040' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3Cpath d='M9 14l2 2 4-4'/%3E%3C/svg%3E");
+}
+
+/* Maintenance Job Icon */
+.sidebar-item-container[data-item-label="Maintenance Job"] .sidebar-item-icon::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23404040' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 22a10 10 0 110-20 10 10 0 010 20z'/%3E%3Cpath d='M12 8v4l2 2'/%3E%3Cpath d='M9 2h6'/%3E%3C/svg%3E");
+}
+
+/* Active/Selected state - darker gray */
+.sidebar-item-container .item-anchor.selected .sidebar-item-icon::after,
+.sidebar-item-container.active .sidebar-item-icon::after {
+  opacity: 1;
+  filter: brightness(0.4);
+}
+
+/* Optional: Even lighter variant for better subtlety */
+@media (prefers-color-scheme: light) {
+  .sidebar-item-icon::after {
+    opacity: 0.8;
+  }
+  
+  .sidebar-item-container:hover .sidebar-item-icon::after {
+    opacity: 1;
+  }
+}
 .vehicle-card {
     border: 1px solid #d1d8dd;
     border-radius: 4px;
