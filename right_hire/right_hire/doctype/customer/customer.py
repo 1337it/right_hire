@@ -11,15 +11,15 @@ class Customer(Document):
     def validate_kyc(self):
         """Validate KYC documents"""
         if self.customer_type == "Individual":
-            if self.id_expiry and getdate(self.id_expiry) < getdate(nowdate()):
+            if self.id_expiry_2 and getdate(self.id_expiry_2) < getdate(nowdate()):
                 frappe.msgprint("ID has expired", alert=True)
-            if self.passport_expiry and getdate(self.passport_expiry) < getdate(nowdate()):
+            if self.passport_expiry_2 and getdate(self.passport_expiry_2) < getdate(nowdate()):
                 frappe.msgprint("Passport has expired", alert=True)
     
     def validate_license(self):
         """Validate driving license"""
-        if self.customer_type == "Individual" and self.license_expiry:
-            if getdate(self.license_expiry) < getdate(nowdate()):
+        if self.customer_type == "Individual" and self.license_expiry_2:
+            if getdate(self.license_expiry_2) < getdate(nowdate()):
                 frappe.throw("Driving license has expired")
     
     def update_totals(self):

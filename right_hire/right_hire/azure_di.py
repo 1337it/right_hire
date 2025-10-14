@@ -74,14 +74,14 @@ def create_customer_from_scan(file_url: str, use_urlsource: int = 0, set_docname
         "date_of_birth": iso(mapped.get("date_of_birth")) or None,
         # passport set
         "passport_number": mapped.get("passport_number") or None,
-        "passport_expiry_scanned": iso(mapped.get("passport_expiry")) or None,
+        "passport_expiry": iso(mapped.get("passport_expiry")) or None,
         # license set
         "license_number": mapped.get("license_number") or None,
-        "license_expiry_scanned": iso(mapped.get("license_expiry")) or None,
+        "license_expiry": iso(mapped.get("license_expiry")) or None,
         "driving_license": mapped.get("driving_license") or None,
         # national id set
         "id_number": mapped.get("id_number") or None,
-        "id_expiry_scanned": iso(mapped.get("id_expiry")) or None,
+        "id_expiry": iso(mapped.get("id_expiry")) or None,
         "national_id": mapped.get("national_id") or None,
     }
 
@@ -240,7 +240,7 @@ def _map_prebuilt_id(res):
         out["passport_expiry"] = exp
     elif out["doc_type"] == "driving_license":
         out["license_number"] = num
-        out["license_expiry"] = exp
+        out["license_expiry_scanned"] = exp
         out["driving_license"] = num
     elif out["doc_type"] == "national_id":
         out["id_number"] = num
