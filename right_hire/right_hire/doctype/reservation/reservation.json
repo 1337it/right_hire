@@ -1,0 +1,357 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "format:RES-{YYYY}-{#####}",
+ "creation": "2024-01-01 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "reservation_status",
+  "column_break_1",
+  "reservation_date",
+  "expiry_datetime",
+  "section_break_customer",
+  "customer",
+  "customer_name",
+  "customer_mobile",
+  "column_break_customer",
+  "driver",
+  "driver_name",
+  "driver_license",
+  "section_break_schedule",
+  "pickup_datetime",
+  "return_datetime",
+  "rental_days",
+  "column_break_schedule",
+  "branch",
+  "return_branch",
+  "pickup_location",
+  "section_break_vehicle",
+  "allocation_mode",
+  "vehicle",
+  "vehicle_details",
+  "column_break_vehicle",
+  "preferred_make",
+  "preferred_model",
+  "preferred_category",
+  "section_break_pricing",
+  "rate_plan",
+  "base_rate",
+  "rental_amount",
+  "column_break_pricing",
+  "deposit",
+  "extras_total",
+  "grand_total",
+  "section_break_extras",
+  "extras",
+  "section_break_notes",
+  "customer_notes",
+  "internal_notes",
+  "section_break_conversion",
+  "rental_agreement",
+  "converted_on"
+ ],
+ "fields": [
+  {
+   "fieldname": "reservation_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Draft\nConfirmed\nAllocated\nConverted\nExpired\nCancelled",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Now",
+   "fieldname": "reservation_date",
+   "fieldtype": "Datetime",
+   "label": "Reservation Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "expiry_datetime",
+   "fieldtype": "Datetime",
+   "label": "Expiry Date/Time"
+  },
+  {
+   "fieldname": "section_break_customer",
+   "fieldtype": "Section Break",
+   "label": "Customer Information"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "customer.customer_name",
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "label": "Customer Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "customer.mobile",
+   "fieldname": "customer_mobile",
+   "fieldtype": "Data",
+   "label": "Customer Mobile",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_customer",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "driver",
+   "fieldtype": "Link",
+   "label": "Driver (if different)",
+   "options": "Driver"
+  },
+  {
+   "fetch_from": "driver.driver_name",
+   "fieldname": "driver_name",
+   "fieldtype": "Data",
+   "label": "Driver Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "driver.license_no",
+   "fieldname": "driver_license",
+   "fieldtype": "Data",
+   "label": "Driver License",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_schedule",
+   "fieldtype": "Section Break",
+   "label": "Schedule"
+  },
+  {
+   "fieldname": "pickup_datetime",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Pickup Date/Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "return_datetime",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Return Date/Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "rental_days",
+   "fieldtype": "Float",
+   "label": "Rental Days",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_schedule",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Pickup Branch",
+   "options": "Branch",
+   "reqd": 1
+  },
+  {
+   "fieldname": "return_branch",
+   "fieldtype": "Link",
+   "label": "Return Branch",
+   "options": "Branch"
+  },
+  {
+   "fieldname": "pickup_location",
+   "fieldtype": "Data",
+   "label": "Pickup Location"
+  },
+  {
+   "fieldname": "section_break_vehicle",
+   "fieldtype": "Section Break",
+   "label": "Vehicle Allocation"
+  },
+  {
+   "default": "Smart",
+   "fieldname": "allocation_mode",
+   "fieldtype": "Select",
+   "label": "Allocation Mode",
+   "options": "Smart\nManual\nOpen"
+  },
+  {
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Vehicle",
+   "options": "Vehicle"
+  },
+  {
+   "fetch_from": "vehicle.make",
+   "fieldname": "vehicle_details",
+   "fieldtype": "Data",
+   "label": "Vehicle Details",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_vehicle",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "preferred_make",
+   "fieldtype": "Data",
+   "label": "Preferred Make"
+  },
+  {
+   "fieldname": "preferred_model",
+   "fieldtype": "Data",
+   "label": "Preferred Model"
+  },
+  {
+   "fieldname": "preferred_category",
+   "fieldtype": "Select",
+   "label": "Preferred Category",
+   "options": "\nEconomy\nCompact\nMid-Size\nFull-Size\nSUV\nLuxury\nSports\nVan"
+  },
+  {
+   "fieldname": "section_break_pricing",
+   "fieldtype": "Section Break",
+   "label": "Pricing"
+  },
+  {
+   "fieldname": "rate_plan",
+   "fieldtype": "Link",
+   "label": "Rate Plan",
+   "options": "Rate Plan",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "rate_plan.base_rate",
+   "fieldname": "base_rate",
+   "fieldtype": "Currency",
+   "label": "Base Rate"
+  },
+  {
+   "fieldname": "rental_amount",
+   "fieldtype": "Currency",
+   "label": "Rental Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_pricing",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "rate_plan.deposit",
+   "fieldname": "deposit",
+   "fieldtype": "Currency",
+   "label": "Deposit"
+  },
+  {
+   "fieldname": "extras_total",
+   "fieldtype": "Currency",
+   "label": "Extras Total",
+   "read_only": 1
+  },
+  {
+   "bold": 1,
+   "fieldname": "grand_total",
+   "fieldtype": "Currency",
+   "label": "Grand Total",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_extras",
+   "fieldtype": "Section Break",
+   "label": "Extras & Add-ons"
+  },
+  {
+   "fieldname": "extras",
+   "fieldtype": "Table",
+   "label": "Extras",
+   "options": "Reservation Extra"
+  },
+  {
+   "fieldname": "section_break_notes",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "customer_notes",
+   "fieldtype": "Small Text",
+   "label": "Customer Notes"
+  },
+  {
+   "fieldname": "internal_notes",
+   "fieldtype": "Text",
+   "label": "Internal Notes"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_conversion",
+   "fieldtype": "Section Break",
+   "label": "Conversion"
+  },
+  {
+   "fieldname": "rental_agreement",
+   "fieldtype": "Link",
+   "label": "Rental Agreement",
+   "options": "Rental Agreement",
+   "read_only": 1
+  },
+  {
+   "fieldname": "converted_on",
+   "fieldtype": "Datetime",
+   "label": "Converted On",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-10-14 12:24:05.627914",
+ "modified_by": "Administrator",
+ "module": "Right Hire",
+ "name": "Reservation",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Counter Agent",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "LeetRental Admin",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

@@ -1,0 +1,356 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "format:CUST-{#####}",
+ "creation": "2024-01-01 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_section",
+  "customer_name",
+  "customer_type",
+  "column_break_basic",
+  "mobile",
+  "email",
+  "date_of_birth",
+  "section_break_company",
+  "company_name",
+  "trade_license_no",
+  "tax_id",
+  "section_break_kyc_individual",
+  "id_type",
+  "id_no",
+  "id_expiry",
+  "column_break_kyc",
+  "passport_no",
+  "passport_expiry",
+  "nationality",
+  "section_break_license",
+  "license_no",
+  "license_country",
+  "license_expiry",
+  "column_break_license",
+  "license_type",
+  "is_blacklisted",
+  "blacklist_reason",
+  "section_break_address",
+  "billing_address",
+  "city",
+  "state",
+  "country",
+  "postal_code",
+  "section_break_financial",
+  "credit_limit",
+  "payment_terms",
+  "column_break_financial",
+  "total_outstanding",
+  "total_bookings",
+  "lifetime_value",
+  "section_break_erpnext",
+  "erpnext_customer",
+  "sync_with_erpnext",
+  "section_break_notes",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_section",
+   "fieldtype": "Section Break",
+   "label": "Basic Information"
+  },
+  {
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Customer Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "customer_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Customer Type",
+   "options": "Individual\nCompany",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_basic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "mobile",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Mobile",
+   "reqd": 1
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email",
+   "options": "Email"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Individual'",
+   "fieldname": "date_of_birth",
+   "fieldtype": "Date",
+   "label": "Date of Birth"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Company'",
+   "fieldname": "section_break_company",
+   "fieldtype": "Section Break",
+   "label": "Company Details"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Company'",
+   "fieldname": "company_name",
+   "fieldtype": "Data",
+   "label": "Company Name"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Company'",
+   "fieldname": "trade_license_no",
+   "fieldtype": "Data",
+   "label": "Trade License Number"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Company'",
+   "fieldname": "tax_id",
+   "fieldtype": "Data",
+   "label": "Tax ID"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Individual'",
+   "fieldname": "section_break_kyc_individual",
+   "fieldtype": "Section Break",
+   "label": "KYC - Individual"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Individual'",
+   "fieldname": "id_type",
+   "fieldtype": "Select",
+   "label": "ID Type",
+   "options": "\nEmirates ID\nNational ID\nPassport\nOther"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Individual'",
+   "fieldname": "id_no",
+   "fieldtype": "Data",
+   "label": "ID Number"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Individual'",
+   "fieldname": "id_expiry",
+   "fieldtype": "Date",
+   "label": "ID Expiry"
+  },
+  {
+   "fieldname": "column_break_kyc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Individual'",
+   "fieldname": "passport_no",
+   "fieldtype": "Data",
+   "label": "Passport Number"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Individual'",
+   "fieldname": "passport_expiry",
+   "fieldtype": "Date",
+   "label": "Passport Expiry"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Individual'",
+   "fieldname": "nationality",
+   "fieldtype": "Link",
+   "label": "Nationality",
+   "options": "Country"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Individual'",
+   "fieldname": "section_break_license",
+   "fieldtype": "Section Break",
+   "label": "Driving License"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Individual'",
+   "fieldname": "license_no",
+   "fieldtype": "Data",
+   "label": "License Number"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Individual'",
+   "fieldname": "license_country",
+   "fieldtype": "Link",
+   "label": "License Country",
+   "options": "Country"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Individual'",
+   "fieldname": "license_expiry",
+   "fieldtype": "Date",
+   "label": "License Expiry"
+  },
+  {
+   "fieldname": "column_break_license",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Individual'",
+   "fieldname": "license_type",
+   "fieldtype": "Data",
+   "label": "License Type"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_blacklisted",
+   "fieldtype": "Check",
+   "label": "Is Blacklisted"
+  },
+  {
+   "depends_on": "is_blacklisted",
+   "fieldname": "blacklist_reason",
+   "fieldtype": "Small Text",
+   "label": "Blacklist Reason"
+  },
+  {
+   "fieldname": "section_break_address",
+   "fieldtype": "Section Break",
+   "label": "Address"
+  },
+  {
+   "fieldname": "billing_address",
+   "fieldtype": "Small Text",
+   "label": "Billing Address"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
+  },
+  {
+   "fieldname": "state",
+   "fieldtype": "Data",
+   "label": "State/Province"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country"
+  },
+  {
+   "fieldname": "postal_code",
+   "fieldtype": "Data",
+   "label": "Postal Code"
+  },
+  {
+   "fieldname": "section_break_financial",
+   "fieldtype": "Section Break",
+   "label": "Financial"
+  },
+  {
+   "fieldname": "credit_limit",
+   "fieldtype": "Currency",
+   "label": "Credit Limit"
+  },
+  {
+   "fieldname": "payment_terms",
+   "fieldtype": "Link",
+   "label": "Payment Terms",
+   "options": "Payment Terms Template"
+  },
+  {
+   "fieldname": "column_break_financial",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_outstanding",
+   "fieldtype": "Currency",
+   "label": "Total Outstanding",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_bookings",
+   "fieldtype": "Int",
+   "label": "Total Bookings",
+   "read_only": 1
+  },
+  {
+   "fieldname": "lifetime_value",
+   "fieldtype": "Currency",
+   "label": "Lifetime Value",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_erpnext",
+   "fieldtype": "Section Break",
+   "label": "ERPNext Integration"
+  },
+  {
+   "fieldname": "erpnext_customer",
+   "fieldtype": "Link",
+   "label": "ERPNext Customer",
+   "options": "Customer"
+  },
+  {
+   "default": "0",
+   "fieldname": "sync_with_erpnext",
+   "fieldtype": "Check",
+   "label": "Sync with ERPNext"
+  },
+  {
+   "fieldname": "section_break_notes",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Text",
+   "label": "Notes"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-10-14 12:24:02.836466",
+ "modified_by": "Administrator",
+ "module": "Right Hire",
+ "name": "Customer",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Counter Agent",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "LeetRental Admin",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

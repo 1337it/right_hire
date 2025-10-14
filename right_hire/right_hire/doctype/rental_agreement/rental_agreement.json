@@ -1,0 +1,613 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:AGR-{YYYY}-{#####}",
+ "creation": "2024-01-01 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "agreement_status",
+  "workflow_state",
+  "column_break_1",
+  "agreement_date",
+  "reservation",
+  "section_break_parties",
+  "customer",
+  "customer_name",
+  "customer_mobile",
+  "column_break_parties",
+  "driver",
+  "driver_name",
+  "driver_license",
+  "section_break_vehicle",
+  "vehicle",
+  "vehicle_make_model",
+  "plate_no",
+  "column_break_vehicle",
+  "branch",
+  "return_branch",
+  "section_break_schedule",
+  "start_datetime",
+  "end_datetime",
+  "actual_return_datetime",
+  "column_break_schedule",
+  "planned_days",
+  "actual_days",
+  "is_overdue",
+  "section_break_handover",
+  "odometer_out",
+  "fuel_out",
+  "condition_out",
+  "column_break_handover",
+  "odometer_in",
+  "fuel_in",
+  "condition_in",
+  "section_break_photos_out",
+  "photos_out",
+  "section_break_photos_in",
+  "photos_in",
+  "section_break_inspection",
+  "inspection_checklist",
+  "section_break_pricing",
+  "rate_plan",
+  "base_rate",
+  "rental_amount",
+  "column_break_pricing",
+  "free_km",
+  "km_driven",
+  "overage_km",
+  "overage_amount",
+  "section_break_charges",
+  "charges",
+  "section_break_totals",
+  "subtotal",
+  "discount_percent",
+  "discount_amount",
+  "column_break_totals",
+  "tax_amount",
+  "grand_total",
+  "rounded_total",
+  "section_break_deposit",
+  "deposit_held",
+  "deposit_applied",
+  "deposit_refunded",
+  "column_break_deposit",
+  "amount_due",
+  "amount_paid",
+  "outstanding_amount",
+  "section_break_payment",
+  "payment_status",
+  "erpnext_invoice",
+  "erpnext_payment_entry",
+  "section_break_terms",
+  "terms_accepted",
+  "terms_accepted_by",
+  "terms_accepted_on",
+  "column_break_terms",
+  "signature",
+  "section_break_notes",
+  "customer_notes",
+  "internal_notes"
+ ],
+ "fields": [
+  {
+   "default": "Draft",
+   "fieldname": "agreement_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Draft\nActive\nDue for Return\nReturned\nClosed\nCancelled",
+   "reqd": 1
+  },
+  {
+   "fieldname": "workflow_state",
+   "fieldtype": "Link",
+   "label": "Workflow State",
+   "options": "Workflow State",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Now",
+   "fieldname": "agreement_date",
+   "fieldtype": "Datetime",
+   "label": "Agreement Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "reservation",
+   "fieldtype": "Link",
+   "label": "Reservation",
+   "options": "Reservation"
+  },
+  {
+   "fieldname": "section_break_parties",
+   "fieldtype": "Section Break",
+   "label": "Parties"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "customer.customer_name",
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "label": "Customer Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "customer.mobile",
+   "fieldname": "customer_mobile",
+   "fieldtype": "Data",
+   "label": "Customer Mobile",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_parties",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "driver",
+   "fieldtype": "Link",
+   "label": "Driver",
+   "options": "Driver"
+  },
+  {
+   "fetch_from": "driver.driver_name",
+   "fieldname": "driver_name",
+   "fieldtype": "Data",
+   "label": "Driver Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "driver.license_no",
+   "fieldname": "driver_license",
+   "fieldtype": "Data",
+   "label": "Driver License",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_vehicle",
+   "fieldtype": "Section Break",
+   "label": "Vehicle"
+  },
+  {
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Vehicle",
+   "options": "Vehicle",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "vehicle.make",
+   "fieldname": "vehicle_make_model",
+   "fieldtype": "Data",
+   "label": "Make/Model",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "vehicle.plate_no",
+   "fieldname": "plate_no",
+   "fieldtype": "Data",
+   "label": "Plate Number",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_vehicle",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Pickup Branch",
+   "options": "Branch",
+   "reqd": 1
+  },
+  {
+   "fieldname": "return_branch",
+   "fieldtype": "Link",
+   "label": "Return Branch",
+   "options": "Branch"
+  },
+  {
+   "fieldname": "section_break_schedule",
+   "fieldtype": "Section Break",
+   "label": "Schedule"
+  },
+  {
+   "fieldname": "start_datetime",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Start Date/Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "end_datetime",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Planned End Date/Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "actual_return_datetime",
+   "fieldtype": "Datetime",
+   "label": "Actual Return Date/Time"
+  },
+  {
+   "fieldname": "column_break_schedule",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "planned_days",
+   "fieldtype": "Float",
+   "label": "Planned Days",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "actual_days",
+   "fieldtype": "Float",
+   "label": "Actual Days",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_overdue",
+   "fieldtype": "Check",
+   "label": "Is Overdue",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_handover",
+   "fieldtype": "Section Break",
+   "label": "Handover Details"
+  },
+  {
+   "fieldname": "odometer_out",
+   "fieldtype": "Int",
+   "label": "Odometer Out (KM)"
+  },
+  {
+   "fieldname": "fuel_out",
+   "fieldtype": "Percent",
+   "label": "Fuel Out (%)"
+  },
+  {
+   "fieldname": "condition_out",
+   "fieldtype": "Select",
+   "label": "Condition Out",
+   "options": "\nExcellent\nGood\nFair\nPoor"
+  },
+  {
+   "fieldname": "column_break_handover",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "odometer_in",
+   "fieldtype": "Int",
+   "label": "Odometer In (KM)"
+  },
+  {
+   "fieldname": "fuel_in",
+   "fieldtype": "Percent",
+   "label": "Fuel In (%)"
+  },
+  {
+   "fieldname": "condition_in",
+   "fieldtype": "Select",
+   "label": "Condition In",
+   "options": "\nExcellent\nGood\nFair\nPoor"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_photos_out",
+   "fieldtype": "Section Break",
+   "label": "Photos - Pickup"
+  },
+  {
+   "fieldname": "photos_out",
+   "fieldtype": "Table",
+   "label": "Pickup Photos",
+   "options": "Agreement Photo"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_photos_in",
+   "fieldtype": "Section Break",
+   "label": "Photos - Return"
+  },
+  {
+   "fieldname": "photos_in",
+   "fieldtype": "Table",
+   "label": "Return Photos",
+   "options": "Agreement Photo"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_inspection",
+   "fieldtype": "Section Break",
+   "label": "Inspection Checklist"
+  },
+  {
+   "fieldname": "inspection_checklist",
+   "fieldtype": "Table",
+   "label": "Inspection",
+   "options": "Inspection Line"
+  },
+  {
+   "fieldname": "section_break_pricing",
+   "fieldtype": "Section Break",
+   "label": "Pricing"
+  },
+  {
+   "fieldname": "rate_plan",
+   "fieldtype": "Link",
+   "label": "Rate Plan",
+   "options": "Rate Plan",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "rate_plan.base_rate",
+   "fieldname": "base_rate",
+   "fieldtype": "Currency",
+   "label": "Base Rate"
+  },
+  {
+   "fieldname": "rental_amount",
+   "fieldtype": "Currency",
+   "label": "Rental Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_pricing",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "rate_plan.free_km",
+   "fieldname": "free_km",
+   "fieldtype": "Int",
+   "label": "Free KM"
+  },
+  {
+   "fieldname": "km_driven",
+   "fieldtype": "Int",
+   "label": "KM Driven",
+   "read_only": 1
+  },
+  {
+   "fieldname": "overage_km",
+   "fieldtype": "Int",
+   "label": "Overage KM",
+   "read_only": 1
+  },
+  {
+   "fieldname": "overage_amount",
+   "fieldtype": "Currency",
+   "label": "Overage Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_charges",
+   "fieldtype": "Section Break",
+   "label": "Charges & Fees"
+  },
+  {
+   "fieldname": "charges",
+   "fieldtype": "Table",
+   "label": "Charges",
+   "options": "Agreement Charge"
+  },
+  {
+   "fieldname": "section_break_totals",
+   "fieldtype": "Section Break",
+   "label": "Totals"
+  },
+  {
+   "fieldname": "subtotal",
+   "fieldtype": "Currency",
+   "label": "Subtotal",
+   "read_only": 1
+  },
+  {
+   "fieldname": "discount_percent",
+   "fieldtype": "Percent",
+   "label": "Discount %"
+  },
+  {
+   "fieldname": "discount_amount",
+   "fieldtype": "Currency",
+   "label": "Discount Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_totals",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "tax_amount",
+   "fieldtype": "Currency",
+   "label": "Tax Amount"
+  },
+  {
+   "bold": 1,
+   "fieldname": "grand_total",
+   "fieldtype": "Currency",
+   "label": "Grand Total",
+   "read_only": 1
+  },
+  {
+   "fieldname": "rounded_total",
+   "fieldtype": "Currency",
+   "label": "Rounded Total",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_deposit",
+   "fieldtype": "Section Break",
+   "label": "Deposit & Payment"
+  },
+  {
+   "fieldname": "deposit_held",
+   "fieldtype": "Currency",
+   "label": "Deposit Held"
+  },
+  {
+   "fieldname": "deposit_applied",
+   "fieldtype": "Currency",
+   "label": "Deposit Applied",
+   "read_only": 1
+  },
+  {
+   "fieldname": "deposit_refunded",
+   "fieldtype": "Currency",
+   "label": "Deposit Refunded",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_deposit",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amount_due",
+   "fieldtype": "Currency",
+   "label": "Amount Due",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amount_paid",
+   "fieldtype": "Currency",
+   "label": "Amount Paid",
+   "read_only": 1
+  },
+  {
+   "fieldname": "outstanding_amount",
+   "fieldtype": "Currency",
+   "label": "Outstanding Amount",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_payment",
+   "fieldtype": "Section Break",
+   "label": "Payment Integration"
+  },
+  {
+   "fieldname": "payment_status",
+   "fieldtype": "Select",
+   "label": "Payment Status",
+   "options": "Unpaid\nPartially Paid\nPaid\nOverdue"
+  },
+  {
+   "fieldname": "erpnext_invoice",
+   "fieldtype": "Link",
+   "label": "ERPNext Invoice",
+   "options": "Sales Invoice",
+   "read_only": 1
+  },
+  {
+   "fieldname": "erpnext_payment_entry",
+   "fieldtype": "Link",
+   "label": "ERPNext Payment Entry",
+   "options": "Payment Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_terms",
+   "fieldtype": "Section Break",
+   "label": "Terms & Conditions"
+  },
+  {
+   "default": "0",
+   "fieldname": "terms_accepted",
+   "fieldtype": "Check",
+   "label": "Terms Accepted"
+  },
+  {
+   "fieldname": "terms_accepted_by",
+   "fieldtype": "Data",
+   "label": "Accepted By"
+  },
+  {
+   "fieldname": "terms_accepted_on",
+   "fieldtype": "Datetime",
+   "label": "Accepted On"
+  },
+  {
+   "fieldname": "column_break_terms",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "signature",
+   "fieldtype": "Attach Image",
+   "label": "Customer Signature"
+  },
+  {
+   "fieldname": "section_break_notes",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "customer_notes",
+   "fieldtype": "Small Text",
+   "label": "Customer Notes"
+  },
+  {
+   "fieldname": "internal_notes",
+   "fieldtype": "Text",
+   "label": "Internal Notes"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Right Hire",
+ "name": "Rental Agreement",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Counter Agent",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "LeetRental Admin",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

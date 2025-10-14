@@ -1,0 +1,204 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:policy_number",
+ "creation": "2024-01-01 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "policy_number",
+  "provider",
+  "policy_type",
+  "column_break_1",
+  "start_date",
+  "end_date",
+  "is_active",
+  "section_break_coverage",
+  "coverage_type",
+  "coverage_limit",
+  "excess_amount",
+  "column_break_coverage",
+  "deductible",
+  "premium_amount",
+  "payment_frequency",
+  "section_break_details",
+  "covered_vehicles",
+  "exclusions",
+  "section_break_claims",
+  "total_claims",
+  "claims_amount",
+  "section_break_documents",
+  "policy_document",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "policy_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Policy Number",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "provider",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Insurance Provider",
+   "reqd": 1
+  },
+  {
+   "fieldname": "policy_type",
+   "fieldtype": "Select",
+   "label": "Policy Type",
+   "options": "Comprehensive\nThird Party\nThird Party Fire and Theft\nCommercial Fleet"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Start Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "End Date",
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active"
+  },
+  {
+   "fieldname": "section_break_coverage",
+   "fieldtype": "Section Break",
+   "label": "Coverage Details"
+  },
+  {
+   "fieldname": "coverage_type",
+   "fieldtype": "Select",
+   "label": "Coverage Type",
+   "options": "\nAccident\nTheft\nFire\nNatural Disaster\nVandalism\nAll Risks"
+  },
+  {
+   "fieldname": "coverage_limit",
+   "fieldtype": "Currency",
+   "label": "Coverage Limit"
+  },
+  {
+   "description": "Amount customer pays before insurance covers",
+   "fieldname": "excess_amount",
+   "fieldtype": "Currency",
+   "label": "Excess Amount"
+  },
+  {
+   "fieldname": "column_break_coverage",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "deductible",
+   "fieldtype": "Currency",
+   "label": "Deductible"
+  },
+  {
+   "fieldname": "premium_amount",
+   "fieldtype": "Currency",
+   "label": "Premium Amount"
+  },
+  {
+   "fieldname": "payment_frequency",
+   "fieldtype": "Select",
+   "label": "Payment Frequency",
+   "options": "Annual\nSemi-Annual\nQuarterly\nMonthly"
+  },
+  {
+   "fieldname": "section_break_details",
+   "fieldtype": "Section Break",
+   "label": "Policy Details"
+  },
+  {
+   "fieldname": "covered_vehicles",
+   "fieldtype": "Small Text",
+   "label": "Covered Vehicles"
+  },
+  {
+   "fieldname": "exclusions",
+   "fieldtype": "Text",
+   "label": "Exclusions"
+  },
+  {
+   "fieldname": "section_break_claims",
+   "fieldtype": "Section Break",
+   "label": "Claims Summary"
+  },
+  {
+   "fieldname": "total_claims",
+   "fieldtype": "Int",
+   "label": "Total Claims",
+   "read_only": 1
+  },
+  {
+   "fieldname": "claims_amount",
+   "fieldtype": "Currency",
+   "label": "Claims Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_documents",
+   "fieldtype": "Section Break",
+   "label": "Documents"
+  },
+  {
+   "fieldname": "policy_document",
+   "fieldtype": "Attach",
+   "label": "Policy Document"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Text",
+   "label": "Notes"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Right Hire",
+ "name": "Insurance Policy",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "LeetRental Admin",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fleet Manager",
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

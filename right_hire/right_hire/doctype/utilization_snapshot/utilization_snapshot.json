@@ -1,0 +1,184 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:{vehicle}-{snapshot_date}",
+ "creation": "2024-01-01 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "snapshot_date",
+  "vehicle",
+  "branch",
+  "column_break_1",
+  "utilization_pct",
+  "availability_pct",
+  "section_break_hours",
+  "total_hours",
+  "rented_hours",
+  "idle_hours",
+  "column_break_hours",
+  "maintenance_hours",
+  "reserved_hours",
+  "other_hours",
+  "section_break_financial",
+  "revenue",
+  "maintenance_cost",
+  "net_revenue",
+  "column_break_financial",
+  "rental_days",
+  "average_daily_rate"
+ ],
+ "fields": [
+  {
+   "fieldname": "snapshot_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Snapshot Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Vehicle",
+   "options": "Vehicle",
+   "reqd": 1
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "utilization_pct",
+   "fieldtype": "Percent",
+   "in_list_view": 1,
+   "label": "Utilization %"
+  },
+  {
+   "fieldname": "availability_pct",
+   "fieldtype": "Percent",
+   "label": "Availability %"
+  },
+  {
+   "fieldname": "section_break_hours",
+   "fieldtype": "Section Break",
+   "label": "Hours Breakdown"
+  },
+  {
+   "default": "24",
+   "fieldname": "total_hours",
+   "fieldtype": "Float",
+   "label": "Total Hours",
+   "precision": "2"
+  },
+  {
+   "fieldname": "rented_hours",
+   "fieldtype": "Float",
+   "label": "Rented Hours",
+   "precision": "2"
+  },
+  {
+   "fieldname": "idle_hours",
+   "fieldtype": "Float",
+   "label": "Idle Hours",
+   "precision": "2"
+  },
+  {
+   "fieldname": "column_break_hours",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "maintenance_hours",
+   "fieldtype": "Float",
+   "label": "Maintenance Hours",
+   "precision": "2"
+  },
+  {
+   "fieldname": "reserved_hours",
+   "fieldtype": "Float",
+   "label": "Reserved Hours",
+   "precision": "2"
+  },
+  {
+   "fieldname": "other_hours",
+   "fieldtype": "Float",
+   "label": "Other Hours",
+   "precision": "2"
+  },
+  {
+   "fieldname": "section_break_financial",
+   "fieldtype": "Section Break",
+   "label": "Financial"
+  },
+  {
+   "fieldname": "revenue",
+   "fieldtype": "Currency",
+   "label": "Revenue"
+  },
+  {
+   "fieldname": "maintenance_cost",
+   "fieldtype": "Currency",
+   "label": "Maintenance Cost"
+  },
+  {
+   "fieldname": "net_revenue",
+   "fieldtype": "Currency",
+   "label": "Net Revenue"
+  },
+  {
+   "fieldname": "column_break_financial",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "rental_days",
+   "fieldtype": "Float",
+   "label": "Rental Days",
+   "precision": "2"
+  },
+  {
+   "fieldname": "average_daily_rate",
+   "fieldtype": "Currency",
+   "label": "Average Daily Rate"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Right Hire",
+ "name": "Utilization Snapshot",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fleet Manager",
+   "share": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "LeetRental Admin",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

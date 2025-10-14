@@ -1,0 +1,210 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:rate_plan_name",
+ "creation": "2024-01-01 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "rate_plan_name",
+  "rate_type",
+  "is_active",
+  "column_break_1",
+  "vehicle_category",
+  "applicable_from",
+  "applicable_to",
+  "section_break_pricing",
+  "base_rate",
+  "free_km",
+  "overage_per_km",
+  "column_break_pricing",
+  "deposit",
+  "minimum_rental_days",
+  "grace_period_hours",
+  "section_break_extras",
+  "cdw_rate",
+  "pai_rate",
+  "delivery_charge",
+  "pickup_charge",
+  "section_break_seasonal",
+  "seasonal_windows",
+  "section_break_notes",
+  "description",
+  "terms_and_conditions"
+ ],
+ "fields": [
+  {
+   "fieldname": "rate_plan_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Rate Plan Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "rate_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Rate Type",
+   "options": "Daily\nWeekly\nMonthly\nHourly",
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Is Active"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "vehicle_category",
+   "fieldtype": "Select",
+   "label": "Vehicle Category",
+   "options": "\nEconomy\nCompact\nMid-Size\nFull-Size\nSUV\nLuxury\nSports\nVan"
+  },
+  {
+   "fieldname": "applicable_from",
+   "fieldtype": "Date",
+   "label": "Applicable From"
+  },
+  {
+   "fieldname": "applicable_to",
+   "fieldtype": "Date",
+   "label": "Applicable To"
+  },
+  {
+   "fieldname": "section_break_pricing",
+   "fieldtype": "Section Break",
+   "label": "Pricing"
+  },
+  {
+   "fieldname": "base_rate",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Base Rate",
+   "reqd": 1
+  },
+  {
+   "fieldname": "free_km",
+   "fieldtype": "Int",
+   "label": "Free KM"
+  },
+  {
+   "fieldname": "overage_per_km",
+   "fieldtype": "Currency",
+   "label": "Overage per KM"
+  },
+  {
+   "fieldname": "column_break_pricing",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "deposit",
+   "fieldtype": "Currency",
+   "label": "Deposit"
+  },
+  {
+   "fieldname": "minimum_rental_days",
+   "fieldtype": "Int",
+   "label": "Minimum Rental Days"
+  },
+  {
+   "description": "Grace period before late fees apply",
+   "fieldname": "grace_period_hours",
+   "fieldtype": "Int",
+   "label": "Grace Period (Hours)"
+  },
+  {
+   "fieldname": "section_break_extras",
+   "fieldtype": "Section Break",
+   "label": "Optional Extras"
+  },
+  {
+   "description": "Collision Damage Waiver per day",
+   "fieldname": "cdw_rate",
+   "fieldtype": "Currency",
+   "label": "CDW Rate"
+  },
+  {
+   "description": "Personal Accident Insurance per day",
+   "fieldname": "pai_rate",
+   "fieldtype": "Currency",
+   "label": "PAI Rate"
+  },
+  {
+   "fieldname": "delivery_charge",
+   "fieldtype": "Currency",
+   "label": "Delivery Charge"
+  },
+  {
+   "fieldname": "pickup_charge",
+   "fieldtype": "Currency",
+   "label": "Pickup Charge"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_seasonal",
+   "fieldtype": "Section Break",
+   "label": "Seasonal Pricing"
+  },
+  {
+   "fieldname": "seasonal_windows",
+   "fieldtype": "Table",
+   "label": "Seasonal Windows",
+   "options": "Seasonal Price Window"
+  },
+  {
+   "fieldname": "section_break_notes",
+   "fieldtype": "Section Break",
+   "label": "Additional Information"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "terms_and_conditions",
+   "fieldtype": "Text Editor",
+   "label": "Terms and Conditions"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Right Hire",
+ "name": "Rate Plan",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "LeetRental Admin",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Counter Agent",
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

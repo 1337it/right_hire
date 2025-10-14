@@ -1,0 +1,474 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "field:vehicle_id",
+ "creation": "2024-01-01 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_details_section",
+  "vehicle_id",
+  "vin",
+  "plate_no",
+  "column_break_basic",
+  "make",
+  "model",
+  "variant",
+  "year",
+  "section_break_specs",
+  "color",
+  "transmission",
+  "fuel_type",
+  "seating_capacity",
+  "column_break_specs",
+  "body_type",
+  "engine_capacity",
+  "horsepower",
+  "section_break_location",
+  "branch",
+  "parking_lot",
+  "current_location",
+  "column_break_location",
+  "status",
+  "availability_status",
+  "section_break_operational",
+  "odometer",
+  "fuel_level",
+  "last_service_date",
+  "next_service_due",
+  "column_break_operational",
+  "gps_device_id",
+  "telematics_provider",
+  "telematics_enabled",
+  "section_break_financial",
+  "purchase_date",
+  "purchase_cost",
+  "depreciation_method",
+  "depreciation_rate",
+  "column_break_financial",
+  "current_book_value",
+  "total_revenue",
+  "total_maintenance_cost",
+  "net_profit",
+  "section_break_insurance",
+  "insurance_policy",
+  "registration_expiry",
+  "insurance_expiry",
+  "column_break_insurance",
+  "insurance_provider",
+  "policy_number",
+  "section_break_photos",
+  "photos",
+  "section_break_documents",
+  "documents",
+  "section_break_service",
+  "service_history",
+  "section_break_odometer",
+  "odometer_logs",
+  "section_break_damage",
+  "damage_logs",
+  "section_break_accessories",
+  "accessories"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_details_section",
+   "fieldtype": "Section Break",
+   "label": "Basic Details"
+  },
+  {
+   "fieldname": "vehicle_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Vehicle ID",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "vin",
+   "fieldtype": "Data",
+   "label": "VIN",
+   "unique": 1
+  },
+  {
+   "fieldname": "plate_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Plate Number",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "column_break_basic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "make",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Make",
+   "reqd": 1
+  },
+  {
+   "fieldname": "model",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Model",
+   "reqd": 1
+  },
+  {
+   "fieldname": "variant",
+   "fieldtype": "Data",
+   "label": "Variant/Trim"
+  },
+  {
+   "fieldname": "year",
+   "fieldtype": "Int",
+   "label": "Year",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_specs",
+   "fieldtype": "Section Break",
+   "label": "Specifications"
+  },
+  {
+   "fieldname": "color",
+   "fieldtype": "Data",
+   "label": "Color"
+  },
+  {
+   "fieldname": "transmission",
+   "fieldtype": "Select",
+   "label": "Transmission",
+   "options": "Automatic\nManual\nCVT\nDCT"
+  },
+  {
+   "fieldname": "fuel_type",
+   "fieldtype": "Select",
+   "label": "Fuel Type",
+   "options": "Petrol\nDiesel\nElectric\nHybrid\nCNG"
+  },
+  {
+   "fieldname": "seating_capacity",
+   "fieldtype": "Int",
+   "label": "Seating Capacity"
+  },
+  {
+   "fieldname": "column_break_specs",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "body_type",
+   "fieldtype": "Select",
+   "label": "Body Type",
+   "options": "Sedan\nSUV\nHatchback\nCoupe\nConvertible\nWagon\nVan\nTruck\nPickup"
+  },
+  {
+   "fieldname": "engine_capacity",
+   "fieldtype": "Data",
+   "label": "Engine Capacity"
+  },
+  {
+   "fieldname": "horsepower",
+   "fieldtype": "Int",
+   "label": "Horsepower"
+  },
+  {
+   "fieldname": "section_break_location",
+   "fieldtype": "Section Break",
+   "label": "Location &amp; Status"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch",
+   "reqd": 1
+  },
+  {
+   "fieldname": "parking_lot",
+   "fieldtype": "Link",
+   "label": "Parking Lot",
+   "options": "Parking Lot"
+  },
+  {
+   "fieldname": "current_location",
+   "fieldtype": "Data",
+   "label": "Current Location",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_location",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Available\nReserved\nOut for Delivery\nRented Out\nDue for Return\nCustody\nAt Garage\nUnder Maintenance\nAccident/Repair\nDeactivated",
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "availability_status",
+   "fieldtype": "Check",
+   "label": "Available for Booking"
+  },
+  {
+   "fieldname": "section_break_operational",
+   "fieldtype": "Section Break",
+   "label": "Operational Data"
+  },
+  {
+   "fieldname": "odometer",
+   "fieldtype": "Int",
+   "label": "Odometer (KM)"
+  },
+  {
+   "fieldname": "fuel_level",
+   "fieldtype": "Percent",
+   "label": "Fuel Level"
+  },
+  {
+   "fieldname": "last_service_date",
+   "fieldtype": "Date",
+   "label": "Last Service Date"
+  },
+  {
+   "fieldname": "next_service_due",
+   "fieldtype": "Date",
+   "label": "Next Service Due"
+  },
+  {
+   "fieldname": "column_break_operational",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "gps_device_id",
+   "fieldtype": "Data",
+   "label": "GPS Device ID"
+  },
+  {
+   "fieldname": "telematics_provider",
+   "fieldtype": "Select",
+   "label": "Telematics Provider",
+   "options": "\nGeotab\nVerizon Connect\nTomTom\nCalAmp\nOther"
+  },
+  {
+   "default": "0",
+   "fieldname": "telematics_enabled",
+   "fieldtype": "Check",
+   "label": "Telematics Enabled"
+  },
+  {
+   "fieldname": "section_break_financial",
+   "fieldtype": "Section Break",
+   "label": "Financial"
+  },
+  {
+   "fieldname": "purchase_date",
+   "fieldtype": "Date",
+   "label": "Purchase Date"
+  },
+  {
+   "fieldname": "purchase_cost",
+   "fieldtype": "Currency",
+   "label": "Purchase Cost"
+  },
+  {
+   "fieldname": "depreciation_method",
+   "fieldtype": "Select",
+   "label": "Depreciation Method",
+   "options": "\nStraight Line\nReducing Balance\nManual"
+  },
+  {
+   "fieldname": "depreciation_rate",
+   "fieldtype": "Percent",
+   "label": "Depreciation Rate"
+  },
+  {
+   "fieldname": "column_break_financial",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "current_book_value",
+   "fieldtype": "Currency",
+   "label": "Current Book Value",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_revenue",
+   "fieldtype": "Currency",
+   "label": "Total Revenue",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_maintenance_cost",
+   "fieldtype": "Currency",
+   "label": "Total Maintenance Cost",
+   "read_only": 1
+  },
+  {
+   "fieldname": "net_profit",
+   "fieldtype": "Currency",
+   "label": "Net Profit",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_insurance",
+   "fieldtype": "Section Break",
+   "label": "Insurance &amp; Registration"
+  },
+  {
+   "fieldname": "insurance_policy",
+   "fieldtype": "Link",
+   "label": "Insurance Policy",
+   "options": "Insurance Policy"
+  },
+  {
+   "fieldname": "registration_expiry",
+   "fieldtype": "Date",
+   "label": "Registration Expiry"
+  },
+  {
+   "fieldname": "insurance_expiry",
+   "fieldtype": "Date",
+   "label": "Insurance Expiry"
+  },
+  {
+   "fieldname": "column_break_insurance",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "insurance_provider",
+   "fieldtype": "Data",
+   "label": "Insurance Provider"
+  },
+  {
+   "fieldname": "policy_number",
+   "fieldtype": "Data",
+   "label": "Policy Number"
+  },
+  {
+   "fieldname": "section_break_photos",
+   "fieldtype": "Section Break",
+   "label": "Photos"
+  },
+  {
+   "fieldname": "photos",
+   "fieldtype": "Table",
+   "label": "Photos",
+   "options": "Vehicle Photo"
+  },
+  {
+   "fieldname": "section_break_documents",
+   "fieldtype": "Section Break",
+   "label": "Documents"
+  },
+  {
+   "fieldname": "documents",
+   "fieldtype": "Table",
+   "label": "Documents",
+   "options": "Vehicle Document"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_service",
+   "fieldtype": "Section Break",
+   "label": "Service History"
+  },
+  {
+   "fieldname": "service_history",
+   "fieldtype": "Table",
+   "label": "Service History",
+   "options": "Service Entry"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_odometer",
+   "fieldtype": "Section Break",
+   "label": "Odometer Logs"
+  },
+  {
+   "fieldname": "odometer_logs",
+   "fieldtype": "Table",
+   "label": "Odometer Logs",
+   "options": "Odometer Log Child"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_damage",
+   "fieldtype": "Section Break",
+   "label": "Damage Logs"
+  },
+  {
+   "fieldname": "damage_logs",
+   "fieldtype": "Table",
+   "label": "Damage Logs",
+   "options": "Damage Log Child"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_accessories",
+   "fieldtype": "Section Break",
+   "label": "Accessories"
+  },
+  {
+   "fieldname": "accessories",
+   "fieldtype": "Table",
+   "label": "Accessories",
+   "options": "Vehicle Accessory"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-10-14 12:24:03.119631",
+ "modified_by": "Administrator",
+ "module": "Right Hire",
+ "name": "Vehicle",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fleet Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Counter Agent",
+   "share": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Right Hire Admin",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
