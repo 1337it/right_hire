@@ -1,0 +1,154 @@
+@media only screen and (min-width: 992px) {
+/* splitter (the middle column) */
+.splitter{
+  grid-column: 2;
+  cursor: col-resize;
+  background: rgba(148,163,184,.25);
+}
+.splitter:hover{ background: rgba(148,163,184,.4); }
+
+/* optional exit button */
+.split-exit{
+  position: absolute; top: 8px; right: 8px; z-index: 5;
+  padding: 6px 10px; border-radius: 8px; border: 0; cursor: pointer;
+  background: rgba(2,6,23,.78); color: #e5e7eb;
+}
+/* When split mode is on, make the wrapper a 2-col grid */
+.layout-main-section-wrapper.is-split{
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  align-items: stretch;
+  height: calc(100vh - 64px); /* adjust if your header differs */
+}
+
+/* panes */
+.page-container.split-left,
+.page-container.split-right{
+  display: block !important;   /* override Frappe's display:none */
+  overflow: auto;
+}
+
+/* draggable divider */
+
+/* assets/your_app/css/custom.css */
+/* Split view shell */
+.split-shell{ position:relative; display:grid; grid-template-columns: 1fr 1fr; gap:0; height:calc(100vh - 64px); }
+.split-pane{ position:relative; overflow:auto; }
+.split-iframe{ width:100%; height:100%; border:0; }
+.splitter{ width:6px; cursor:col-resize; background:rgba(148,163,184,.25); }
+.splitter:hover{ background:rgba(148,163,184,.4); }
+.split-exit{
+  position:absolute; top:8px; right:8px; z-index:10;
+  padding:6px 10px; border-radius:8px; border:0; cursor:pointer;
+  background:rgba(2,6,23,.78); color:#e5e7eb;
+}
+/* Primary (sidebar-hosted) dock */
+.sidebar__minimized{
+  padding: 0px;
+  display: grid;
+  gap: 1px !important;
+  border-top: 1px solid rgba(148,163,184,.12);
+  margin-top: 8px;
+}
+.sidebar__minimized{ padding-bottom:10px; display:grid; gap:1px; border-top:1px solid rgba(148,163,184,.12); margin-top:8px;padding-bottom: 10px; }
+
+/* Buttons */
+
+
+.minibtn:hover{ background: rgba(148,163,184,.18); }
+.minibtn__icon {
+width: 24px;
+text-align: center;
+opacity: 1;
+font-size: 22px;
+  margin-left: -1px;
+/* margin-right: 5px; */
+}
+.minibtn__labels {
+display: flex;
+flex-direction: column;
+overflow: hidden;
+margin-left: 5px;
+}
+.minibtn__close {
+border: 0px;
+background-position: 0% 0%;
+background-size: auto;
+background-repeat: repeat;
+background-attachment: scroll;
+background-origin: padding-box;
+background-clip: border-box;
+color: black;
+cursor: pointer;
+font-size: 24px;
+opacity: 0.6;
+padding: 0px;
+background: rgb(136, 182, 207);
+width: 32px;
+height: 45px;
+border-top-right-radius: 0px;
+border-bottom-right-radius: 0px;
+}
+.minibtn__close:hover{ opacity:1; }
+
+/* Work with your collapsed rail */
+.app.--collapsed .sidebar__minimized .minibtn__label{ opacity:0; visibility:hidden; }
+.app.--collapsed .sidebar:hover .minibtn__label{ opacity:1; visibility:visible; }
+.minibtn{
+  display: grid;
+  grid-template-columns: 24px 1fr 20px;
+  align-items: center;
+  gap: 8px;
+  padding: 0px 12px;
+  border-radius: 0px;
+  background: rgba(148,163,184,.10);
+  color: inherit;
+  cursor: pointer;
+  border: 0;
+  transition: background .2s ease;
+}
+
+.minibtn__labels{
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.minibtn__doctype{
+  font-size: 12px;
+  font-weight: 600;
+  color: #8cacd4; /* lighter slate */
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.minibtn__docname{
+  font-size: 13px;
+  font-weight: 400;
+  color: #f1f5f9; /* brighter */
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 640px){
+  .bottomdock{
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-auto-rows: 40px;
+    left: 12px; right: 12px; bottom: 12px;
+  }
+}
+
+.minibtn__docname{
+  font-size: 13px;
+  font-weight: 400;
+  color: #828181; /* brighter */
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+}
