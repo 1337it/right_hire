@@ -2,6 +2,12 @@
    Frappe Sidebar - Complete Minimal Icon Set
    ============================================ */
 
+[data-theme-mode="dark"] .item-anchor {
+gap: 0px !important;
+color: white !important;
+}
+
+
 /* Hide original SVG icons */
 .sidebar-item-icon svg {
   display: none !important;
