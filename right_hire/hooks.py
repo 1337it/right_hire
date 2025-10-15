@@ -6,48 +6,6 @@ app_email = "support@righthire.com"
 app_license = "MIT"
 app_version = "1.0.0"
 
-# Includes in 
-.DS_Store
-hi
-yesterday
-__init__.py
-hi
-yesterday
-advanced_link_picker.js
-hi
-yesterday
-customer_quick_scan.js
-hi
-yesterday
-enter-to-next-and-focus-first.js
-hi
-yesterday
-icons.js
-hi
-yesterday
-minimize-to-sidebar.js
-hi
-yesterday
-portal-settings.js
-hi
-yesterday
-rental_agreement.js
-hi
-yesterday
-reservation.js
-hi
-yesterday
-right_hire.js
-hi
-yesterday
-sidebar_toggle.js
-hi
-yesterday
-vehicle.js
-hi
-yesterday
-vehicle_listview.js
-
 app_include_css = [
 	"/assets/leetrental/css/right_hire.css",
 	"/assets/leetrental/css/portal-settings.css",
