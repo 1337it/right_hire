@@ -7,8 +7,27 @@ app_license = "MIT"
 app_version = "1.0.0"
 
 # Includes in 
-app_include_css = "/assets/right_hire/css/right_hire.css"
-app_include_js = "/assets/right_hire/js/right_hire.js"
+
+
+app_include_css = [
+	"/assets/leetrental/css/right_hire.css",
+	"/assets/leetrental/css/portal-settings.css",
+	"/assets/leetrental/css/minimize-to-sidebar.css",
+	"/assets/leetrental/css/sidebar_toggle.css",
+	"/assets/leetrental/css/icons.css"
+]
+
+app_include_js = [
+	"/assets/leetrental/js/right_hire.js",
+	"/assets/leetrental/js/portal-settings.js",
+	"/assets/leetrental/js/minimize-to-sidebar.js",
+	"/assets/leetrental/js/customer_quick_scan.js",
+	"/assets/leetrental/js/enter-to-next-and-focus-first.js",
+	"/assets/leetrental/js/advanced_link_picker.js",
+	"/assets/leetrental/js/sidebar_toggle.js",
+	"/assets/leetrental/js/icons.js",
+	"/assets/leetrental/js/vehicle_listview.js"
+]
 
 # include js in doctype views
 doctype_js = {
