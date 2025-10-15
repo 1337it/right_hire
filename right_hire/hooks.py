@@ -7,26 +7,26 @@ app_license = "MIT"
 app_version = "1.0.0"
 
 app_include_css = [
-	"/assets/leetrental/css/right_hire.css",
-	"/assets/leetrental/css/portal-settings.css",
-	"/assets/leetrental/css/minimize-to-sidebar.css",
-	"/assets/leetrental/css/sidebar_toggle.css",
-	"/assets/leetrental/css/icons.css"
+	"/assets/right_hire/css/right_hire.css",
+	"/assets/right_hire/css/portal-settings.css",
+	"/assets/right_hire/css/minimize-to-sidebar.css",
+	"/assets/right_hire/css/sidebar_toggle.css",
+	"/assets/right_hire/css/icons.css"
 ]
 
 app_include_js = [
-	"/assets/leetrental/js/right_hire.js",
-	"/assets/leetrental/js/portal-settings.js",
-	"/assets/leetrental/js/minimize-to-sidebar.js",
-	"/assets/leetrental/js/customer_quick_scan.js",
-	"/assets/leetrental/js/enter-to-next-and-focus-first.js",
-	"/assets/leetrental/js/advanced_link_picker.js",
-	"/assets/leetrental/js/sidebar_toggle.js",
-	"/assets/leetrental/js/icons.js",
-	"/assets/leetrental/js/vehicle_listview.js",
-	"/assets/leetrental/js/reservation.js",
-	"/assets/leetrental/js/vehicle.js",
-	"/assets/leetrental/js/vehicle_listview.js"
+	"/assets/right_hire/js/right_hire.js",
+	"/assets/right_hire/js/portal-settings.js",
+	"/assets/right_hire/js/minimize-to-sidebar.js",
+	"/assets/right_hire/js/customer_quick_scan.js",
+	"/assets/right_hire/js/enter-to-next-and-focus-first.js",
+	"/assets/right_hire/js/advanced_link_picker.js",
+	"/assets/right_hire/js/sidebar_toggle.js",
+	"/assets/right_hire/js/icons.js",
+	"/assets/right_hire/js/vehicle_listview.js",
+	"/assets/right_hire/js/reservation.js",
+	"/assets/right_hire/js/vehicle.js",
+	"/assets/right_hire/js/vehicle_listview.js"
 ]
 
 # include js in doctype views
