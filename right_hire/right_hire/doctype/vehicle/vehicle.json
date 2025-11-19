@@ -9,7 +9,7 @@
  "field_order": [
   "basic_details_section",
   "vehicle_id",
-  "vin",
+  "chassis_number",
   "plate_no",
   "column_break_basic",
   "make",
@@ -86,12 +86,6 @@
    "unique": 1
   },
   {
-   "fieldname": "vin",
-   "fieldtype": "Data",
-   "label": "VIN",
-   "unique": 1
-  },
-  {
    "fieldname": "plate_no",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -121,12 +115,6 @@
    "fieldname": "variant",
    "fieldtype": "Data",
    "label": "Variant/Trim"
-  },
-  {
-   "fieldname": "year",
-   "fieldtype": "Int",
-   "label": "Year",
-   "reqd": 1
   },
   {
    "fieldname": "section_break_specs",
@@ -421,11 +409,23 @@
    "fieldtype": "Table",
    "label": "Accessories",
    "options": "Vehicle Accessory"
+  },
+  {
+   "fieldname": "chassis_number",
+   "fieldtype": "Data",
+   "label": "Chassis Number",
+   "unique": 1
+  },
+  {
+   "fieldname": "year",
+   "fieldtype": "Int",
+   "label": "Year",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-14 12:24:03.119631",
+ "modified": "2025-11-18 20:05:18.586868",
  "modified_by": "Administrator",
  "module": "Right Hire",
  "name": "Vehicle",

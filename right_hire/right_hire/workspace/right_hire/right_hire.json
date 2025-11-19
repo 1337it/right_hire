@@ -1,16 +1,7 @@
 {
- "charts": [
-  {
-   "chart_name": "Fleet Status Overview",
-   "label": "Fleet Status Overview"
-  },
-  {
-   "chart_name": "Monthly Revenue",
-   "label": "Monthly Revenue"
-  }
- ],
+ "charts": [],
  "content": "[{\"id\":\"operations\",\"type\":\"header\",\"data\":{\"text\":\"Operations\",\"col\":12}},{\"id\":\"reservation\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Reservation\",\"col\":3}},{\"id\":\"rental_agreement\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Rental Agreement\",\"col\":3}},{\"id\":\"lease_contract\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Lease Contract\",\"col\":3}},{\"id\":\"vehicle_movement\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Vehicle Movement\",\"col\":3}},{\"id\":\"fleet\",\"type\":\"header\",\"data\":{\"text\":\"Fleet Management\",\"col\":12}},{\"id\":\"vehicle\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Vehicle\",\"col\":3}},{\"id\":\"maintenance_job\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Maintenance Job\",\"col\":3}},{\"id\":\"violation\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Violation\",\"col\":3}},{\"id\":\"fleet_chart\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Fleet Status Overview\",\"col\":12}},{\"id\":\"customers\",\"type\":\"header\",\"data\":{\"text\":\"Customers\",\"col\":12}},{\"id\":\"customer\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Customer\",\"col\":3}},{\"id\":\"driver\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Driver\",\"col\":3}},{\"id\":\"reports\",\"type\":\"header\",\"data\":{\"text\":\"Reports & Analytics\",\"col\":12}},{\"id\":\"utilization_report\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Vehicle Utilization\",\"col\":3}},{\"id\":\"revenue_report\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Revenue Analysis\",\"col\":3}},{\"id\":\"revenue_chart\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Monthly Revenue\",\"col\":12}}]",
- "creation": "2024-01-01 00:00:00.000000",
+ "creation": "2024-01-01 00:00:00",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
@@ -18,19 +9,20 @@
  "hide_custom": 0,
  "icon": "car",
  "idx": 0,
- "is_hidden": 0,
+ "is_hidden": 1,
  "label": "Right Hire",
  "links": [],
- "modified": "2024-01-01 00:00:00.000000",
+ "modified": "2025-10-15 19:57:44.535363",
  "modified_by": "Administrator",
  "module": "Right Hire",
  "name": "Right Hire",
+ "number_cards": [],
  "owner": "Administrator",
  "parent_page": "",
  "public": 1,
  "quick_lists": [],
  "roles": [],
- "sequence_id": 1,
+ "sequence_id": 1.0,
  "shortcuts": [
   {
    "color": "Green",
@@ -77,12 +69,14 @@
    "doc_view": "Report Builder",
    "label": "Vehicle Utilization",
    "link_to": "Vehicle Utilization",
+   "report_ref_doctype": "Vehicle",
    "type": "Report"
   },
   {
    "doc_view": "Report Builder",
    "label": "Revenue Analysis",
    "link_to": "Revenue Analysis",
+   "report_ref_doctype": "Rental Agreement",
    "type": "Report"
   }
  ],

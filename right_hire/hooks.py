@@ -18,7 +18,6 @@ app_include_js = [
 	"/assets/right_hire/js/right_hire.js",
 	"/assets/right_hire/js/portal-settings.js",
 	"/assets/right_hire/js/minimize-to-sidebar.js",
-	"/assets/right_hire/js/customer_quick_scan.js",
 	"/assets/right_hire/js/enter-to-next-and-focus-first.js",
 	"/assets/right_hire/js/advanced_link_picker.js",
 	"/assets/right_hire/js/sidebar_toggle.js",
