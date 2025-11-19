@@ -6,6 +6,13 @@
 gap: 0px !important;
 color: white !important;
 }
+img.aed {
+height: 11px;
+width: auto;
+content: url("data:image/svg+xml; base64,PHN2ZyB2ZXJzaW9uPSIxLjIiIHhtbG5zPSJodHRwOi8vd3d3…IgMjIxLjYtMC41IDIyMi40LTAuNyAwLjktMC4xIDEuOCAwLjUgMi4xIDEuMnoiLz4KPC9zdmc+");
+vertical-align: middle;
+margin-bottom: 3px;
+}
 
 /* Icon container styling */
 .sidebar-item-icon {
