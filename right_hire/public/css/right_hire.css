@@ -166,7 +166,19 @@ position: absolute !important;
 left: -12px !important;
 }
   .list-sidebar {
-padding-top: 40px!important;
+padding-top: 10px!important;
+}
+[data-theme="dark"] .sidebar-item-icon {
+filter: brightness(10)!important;
+}
+[data-theme="dark"] .sidebar-item-label {
+filter: brightness(10) !important;
+}
+[data-theme="dark"] .sidebar-item-icon:hover {
+filter: brightness(0)!important;
+}
+[data-theme="dark"] .sidebar-item-label:hover {
+filter: brightness(0) !important;
 }
 .frappe-control .img-responsive {
 background-color: var(--bg-light-gray);
@@ -356,7 +368,7 @@ border-radius: var(--border-radius-lg);
 }
 .page-title .sidebar-toggle-btn {
 
-display: none;
+display: none !important;
 }
 .layout-side-section {
 display: none;
