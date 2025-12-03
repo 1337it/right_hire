@@ -1,7 +1,17 @@
 /* ============================================
    Frappe Sidebar - Complete Minimal Icon Set
    ============================================ */
-
+.widget.shortcut-widget-box:hover {
+box-shadow: 0 2px 2px #ffffff30 inset, /* top highlight */ 0 1px 4px #00000030,
+/* dark shadow */ 1px 1px 3px #00000015;
+}
+.widget.shortcut-widget-box {
+cursor: pointer;
+padding: 10px 10px!important;
+align-items: flex-start;
+box-shadow: 0 2px 2px #ffffff30 inset, /* top highlight */ 0 1px 2px #00000030,
+/* dark shadow */ 1px 1px 2px #00000015;
+}
 [data-theme-mode="dark"] .item-anchor {
 gap: 0px !important;
 color: white !important;
