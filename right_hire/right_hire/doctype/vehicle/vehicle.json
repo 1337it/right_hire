@@ -69,7 +69,9 @@
   "section_break_damage",
   "damage_logs",
   "section_break_accessories",
-  "accessories"
+  "accessories",
+  "section_break_vin_decode",
+  "vin_decode_data"
  ],
  "fields": [
   {
@@ -99,17 +101,19 @@
   },
   {
    "fieldname": "make",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Make",
-   "reqd": 1
+   "reqd": 1,
+   "options": "Vehicle Make"
   },
   {
    "fieldname": "model",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Model",
-   "reqd": 1
+   "reqd": 1,
+   "options": "Vehicle Model"
   },
   {
    "fieldname": "variant",
@@ -421,6 +425,18 @@
    "fieldtype": "Int",
    "label": "Year",
    "reqd": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_vin_decode",
+   "fieldtype": "Section Break",
+   "label": "VIN Decode Data"
+  },
+  {
+   "fieldname": "vin_decode_data",
+   "fieldtype": "Long Text",
+   "label": "Complete VIN Decode Response",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,

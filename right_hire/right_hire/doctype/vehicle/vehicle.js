@@ -62,7 +62,7 @@ frappe.ui.form.on('Vehicle', {
 function validate_vin_format(frm, vin) {
     // Client-side quick validation before API call
     frappe.call({
-        method: 'right_hire.right_hire.doctype.Vehicle.api.validate_vin',
+        method: 'right_hire.right_hire.doctype.vehicle.api.validate_vin',
         args: { vin: vin },
         callback: function(r) {
             if (r.message && !r.message.valid) {
@@ -99,11 +99,11 @@ function decode_vehicle_vin(frm) {
     }
     
     // Show loading indicator
-    frappe.dom.freeze(__('Decoding VIN from NHTSA database...<br><small>Creating missing records if needed...</small>'));
+    frappe.dom.freeze(__('Decoding VIN from vehicle database...<br><small>Creating missing records if needed...</small>'));
     
     // Call server-side method
     frappe.call({
-        method: 'right_hire.right_hire.doctype.Vehicle.api.decode_vehicle_vin',
+        method: 'right_hire.right_hire.doctype.vehicle.api.decode_vehicle_vin',
         args: {
             vin: vin,
             model_year: frm.doc.model_year || null

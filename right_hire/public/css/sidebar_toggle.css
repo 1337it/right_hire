@@ -1,0 +1,165 @@
+/* Collapsible Sidebar Styles for Workspace Sidebar */
+/* Add this file to your_app/public/css/sidebar_toggle.css */
+
+/* Hamburger Button */
+.sidebar-toggle-btn {
+width: 24px;
+height: 24px;
+border-radius: 2px;
+cursor: pointer;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+gap: 5px;
+padding: 0px;
+transition: 0.3s;
+position: fixed !important;
+top: 58px !important;
+left: 12px !important;
+z-index: 9999 !important;
+background: rgb(255, 255, 255) !important;
+display: flex !important;
+}
+
+
+
+.sidebar-toggle-btn:active {
+    transform: translateY(0) scale(0.95);
+}
+
+.hamburger-line {
+    width: 22px;
+    height: 3px;
+    background: #333 !important;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    display: block !important;
+}
+
+/* Animate hamburger to X when active */
+.sidebar-toggle-btn.active .hamburger-line:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.sidebar-toggle-btn.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+    transform: scale(0);
+}
+
+.sidebar-toggle-btn.active .hamburger-line:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Target specifically the workspace sidebar */
+#page-Workspaces .layout-side-section {
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1040;
+}
+
+/* Collapsed state for workspace sidebar */
+#page-Workspaces .layout-side-section.workspace-collapsed {
+    transform: translateX(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Adjust main content area when workspace sidebar is collapsed */
+#page-Workspaces .layout-side-section.workspace-collapsed ~ .layout-main-section-wrapper,
+#page-Workspaces .layout-side-section.workspace-collapsed ~ * .layout-main-section-wrapper {
+    margin-left: 0 !important;
+    max-width: 100%;
+}
+
+/* Smooth transition for main content */
+#page-Workspaces .layout-main-section-wrapper {
+    transition: all 0.3s ease;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .sidebar-toggle-btn {
+        top: 10px !important;
+        left: 10px !important;
+        width: 42px;
+        height: 42px;
+    }
+    
+    .hamburger-line {
+        width: 20px;
+    }
+    
+    /* Make workspace sidebar overlay on mobile */
+    #page-Workspaces .layout-side-section {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        z-index: 1040;
+        background: #ffffff;
+        box-shadow: 2px 0 16px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+    }
+    
+    #page-Workspaces .layout-side-section.workspace-collapsed {
+        transform: translateX(-100%);
+    }
+    
+    /* Overlay backdrop when sidebar is open on mobile */
+    #page-Workspaces .layout-side-section:not(.workspace-collapsed)::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+        animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+}
+
+/* Desktop - ensure workspace sidebar is visible by default */
+@media (min-width: 769px) {
+    #page-Workspaces .layout-side-section:not(.workspace-collapsed) {
+        transform: translateX(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+/* Smooth scrolling for workspace sidebar */
+#page-Workspaces .layout-side-section {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Scrollbar styling */
+#page-Workspaces .layout-side-section::-webkit-scrollbar {
+    width: 6px;
+}
+
+#page-Workspaces .layout-side-section::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#page-Workspaces .layout-side-section::-webkit-scrollbar-thumb {
+    background: #cccccc;
+    border-radius: 3px;
+}
+
+#page-Workspaces .layout-side-section::-webkit-scrollbar-thumb:hover {
+    background: #999999;
+}
+
+/* Ensure button is always visible above everything */
+.sidebar-toggle-btn {
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}

@@ -34,53 +34,46 @@ def decode_vehicle_vin(vin, model_year=None):
             frappe.throw(_("VIN cannot contain letters I, O, or Q"))
     
     try:
-        # Build API URL
-        api_url = f"https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/{vin}"
-        params = {"format": "json"}
-        
-        if model_year:
-            params["modelyear"] = model_year
-        
+        # Build API URL for RapidAPI car-api2
+        api_url = f"https://car-api2.p.rapidapi.com/api/vin/{vin}"
+        headers = {
+            'x-rapidapi-host': 'car-api2.p.rapidapi.com',
+            'x-rapidapi-key': '60d40f8d72msh2b2f2454f08ea4dp1e7250jsnafc12c2141f1'
+        }
+
         # Make API request
-        response = requests.get(api_url, params=params, timeout=15)
+        response = requests.get(api_url, headers=headers, timeout=15)
         response.raise_for_status()
-        
+
         data = response.json()
-        
-        if data.get("Results") and len(data["Results"]) > 0:
-            result = data["Results"][0]
-            
-            # Check for errors
-            error_code = result.get("ErrorCode", "")
-            if "0" in error_code:
-                # Map to your DocType fields
-                mapped_data = map_to_vehicle_fields(result)
-                
-                # Create manufacturer and model if they don't exist
-                make_name = create_manufacturer_if_not_exists(result)
-                model_name = create_vehicle_model_if_not_exists(result, make_name)
-                
-                # Add the linked fields to mapped data
-                if make_name:
-                    mapped_data['custom_make'] = make_name
-                    frappe.msgprint(_("Manufacturer set: {0}").format(make_name), indicator='blue', alert=True)
-                    
-                if model_name:
-                    mapped_data['model'] = model_name
-                    frappe.msgprint(_("Model set: {0}").format(model_name), indicator='blue', alert=True)
-                
-                return {
-                    "success": True,
-                    "data": mapped_data,
-                    "raw_data": result,
-                    "message": _("VIN decoded successfully")
-                }
-            else:
-                return {
-                    "success": False,
-                    "message": result.get("ErrorText", _("Unable to decode VIN")),
-                    "data": None
-                }
+
+        if data:
+            # Map to your DocType fields
+            mapped_data = map_to_vehicle_fields(data)
+
+            # Create manufacturer and model if they don't exist
+            make_name = create_manufacturer_if_not_exists(data)
+            model_name = create_vehicle_model_if_not_exists(data, make_name)
+
+            # Add the linked fields to mapped data
+            if make_name:
+                mapped_data['make'] = make_name
+                frappe.msgprint(_("Manufacturer set: {0}").format(make_name), indicator='blue', alert=True)
+
+            if model_name:
+                mapped_data['model'] = model_name
+                frappe.msgprint(_("Model set: {0}").format(model_name), indicator='blue', alert=True)
+
+            # Store complete JSON response
+            import json
+            mapped_data['vin_decode_data'] = json.dumps(data, indent=2)
+
+            return {
+                "success": True,
+                "data": mapped_data,
+                "raw_data": data,
+                "message": _("VIN decoded successfully")
+            }
         else:
             return {
                 "success": False,
@@ -112,277 +105,236 @@ def decode_vehicle_vin(vin, model_year=None):
 
 def create_manufacturer_if_not_exists(api_data):
     """
-    Create Manufacturers record if it doesn't exist
-    
+    Create Vehicle Make record if it doesn't exist
+
     Args:
         api_data (dict): API response data
-    
+
     Returns:
-        str: Manufacturer name
+        str: Vehicle Make name
     """
-    make = api_data.get("Make")
+    # Support both old NHTSA API and new RapidAPI format
+    make = api_data.get("make") or api_data.get("Make")
     if not make or make == "Not Applicable":
         return None
-    
+
     # Clean the make name
     make = make.strip()
-    
-    # Check if manufacturer exists - use a more robust check
-    existing_make = frappe.db.get_value("Manufacturers", 
-        filters={"name1": make}, 
+
+    # Check if make exists
+    existing_make = frappe.db.get_value("Vehicle Make",
+        filters={"make_name": make},
         fieldname="name"
     )
-    
+
     if existing_make:
         return existing_make
-    
+
     try:
         # Double-check before creating (prevent race condition)
-        existing_make = frappe.db.get_value("Manufacturers", 
-            filters={"name1": make}, 
+        existing_make = frappe.db.get_value("Vehicle Make",
+            filters={"make_name": make},
             fieldname="name"
         )
-        
+
         if existing_make:
             return existing_make
-        
-        # Create new manufacturer
-        manufacturer_doc = frappe.get_doc({
-            "doctype": "Manufacturers",
-            "manufacturers_name": make,
-            # Add any other required fields for your Manufacturers doctype
+
+        # Create new make
+        make_doc = frappe.get_doc({
+            "doctype": "Vehicle Make",
+            "make_name": make,
         })
-        
-        manufacturer_doc.insert(ignore_permissions=True, ignore_if_duplicate=True)
+
+        make_doc.insert(ignore_permissions=True, ignore_if_duplicate=True)
         frappe.db.commit()
-        
-        frappe.msgprint(_("Created new manufacturer: {0}").format(make), alert=True)
-        
+
+        frappe.msgprint(_("Created new make: {0}").format(make), alert=True)
+
         # Return the name of the created document
-        return manufacturer_doc.name
-        
+        return make_doc.name
+
     except frappe.DuplicateEntryError:
-        # Manufacturer was created by another process, fetch and return it
+        # Make was created by another process, fetch and return it
         frappe.db.rollback()
-        existing_make = frappe.db.get_value("Manufacturers", 
-            filters={"manufacturers_name": make}, 
+        existing_make = frappe.db.get_value("Vehicle Make",
+            filters={"make_name": make},
             fieldname="name"
         )
         return existing_make
-        
+
     except Exception as e:
-        frappe.log_error(f"Error creating manufacturer {make}: {str(e)}", "VIN Decoder")
+        frappe.log_error(f"Error creating make {make}: {str(e)}", "VIN Decoder")
         frappe.db.rollback()
-        # Try to return existing manufacturer if any
-        existing_make = frappe.db.get_value("Manufacturers", 
-            filters={"manufacturers_name": make}, 
+        # Try to return existing make if any
+        existing_make = frappe.db.get_value("Vehicle Make",
+            filters={"make_name": make},
             fieldname="name"
         )
         return existing_make if existing_make else None
 
 
-def create_vehicle_model_if_not_exists(api_data, manufacturer_name):
+def create_vehicle_model_if_not_exists(api_data, make_name):
     """
-    Create Vehicles Model record if it doesn't exist
-    
+    Create Vehicle Model record if it doesn't exist
+
     Args:
         api_data (dict): API response data
-        name1 (str): Manufacturer name from Manufacturers doctype
-    
+        make_name (str): Vehicle Make name
+
     Returns:
         str: Model name
     """
-    model = api_data.get("Model")
+    # Support both old NHTSA API and new RapidAPI format
+    model = api_data.get("model") or api_data.get("Model")
     if not model or model == "Not Applicable":
         return None
-    
+
     # Clean the model name
     model = model.strip()
-    
-    # Check if model exists - use a more robust check
-    existing_model = frappe.db.get_value("Vehicles Model", 
-        filters={"model_name": model}, 
+
+    # Check if model exists with this make
+    existing_model = frappe.db.get_value("Vehicle Model",
+        filters={"model_name": model, "make": make_name},
         fieldname="name"
     )
-    
+
     if existing_model:
         return existing_model
-    
+
     try:
-        # Get vehicle type from API
-        vehicle_type = api_data.get("VehicleType")
-        if vehicle_type and vehicle_type != "Not Applicable":
-            vehicle_type = vehicle_type.strip()
-        else:
-            vehicle_type = None
-        
         # Double-check before creating (prevent race condition)
-        existing_model = frappe.db.get_value("Vehicles Model", 
-            filters={"model_name": model}, 
+        existing_model = frappe.db.get_value("Vehicle Model",
+            filters={"model_name": model, "make": make_name},
             fieldname="name"
         )
-        
+
         if existing_model:
             return existing_model
-        
+
         # Create new vehicle model
         model_doc = frappe.get_doc({
-            "doctype": "Vehicles Model",
+            "doctype": "Vehicle Model",
             "model_name": model,
-            "manufacturer": name1,
-            "vehicle_type": vehicle_type,
+            "make": make_name,
         })
-        
+
         model_doc.insert(ignore_permissions=True, ignore_if_duplicate=True)
         frappe.db.commit()
-        
-        frappe.msgprint(_("Created new vehicle model: {0}").format(model), alert=True)
-        
+
+        frappe.msgprint(_("Created new model: {0}").format(model), alert=True)
+
         # Return the name of the created document
         return model_doc.name
-        
+
     except frappe.DuplicateEntryError:
         # Model was created by another process, fetch and return it
         frappe.db.rollback()
-        existing_model = frappe.db.get_value("Vehicles Model", 
-            filters={"model_name": model}, 
+        existing_model = frappe.db.get_value("Vehicle Model",
+            filters={"model_name": model, "make": make_name},
             fieldname="name"
         )
         return existing_model
-        
+
     except Exception as e:
         frappe.log_error(f"Error creating vehicle model {model}: {str(e)}", "VIN Decoder")
         frappe.db.rollback()
         # Try to return existing model if any
-        existing_model = frappe.db.get_value("Vehicles Model", 
-            filters={"model_name": model}, 
+        existing_model = frappe.db.get_value("Vehicle Model",
+            filters={"model_name": model, "make": make_name},
             fieldname="name"
         )
         return existing_model if existing_model else None
 
 
 def map_to_vehicle_fields(api_data):
-    """Map API response to Vehicles DocType fields"""
-    
-    # Helper function to get value safely
-    def get_value(key):
-        val = api_data.get(key)
-        if val and val not in ["Not Applicable", "null", ""]:
+    """Map API response to Vehicle DocType fields"""
+
+    # Helper function to get value safely from specs
+    def get_spec_value(key):
+        specs = api_data.get('specs', {})
+        val = specs.get(key)
+        if val and val not in ["Not Applicable", "null", "", None]:
             return val
         return None
-    
+
+    # Helper function to get value from root
+    def get_value(key):
+        val = api_data.get(key)
+        if val and val not in ["Not Applicable", "null", "", None]:
+            return val
+        return None
+
     # Map fuel type
     def map_fuel_type(api_fuel):
         if not api_fuel:
             return None
-        
+
         fuel_map = {
-            'Gasoline': 'Gasoline',
+            'Gasoline': 'Petrol',
             'Diesel': 'Diesel',
-            'LPG': 'LPG',
-            'Liquefied Petroleum Gas': 'LPG',
             'Electric': 'Electric',
-            'Plug-in Hybrid': 'Hybrid',
             'Hybrid': 'Hybrid',
-            'E85': 'Gasoline',
-            'Flex': 'Gasoline',
+            'Plug-in Hybrid': 'Hybrid',
         }
-        
+
         for key, value in fuel_map.items():
             if key.lower() in api_fuel.lower():
                 return value
         return None
-    
+
     # Map transmission
     def map_transmission(api_trans):
         if not api_trans:
             return None
-        
+
         api_trans_lower = api_trans.lower()
         if 'manual' in api_trans_lower:
             return 'Manual'
-        elif any(x in api_trans_lower for x in ['auto', 'cvt', 'dct']):
+        elif 'cvt' in api_trans_lower:
+            return 'CVT'
+        elif 'dct' in api_trans_lower:
+            return 'DCT'
+        elif 'auto' in api_trans_lower:
             return 'Automatic'
         return None
-    
-    # Calculate seats (approximate)
-    def calculate_seats(doors, rows):
-        if rows:
-            try:
-                return str(int(rows) * 2)
-            except:
-                pass
-        
-        if doors:
-            return '2' if doors == '2' else '5'
-        
+
+    # Map body type
+    def map_body_type(api_body):
+        if not api_body:
+            return None
+
+        body_map = {
+            'Sedan': 'Sedan',
+            'SUV': 'SUV',
+            'Pickup': 'Pickup',
+            'Truck': 'Truck',
+            'Van': 'Van',
+            'Coupe': 'Coupe',
+            'Convertible': 'Convertible',
+            'Wagon': 'Wagon',
+            'Hatchback': 'Hatchback',
+        }
+
+        for key, value in body_map.items():
+            if key.lower() in api_body.lower():
+                return value
         return None
-    
+
     # Build mapped data
     mapped = {
-        'model_year': get_value('ModelYear'),
-        'custom_variant': get_value('Trim') or get_value('Series'),
-        'custom_engine_number': get_value('EngineModel'),
-        'custom_cylinders': get_value('EngineCylinders'),
-        'horsepower': get_value('EngineHP') or get_value('EngineKW'),
-        'power': get_value('DisplacementCC') or get_value('EngineKW'),
-        'doors_number': get_value('Doors'),
-        'seats_number': calculate_seats(get_value('Doors'), get_value('SeatingRows')),
-        'fuel_type': map_fuel_type(get_value('FuelTypePrimary')),
-        'transmission': map_transmission(get_value('TransmissionStyle')),
+        'year': get_value('year'),
+        'variant': get_value('trim'),
+        'transmission': map_transmission(get_spec_value('transmission_style')),
+        'fuel_type': map_fuel_type(get_spec_value('fuel_type_primary')),
+        'seating_capacity': int(get_spec_value('number_of_seats')) if get_spec_value('number_of_seats') else None,
+        'body_type': map_body_type(get_spec_value('body_class')),
+        'engine_capacity': get_spec_value('displacement_l'),
     }
-    
-    # Build description with all details
-    description_parts = ["Vehicle Information (Auto-decoded from VIN):\n"]
-    
-    info_fields = {
-        'Make': get_value('Make'),
-        'Manufacturer': get_value('Manufacturer'),
-        'Model': get_value('Model'),
-        'Year': get_value('ModelYear'),
-        'Body Class': get_value('BodyClass'),
-        'Vehicle Type': get_value('VehicleType'),
-        'Trim': get_value('Trim'),
-        'Series': get_value('Series'),
-        'Engine Model': get_value('EngineModel'),
-        'Displacement': f"{get_value('DisplacementL')}L" if get_value('DisplacementL') else None,
-        'Drive Type': get_value('DriveType'),
-        'Brake System': get_value('BrakeSystemType'),
-        'ABS': get_value('ABS'),
-        'ESC': get_value('ESC'),
-        'Traction Control': get_value('TractionControl'),
-        'Airbags': get_value('AirBagLocFront'),
-        'Plant Country': get_value('PlantCountry'),
-        'Plant City': get_value('PlantCity'),
-    }
-    
-    for label, value in info_fields.items():
-        if value:
-            description_parts.append(f"{label}: {value}")
-    
-    mapped['description'] = '\n'.join(description_parts)
-    
-    # Additional info for reference
-    mapped['_additional_info'] = {
-        'make': get_value('Make'),
-        'manufacturer': get_value('Manufacturer'),
-        'model': get_value('Model'),
-        'body_class': get_value('BodyClass'),
-        'vehicle_type': get_value('VehicleType'),
-        'drive_type': get_value('DriveType'),
-        'displacement_l': get_value('DisplacementL'),
-        'displacement_cc': get_value('DisplacementCC'),
-        'engine_config': get_value('EngineConfiguration'),
-        'fuel_injection': get_value('FuelInjectionType'),
-        'turbo': get_value('Turbo'),
-        'top_speed_mph': get_value('TopSpeedMPH'),
-        'gvwr': get_value('GVWR'),
-        'plant_country': get_value('PlantCountry'),
-    }
-    
+
     # Remove None values
     mapped = {k: v for k, v in mapped.items() if v is not None}
-    
+
     return mapped
 
 
@@ -465,3 +417,224 @@ def validate_vin(vin):
             }
     
     return {"valid": True, "message": "VIN is valid"}
+
+
+@frappe.whitelist()
+def sync_makes_from_api():
+    """
+    Sync all vehicle makes from RapidAPI
+
+    Returns:
+        dict: Sync result with count of created/updated makes
+    """
+    api_url = "https://car-api2.p.rapidapi.com/api/makes?direction=asc&sort=id"
+    headers = {
+        'x-rapidapi-host': 'car-api2.p.rapidapi.com',
+        'x-rapidapi-key': '60d40f8d72msh2b2f2454f08ea4dp1e7250jsnafc12c2141f1'
+    }
+
+    try:
+        response = requests.get(api_url, headers=headers, timeout=30)
+        response.raise_for_status()
+        data = response.json()
+
+        if not data.get("data"):
+            return {
+                "success": False,
+                "message": _("No makes found in API response")
+            }
+
+        makes = data["data"]
+        created = 0
+        updated = 0
+
+        for make_data in makes:
+            make_name = make_data.get("name")
+            api_id = make_data.get("id")
+
+            if not make_name:
+                continue
+
+            # Check if make exists
+            existing = frappe.db.get_value("Vehicle Make",
+                filters={"make_name": make_name},
+                fieldname=["name", "api_id"],
+                as_dict=True
+            )
+
+            if existing:
+                # Update API ID if different
+                if existing.api_id != api_id:
+                    frappe.db.set_value("Vehicle Make", existing.name, "api_id", api_id)
+                    updated += 1
+            else:
+                # Create new make
+                try:
+                    make_doc = frappe.get_doc({
+                        "doctype": "Vehicle Make",
+                        "make_name": make_name,
+                        "api_id": api_id
+                    })
+                    make_doc.insert(ignore_permissions=True, ignore_if_duplicate=True)
+                    created += 1
+                except Exception as e:
+                    frappe.log_error(f"Error creating make {make_name}: {str(e)}", "Make Sync")
+
+        frappe.db.commit()
+
+        return {
+            "success": True,
+            "message": _("Synced {0} makes ({1} created, {2} updated)").format(
+                len(makes), created, updated
+            ),
+            "created": created,
+            "updated": updated,
+            "total": len(makes)
+        }
+
+    except Exception as e:
+        frappe.log_error(f"Make Sync Error: {str(e)}", "Make Sync")
+        return {
+            "success": False,
+            "message": _("Failed to sync makes: {0}").format(str(e))
+        }
+
+
+@frappe.whitelist()
+def sync_models_from_api(year=None, make_id=None):
+    """
+    Sync vehicle models from RapidAPI
+
+    Args:
+        year (int, optional): Filter by year
+        make_id (int, optional): Filter by make ID
+
+    Returns:
+        dict: Sync result with count of created/updated models
+    """
+    # Build API URL
+    api_url = "https://car-api2.p.rapidapi.com/api/models?sort=id&direction=asc&verbose=yes"
+
+    if year:
+        api_url += f"&year={year}"
+    if make_id:
+        api_url += f"&make_id={make_id}"
+
+    headers = {
+        'x-rapidapi-host': 'car-api2.p.rapidapi.com',
+        'x-rapidapi-key': '60d40f8d72msh2b2f2454f08ea4dp1e7250jsnafc12c2141f1'
+    }
+
+    try:
+        # Fetch all pages
+        all_models = []
+        page = 1
+        total_pages = 1
+
+        while page <= total_pages:
+            url = f"{api_url}&page={page}"
+            response = requests.get(url, headers=headers, timeout=30)
+            response.raise_for_status()
+            data = response.json()
+
+            if data.get("data"):
+                all_models.extend(data["data"])
+
+            # Get total pages from first request
+            if page == 1 and data.get("collection"):
+                total_pages = data["collection"].get("pages", 1)
+
+            page += 1
+
+            # Safety limit to avoid too many requests
+            if page > 100:
+                break
+
+        if not all_models:
+            return {
+                "success": False,
+                "message": _("No models found in API response")
+            }
+
+        created = 0
+        updated = 0
+        skipped = 0
+
+        for model_data in all_models:
+            model_name = model_data.get("name")
+            api_id = model_data.get("id")
+            make_api_id = model_data.get("make_id")
+            make_info = model_data.get("make", {})
+            make_name = make_info.get("name")
+
+            if not model_name or not make_name:
+                skipped += 1
+                continue
+
+            # Find or create the make first
+            make_doc_name = frappe.db.get_value("Vehicle Make",
+                filters={"make_name": make_name},
+                fieldname="name"
+            )
+
+            if not make_doc_name:
+                # Create the make if it doesn't exist
+                try:
+                    make_doc = frappe.get_doc({
+                        "doctype": "Vehicle Make",
+                        "make_name": make_name,
+                        "api_id": make_api_id
+                    })
+                    make_doc.insert(ignore_permissions=True, ignore_if_duplicate=True)
+                    make_doc_name = make_doc.name
+                except Exception as e:
+                    frappe.log_error(f"Error creating make {make_name}: {str(e)}", "Model Sync")
+                    skipped += 1
+                    continue
+
+            # Check if model exists
+            existing = frappe.db.get_value("Vehicle Model",
+                filters={"model_name": model_name, "make": make_doc_name},
+                fieldname=["name", "api_id"],
+                as_dict=True
+            )
+
+            if existing:
+                # Update API ID if different
+                if existing.api_id != api_id:
+                    frappe.db.set_value("Vehicle Model", existing.name, "api_id", api_id)
+                    updated += 1
+            else:
+                # Create new model
+                try:
+                    model_doc = frappe.get_doc({
+                        "doctype": "Vehicle Model",
+                        "model_name": model_name,
+                        "make": make_doc_name,
+                        "api_id": api_id
+                    })
+                    model_doc.insert(ignore_permissions=True, ignore_if_duplicate=True)
+                    created += 1
+                except Exception as e:
+                    frappe.log_error(f"Error creating model {model_name}: {str(e)}", "Model Sync")
+                    skipped += 1
+
+        frappe.db.commit()
+
+        return {
+            "success": True,
+            "message": _("Synced {0} models ({1} created, {2} updated, {3} skipped)").format(
+                len(all_models), created, updated, skipped
+            ),
+            "created": created,
+            "updated": updated,
+            "skipped": skipped,
+            "total": len(all_models)
+        }
+
+    except Exception as e:
+        frappe.log_error(f"Model Sync Error: {str(e)}", "Model Sync")
+        return {
+            "success": False,
+            "message": _("Failed to sync models: {0}").format(str(e))
+        }
