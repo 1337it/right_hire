@@ -18,7 +18,7 @@ color: white !important;
 }
 .layout-main-section-wrapper {
 min-width: 0;
-background-image: url("/files/white.png");
+background-color: hsl(0, 0%, 95%);
 }
 .widget {
 display: flex;
