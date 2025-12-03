@@ -20,6 +20,12 @@ color: white !important;
 min-width: 0;
 background-color: hsl(0, 0%, 95%);
 }
+[data-page-route=Workspaces] .layout-main-section {
+background-color: hsl(0, 0%, 95%)!important;
+box-shadow: none;
+border-radius: var(--border-radius-lg);
+padding: var(--padding-sm);
+}
 .widget {
 display: flex;
 flex-direction: column;
