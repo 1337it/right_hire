@@ -89,6 +89,7 @@ class Vehicle(Document):
                 "reference_doctype": reference_doctype,
                 "reference_name": reference_name,
                 "changed_at": frappe.utils.now(),
+                "changed_by": frappe.session.user,
             }
         )
         log.insert(ignore_permissions=True)

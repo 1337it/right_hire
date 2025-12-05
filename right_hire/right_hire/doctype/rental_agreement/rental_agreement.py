@@ -20,7 +20,11 @@ class RentalAgreement(Document):
 
     def on_submit(self):
         self.update_vehicle_status("Rented Out")
-        self.create_invoice()
+        try:
+            self.create_invoice()
+        except Exception as e:
+            frappe.log_error(f"Failed to create invoice for {self.name}: {str(e)}", "Rental Agreement Invoice Creation")
+            frappe.msgprint(f"Rental Agreement submitted, but invoice creation failed: {str(e)}", indicator="orange")
         self.agreement_status = "Active"
 
     def on_cancel(self):
