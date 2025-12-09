@@ -8,6 +8,9 @@ vertical-align: middle;
 margin-bottom: 3px;
 }
 @media only screen and (min-width: 992px) {
+    .std-form-layout > .form-layout > .form-page {
+padding: 10px;
+}
 form-section .section-body:first-child, .form-dashboard-section .section-body:first-child {
 margin-top: 20px;
 }
