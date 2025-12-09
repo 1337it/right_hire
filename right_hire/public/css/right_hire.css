@@ -8,7 +8,9 @@ vertical-align: middle;
 margin-bottom: 3px;
 }
 @media only screen and (min-width: 992px) {
-
+form-section .section-body:first-child, .form-dashboard-section .section-body:first-child {
+margin-top: 20px;
+}
 
    /* ============================================
    Frappe Sidebar - Complete Minimal Icon Set
@@ -238,11 +240,12 @@ flex: 0 0 48px !important;
 }
   .frappe-control .control-label.reqd:after {
 content: " *";
-color: var(--red-600) !important;
 white-space: nowrap;
-font-size: 16px !important;
+color: var(--red-600) !important;
+font-size: 28px !important;
 position: absolute !important;
-left: -12px !important;
+left: -17px !important;
+top: -5px;
 }
   .list-sidebar {
 padding-top: 0px!important;
