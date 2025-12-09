@@ -81,7 +81,7 @@ box-shadow: 0 1px 5px #00000026 inset, /* top highlight */ 0 1px 0 #00000000 ins
 min-width: 0;
 background-color: hsl(0, 0%, 5%);
 }
-[data-page-route=Workspaces] .layout-main-section {
+[data-theme="light"] [data-page-route=Workspaces] .layout-main-section {
 background-color: hsl(0, 0%, 95%)!important;
 box-shadow: none;
 border-radius: var(--border-radius-lg);
