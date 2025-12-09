@@ -42,6 +42,12 @@ top: -2px;
 overflow: hidden auto;
 background: hsl(0,0%,0%);
 }
+    [data-theme="dark"] .widget.shortcut-widget-box:hover {
+box-shadow: 0 2px 2px rgba(101, 101, 101, 0.19) inset, 0 1px 4px rgba(0, 0, 0, 0.63), rgba(0, 0, 0, 0.082) 1px 1px 3px;
+}
+        [data-theme="dark"] .widget.shortcut-widget-box {
+box-shadow: rgba(45, 45, 45, 0.22) 0px 2px 2px inset, rgba(0, 0, 0, 0.3) 0px 1px 2px, rgba(0, 0, 0, 0.63) 1px 1px 2px;
+}
 [data-theme="dark"] .sidebar-item-content:hover {
 background-color: hsl(0,0%,10%) !important;
 color: white!important;
