@@ -121,10 +121,26 @@ function show_start_rental_dialog(frm) {
                     fuel_out: values.fuel_out
                 },
                 callback: function(r) {
-                    if (r.message && r.message.success) {
-                        frm.reload_doc();
-                        d.hide();
+                    if (r.message) {
+                        if (r.message.success) {
+                            frappe.msgprint(__('Rental started successfully'));
+                            frm.reload_doc();
+                            d.hide();
+                        } else if (r.message.error) {
+                            frappe.msgprint({
+                                title: __('Error'),
+                                message: r.message.error,
+                                indicator: 'red'
+                            });
+                        }
                     }
+                },
+                error: function(r) {
+                    frappe.msgprint({
+                        title: __('Error'),
+                        message: __('Failed to start rental. Please check the error log.'),
+                        indicator: 'red'
+                    });
                 }
             });
         }
@@ -149,14 +165,29 @@ function show_return_vehicle_dialog(frm) {
                     fuel_in: values.fuel_in
                 },
                 callback: function(r) {
-                    if (r.message && r.message.success) {
-                        frm.reload_doc();
-                        d.hide();
-                        const formatted = (typeof format_currency === 'function')
-                            ? format_currency(r.message.outstanding)
-                            : frappe.format(r.message.outstanding, { fieldtype: 'Currency' });
-                        frappe.msgprint(__('Outstanding amount: {0}', [formatted]));
+                    if (r.message) {
+                        if (r.message.success) {
+                            const formatted = (typeof format_currency === 'function')
+                                ? format_currency(r.message.outstanding)
+                                : frappe.format(r.message.outstanding, { fieldtype: 'Currency' });
+                            frappe.msgprint(__('Vehicle returned successfully. Outstanding amount: {0}', [formatted]));
+                            frm.reload_doc();
+                            d.hide();
+                        } else if (r.message.error) {
+                            frappe.msgprint({
+                                title: __('Error'),
+                                message: r.message.error,
+                                indicator: 'red'
+                            });
+                        }
                     }
+                },
+                error: function(r) {
+                    frappe.msgprint({
+                        title: __('Error'),
+                        message: __('Failed to return vehicle. Please check the error log.'),
+                        indicator: 'red'
+                    });
                 }
             });
         }

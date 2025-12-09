@@ -1,0 +1,301 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "naming_series:",
+ "creation": "2024-01-01 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "is_submittable": 1,
+ "module": "Right Hire",
+ "name": "Lease to Own",
+ "naming_rule": "By Naming Series",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1
+  },
+  {
+   "role": "Fleet Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1,
+ "field_order": [
+  "naming_series",
+  "contract_status",
+  "amended_from",
+  "column_break_1",
+  "contract_date",
+  "customer_section",
+  "customer",
+  "customer_name",
+  "column_break_customer",
+  "contact_person",
+  "contact_number",
+  "vehicle_section",
+  "vehicle",
+  "vehicle_details",
+  "column_break_vehicle",
+  "plate_no",
+  "dates_section",
+  "start_date",
+  "end_date",
+  "column_break_dates",
+  "lease_duration_months",
+  "payments_remaining",
+  "financial_section",
+  "down_payment",
+  "monthly_payment",
+  "column_break_financial",
+  "total_amount",
+  "amount_paid",
+  "outstanding_amount",
+  "ownership_section",
+  "ownership_transfer_price",
+  "buyout_option_date",
+  "column_break_ownership",
+  "vehicle_estimated_value",
+  "transfer_status",
+  "terms_section",
+  "terms_template",
+  "custom_terms"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "LTO-.YYYY.-####",
+   "reqd": 1
+  },
+  {
+   "fieldname": "contract_status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nActive\nCompleted\nOwnership Transferred\nTerminated\nCancelled",
+   "default": "Draft",
+   "in_list_view": 1,
+   "reqd": 1,
+   "allow_on_submit": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "options": "Lease to Own",
+   "read_only": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "contract_date",
+   "fieldtype": "Date",
+   "label": "Contract Date",
+   "reqd": 1,
+   "default": "Today"
+  },
+  {
+   "fieldname": "customer_section",
+   "fieldtype": "Section Break",
+   "label": "Customer Details"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "label": "Customer Name",
+   "fetch_from": "customer.customer_name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_customer",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "contact_person",
+   "fieldtype": "Data",
+   "label": "Contact Person"
+  },
+  {
+   "fieldname": "contact_number",
+   "fieldtype": "Data",
+   "label": "Contact Number"
+  },
+  {
+   "fieldname": "vehicle_section",
+   "fieldtype": "Section Break",
+   "label": "Vehicle Details"
+  },
+  {
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "label": "Vehicle",
+   "options": "Vehicle",
+   "reqd": 1
+  },
+  {
+   "fieldname": "vehicle_details",
+   "fieldtype": "Data",
+   "label": "Vehicle Details",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_vehicle",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "plate_no",
+   "fieldtype": "Data",
+   "label": "Plate Number",
+   "read_only": 1
+  },
+  {
+   "fieldname": "dates_section",
+   "fieldtype": "Section Break",
+   "label": "Lease Period"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "End Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_dates",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "lease_duration_months",
+   "fieldtype": "Int",
+   "label": "Lease Duration (Months)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payments_remaining",
+   "fieldtype": "Int",
+   "label": "Payments Remaining",
+   "read_only": 1,
+   "allow_on_submit": 1
+  },
+  {
+   "fieldname": "financial_section",
+   "fieldtype": "Section Break",
+   "label": "Financial Details"
+  },
+  {
+   "fieldname": "down_payment",
+   "fieldtype": "Currency",
+   "label": "Down Payment",
+   "reqd": 1
+  },
+  {
+   "fieldname": "monthly_payment",
+   "fieldtype": "Currency",
+   "label": "Monthly Payment",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_financial",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "label": "Total Lease Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amount_paid",
+   "fieldtype": "Currency",
+   "label": "Amount Paid",
+   "read_only": 1,
+   "allow_on_submit": 1
+  },
+  {
+   "fieldname": "outstanding_amount",
+   "fieldtype": "Currency",
+   "label": "Outstanding Amount",
+   "read_only": 1,
+   "allow_on_submit": 1
+  },
+  {
+   "fieldname": "ownership_section",
+   "fieldtype": "Section Break",
+   "label": "Ownership Transfer"
+  },
+  {
+   "fieldname": "ownership_transfer_price",
+   "fieldtype": "Currency",
+   "label": "Ownership Transfer Price",
+   "reqd": 1
+  },
+  {
+   "fieldname": "buyout_option_date",
+   "fieldtype": "Date",
+   "label": "Buyout Option Available From"
+  },
+  {
+   "fieldname": "column_break_ownership",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "vehicle_estimated_value",
+   "fieldtype": "Currency",
+   "label": "Vehicle Estimated Value"
+  },
+  {
+   "fieldname": "transfer_status",
+   "fieldtype": "Select",
+   "label": "Transfer Status",
+   "options": "Pending\nEligible\nIn Progress\nCompleted",
+   "default": "Pending",
+   "allow_on_submit": 1
+  },
+  {
+   "fieldname": "terms_section",
+   "fieldtype": "Section Break",
+   "label": "Terms & Conditions"
+  },
+  {
+   "fieldname": "terms_template",
+   "fieldtype": "Link",
+   "label": "Terms Template",
+   "options": "Terms and Conditions Template"
+  },
+  {
+   "fieldname": "custom_terms",
+   "fieldtype": "Text Editor",
+   "label": "Custom Terms & Conditions"
+  }
+ ]
+}

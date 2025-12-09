@@ -73,6 +73,7 @@
   "total_overage_km",
   "total_overage_charges",
   "section_break_terms",
+  "terms_template",
   "terms_and_conditions",
   "special_terms",
   "section_break_notes",
@@ -459,6 +460,12 @@
    "fieldname": "section_break_terms",
    "fieldtype": "Section Break",
    "label": "Terms & Conditions"
+  },
+  {
+   "fieldname": "terms_template",
+   "fieldtype": "Link",
+   "label": "Terms Template",
+   "options": "Terms and Conditions Template"
   },
   {
    "fieldname": "terms_and_conditions",
