@@ -496,7 +496,7 @@ display: none;
   overscroll-behavior: none;
   scrollbar-width: none;
 }
-.awesomplete > [role="listbox"] {
+.navbar .awesomplete > [role="listbox"] {
 position: fixed;
 /* z-index: 99999999999; */
 overflow-y: visible;
