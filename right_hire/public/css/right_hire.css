@@ -371,6 +371,24 @@ background-color: hsl(0, 0%, 95%);
 overflow: hidden auto;
 background: white;
 }
+   .form-tabs-sticky-down {
+position: fixed!important;
+top: calc(var(--navbar-height) + 10px)!important;
+width: 77%;
+}
+   .form-tabs-sticky-up {
+position: fixed!important;
+top: calc(var(--navbar-height) + 10px)!important;
+width: 77%;
+}
+   .page-head.flex {
+position: fixed;
+top: 0 !important;
+width: calc(100% - 16.6667%);
+right: 0;
+background: hsl(0,0%,95%);
+padding: 0 30px;
+}
 #page-Workspaces[style="display: none;"] .layout-side-section {
 display: block !important;
 
@@ -381,7 +399,7 @@ top: calc(var(--navbar-height) + 40px);
 #page-Workspaces .layout-side-section {
 top: calc(var(--navbar-height) + 40px);
 display: block !important;
-position: fixed;
+position: fixed !important;
 left: 0;
 }
 #page-Workspaces .layout-main-section-wrapper {
