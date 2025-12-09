@@ -11,6 +11,14 @@ margin-bottom: 3px;
 form-section .section-body:first-child, .form-dashboard-section .section-body:first-child {
 margin-top: 20px;
 }
+    .grid-heading-row .grid-static-col .static-area.reqd::after {
+content: " *";
+color: var(--red-700)!important;
+position: absolute;
+left: -7px;
+font-size: 28px;
+top: -2px;
+}
 
    /* ============================================
    Frappe Sidebar - Complete Minimal Icon Set
