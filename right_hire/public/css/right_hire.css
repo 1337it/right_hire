@@ -372,14 +372,12 @@ overflow: hidden auto;
 background: white;
 }
    .form-tabs-sticky-down {
-position: fixed!important;
+position: sticky !important;
 top: calc(var(--navbar-height) + 10px)!important;
-width: 77%;
 }
    .form-tabs-sticky-up {
-position: fixed!important;
+position: sticky !important;
 top: calc(var(--navbar-height) + 10px)!important;
-width: 77%;
 }
    .page-head.flex {
 position: fixed;
