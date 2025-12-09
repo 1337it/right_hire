@@ -38,7 +38,7 @@ background-color: hsl(0,0%,5%);
 box-shadow: 0 2px 2px #ffffff30 inset, /* top highlight */ 0 1px 4px #00000030,
 /* dark shadow */ 1px 1px 3px #00000015;
 }
-.page-actions .btn {
+[data-theme="light"] .page-actions .btn {
 background-color: white !important;
 box-shadow: 0 2px 2px #ffffff3d inset, /* top highlight */ 0 1px 2px #0000001f,
 /* dark shadow */ 1px 1px 2px #00000008;
