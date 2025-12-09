@@ -1,7 +1,38 @@
 /* ============================================
    Frappe Sidebar - Complete Minimal Icon Set
    ============================================ */
+
+[data-theme="dark"] #page-Workspaces .layout-side-section {
+overflow: hidden auto;
+background: hsl(0,0%,0%);
+}
+[data-theme="dark"] .sidebar-item-content:hover {
+background-color: hsl(0,0%,10%) !important;
+color: white!important;
+}
+[data-theme="dark"] .page-head.flex {
+
+background: hsl(0,0%,5%);
+
+}
+[data-theme="dark"] .page-container {
+background-color: hsl(0,0%,5%);
+}
+[data-theme="dark"] .layout-main-section-wrapper {
+min-width: 0px;
+background-color: hsl(0,0%,5%);
+}
 .widget.shortcut-widget-box:hover {
+box-shadow: 0 2px 2px #ffffff30 inset, /* top highlight */ 0 1px 4px #00000030,
+/* dark shadow */ 1px 1px 3px #00000015;
+}
+.page-actions .btn {
+background-color: white !important;
+box-shadow: 0 2px 2px #ffffff3d inset, /* top highlight */ 0 1px 2px #0000001f,
+/* dark shadow */ 1px 1px 2px #00000008;
+}
+.page-actions .btn:hover {
+background-color: white !important;
 box-shadow: 0 2px 2px #ffffff30 inset, /* top highlight */ 0 1px 4px #00000030,
 /* dark shadow */ 1px 1px 3px #00000015;
 }
@@ -44,7 +75,7 @@ box-shadow: none;
 border-radius: var(--border-radius-lg);
 padding: var(--padding-sm);
 }
-.widget {
+[data-theme="light"] .widget {
 display: flex;
 flex-direction: column;
 min-height: 1px;
@@ -463,7 +494,6 @@ width: 30vw !important;
 }
 .search-bar .awesomplete input {
 text-align: left;
-background-color: white;
 height: 40px;
 border-radius: 0;
 }
