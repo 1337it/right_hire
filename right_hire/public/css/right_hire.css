@@ -8,6 +8,17 @@ vertical-align: middle;
 margin-bottom: 3px;
 }
 @media only screen and (min-width: 992px) {
+    .form-message {
+position: relative;
+border-radius: var(--border-radius);
+padding: 10px 19px !important;
+font-size: var(--text-lg, 13px) !important;
+margin-bottom: var(--margin-sm);
+margin-top: 16px;
+filter: saturate(2);
+box-shadow: 0 2px 2px #ffffff3d inset, /* top highlight */ 0 1px 2px #0000001f,
+/* dark shadow */ 1px 1px 2px #00000008;
+}
     .std-form-layout > .form-layout > .form-page {
 padding: 10px;
 }
@@ -304,7 +315,15 @@ position: fixed;
 width: 16.6667%;
 top: 0;
 }
-  
+ [data-theme="dark"] .navbar {
+background: rgb(0, 0, 0);
+}
+   [data-theme="dark"] .search-bar .awesomplete input {
+background-color: black;
+}
+       [data-theme="light"] .search-bar .awesomplete input {
+background-color: white;
+}
   .layout-main-section.frappe-card {
 padding: var(--padding-md);
 }
