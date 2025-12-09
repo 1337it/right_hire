@@ -239,6 +239,7 @@ padding: 0 10px!important;
 
   .sticky-top {
 height: 48px;
+     width:16.6667%;
 }
 html, body {
 background-color: hsl(0, 0%, 95%) !important;
