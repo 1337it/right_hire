@@ -74,7 +74,7 @@ box-shadow: 0 2px 2px #ffffff3d inset, /* top highlight */ 0 1px 2px #0000001f,
 /* dark shadow */ 1px 1px 2px #00000008;
     color:black;
 }
-.page-actions .btn:hover {
+[data-theme="light"] .page-actions .btn:hover {
 background-color: white !important;
 box-shadow: 0 2px 2px #ffffff30 inset, /* top highlight */ 0 1px 4px #00000030,
 /* dark shadow */ 1px 1px 3px #00000015;
@@ -284,12 +284,6 @@ filter: brightness(10)!important;
 }
 [data-theme="dark"] .sidebar-item-label {
 filter: brightness(10) !important;
-}
-[data-theme="dark"] .sidebar-item-icon:hover {
-filter: brightness(0)!important;
-}
-[data-theme="dark"] .sidebar-item-label:hover {
-filter: brightness(0) !important;
 }
 .frappe-control .img-responsive {
 background-color: var(--bg-light-gray);
