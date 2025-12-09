@@ -137,8 +137,16 @@ class RentalAgreement(Document):
     @frappe.whitelist()
     def start_rental(self):
         """Start the rental - capture pickup details."""
-        if self.agreement_status != "Draft":
-            frappe.throw("Agreement must be in Draft status")
+        # Allow starting if document is Draft OR if submitted but status is still Draft
+        # (handles manually submitted documents)
+        if self.docstatus == 1 and self.agreement_status != "Draft":
+            frappe.throw("Rental has already been started. Current status: " + self.agreement_status)
+
+        if self.docstatus == 2:
+            frappe.throw("Cannot start a cancelled agreement. Please amend it first.")
+
+        if self.agreement_status not in ["Draft", "Draft"]:
+            frappe.throw("Agreement must be in Draft status to start rental")
 
         # Validate required fields (allow 0; only None is invalid)
         if self.odometer_out is None:
@@ -150,8 +158,14 @@ class RentalAgreement(Document):
         vehicle = frappe.get_doc("Vehicle", self.vehicle)
         vehicle.update_odometer(self.odometer_out, source="Agreement")
 
-        # Submit the agreement
-        self.submit()
+        # If document is draft, submit it
+        if self.docstatus == 0:
+            self.submit()
+        else:
+            # Document already submitted, just update status
+            self.update_vehicle_status("Rented Out")
+            self.db_set("agreement_status", "Active", update_modified=False)
+
         frappe.msgprint("Rental started successfully")
 
     @frappe.whitelist()
@@ -195,7 +209,7 @@ class RentalAgreement(Document):
 
     def calculate_fuel_charge(self):
         """Calculate fuel refill charge if returned with less fuel."""
-        if self.fuel_in is not None and self.fuel_out is not None and self.fuel_in < self.fuel_out:
+        if self.fuel_in is not None and self.fuel_out is not None and flt(self.fuel_in) < flt(self.fuel_out):
             fuel_diff = flt(self.fuel_out) - flt(self.fuel_in)
             # Assume 50 liters tank and 2 currency per liter
             fuel_cost = (fuel_diff / 100) * 50 * 2
@@ -297,98 +311,105 @@ class RentalAgreement(Document):
 
     def create_erpnext_invoice(self):
         """Create ERPNext Sales Invoice."""
-        # Ensure rental service item exists
-        self.ensure_rental_service_item()
+        try:
+            # Ensure rental service item exists
+            self.ensure_rental_service_item()
 
-        # Check if customer exists and is properly configured
-        if not frappe.db.exists("Customer", self.customer):
-            frappe.throw(f"Customer {self.customer} does not exist")
+            # Check if customer exists and is properly configured
+            if not frappe.db.exists("Customer", self.customer):
+                frappe.log_error(f"Customer {self.customer} does not exist", "Invoice Creation Failed")
+                return
 
-        # Ensure customer has required fields for ERPNext invoice
-        customer_doc = frappe.get_doc("Customer", self.customer)
-        modified = False
+            # Ensure customer has required fields for ERPNext invoice
+            customer_doc = frappe.get_doc("Customer", self.customer)
+            modified = False
 
-        if not customer_doc.get("customer_group"):
-            customer_doc.customer_group = "All Customer Groups"
-            modified = True
+            if not customer_doc.get("customer_group"):
+                customer_doc.customer_group = "All Customer Groups"
+                modified = True
 
-        if not customer_doc.get("territory"):
-            customer_doc.territory = frappe.db.get_single_value("Selling Settings", "territory") or "All Territories"
-            modified = True
+            if not customer_doc.get("territory"):
+                customer_doc.territory = frappe.db.get_single_value("Selling Settings", "territory") or "All Territories"
+                modified = True
 
-        if modified:
-            customer_doc.flags.ignore_mandatory = True
-            customer_doc.flags.ignore_validate = True
-            customer_doc.save(ignore_permissions=True)
+            if modified:
+                customer_doc.flags.ignore_mandatory = True
+                customer_doc.flags.ignore_validate = True
+                customer_doc.save(ignore_permissions=True)
 
-        if self.erpnext_invoice:
-            invoice = frappe.get_doc("Sales Invoice", self.erpnext_invoice)
-            invoice.items = []
-        else:
-            invoice = frappe.new_doc("Sales Invoice")
-            invoice.customer = self.customer
-            invoice.posting_date = getdate()
-            invoice.due_date = getdate()
-            invoice.ignore_pricing_rule = 1
-            invoice.disable_rounded_total = 1
+            if self.erpnext_invoice:
+                invoice = frappe.get_doc("Sales Invoice", self.erpnext_invoice)
+                invoice.items = []
+            else:
+                invoice = frappe.new_doc("Sales Invoice")
+                invoice.customer = self.customer
+                invoice.posting_date = getdate()
+                invoice.due_date = getdate()
+                invoice.ignore_pricing_rule = 1
+                invoice.disable_rounded_total = 1
 
-            # Get company from settings or use default
-            invoice.company = frappe.defaults.get_user_default("Company") or frappe.db.get_single_value("Global Defaults", "default_company")
+                # Get company from settings or use default
+                invoice.company = frappe.db.get_default("company") or frappe.db.get_single_value("Global Defaults", "default_company")
 
-            # Set minimal required fields
-            if not invoice.get("currency"):
-                invoice.currency = frappe.db.get_value("Company", invoice.company, "default_currency") or "AED"
+                # Set minimal required fields
+                if not invoice.get("currency"):
+                    invoice.currency = frappe.db.get_value("Company", invoice.company, "default_currency") or "AED"
 
-            if not invoice.get("selling_price_list"):
-                invoice.selling_price_list = frappe.db.get_single_value("Selling Settings", "selling_price_list") or "Standard Selling"
+                if not invoice.get("selling_price_list"):
+                    invoice.selling_price_list = frappe.db.get_single_value("Selling Settings", "selling_price_list") or "Standard Selling"
 
-        # Add rental charge
-        invoice.append(
-            "items",
-            {
-                "item_code": "Rental Service",  # Ensure this Item exists in ERPNext
-                "item_name": f"Vehicle Rental - {self.vehicle}",
-                "description": f"Rental Agreement {self.name}",
-                "qty": flt(self.actual_days or self.planned_days),
-                "rate": flt(self.base_rate),
-                "amount": flt(self.rental_amount),
-            },
-        )
-
-        # Add overage
-        if flt(self.overage_amount) and flt(self.overage_km):
+            # Add rental charge
             invoice.append(
                 "items",
                 {
-                    "item_code": "Rental Service",
-                    "item_name": "KM Overage",
-                    "description": f"{flt(self.overage_km)} KM overage",
-                    "qty": flt(self.overage_km),
-                    "rate": flt(self.overage_amount) / flt(self.overage_km),
-                    "amount": flt(self.overage_amount),
+                    "item_code": "Rental Service",  # Ensure this Item exists in ERPNext
+                    "item_name": f"Vehicle Rental - {self.vehicle}",
+                    "description": f"Rental Agreement {self.name}",
+                    "qty": flt(self.actual_days or self.planned_days),
+                    "rate": flt(self.base_rate),
+                    "amount": flt(self.rental_amount),
                 },
             )
 
-        # Add other charges
-        for charge in (self.charges or []):
-            invoice.append(
-                "items",
-                {
-                    "item_code": "Rental Service",
-                    "item_name": charge.charge_type,
-                    "description": charge.description,
-                    "qty": flt(charge.qty or 1),
-                    "rate": flt(charge.rate or 0),
-                    "amount": flt(charge.amount or 0),
-                },
-            )
+            # Add overage
+            if flt(self.overage_amount) and flt(self.overage_km):
+                invoice.append(
+                    "items",
+                    {
+                        "item_code": "Rental Service",
+                        "item_name": "KM Overage",
+                        "description": f"{flt(self.overage_km)} KM overage",
+                        "qty": flt(self.overage_km),
+                        "rate": flt(self.overage_amount) / flt(self.overage_km),
+                        "amount": flt(self.overage_amount),
+                    },
+                )
 
-        # Save with flags to bypass validations
-        invoice.flags.ignore_mandatory = True
-        invoice.flags.ignore_validate = True
-        invoice.save(ignore_permissions=True, ignore_links=True)
-        self.erpnext_invoice = invoice.name
-        self.db_set("erpnext_invoice", invoice.name, update_modified=False)
+            # Add other charges
+            for charge in (self.charges or []):
+                invoice.append(
+                    "items",
+                    {
+                        "item_code": "Rental Service",
+                        "item_name": charge.charge_type,
+                        "description": charge.description,
+                        "qty": flt(charge.qty or 1),
+                        "rate": flt(charge.rate or 0),
+                        "amount": flt(charge.amount or 0),
+                    },
+                )
+
+            # Save with flags to bypass validations
+            invoice.flags.ignore_mandatory = True
+            invoice.flags.ignore_validate = True
+            invoice.save(ignore_permissions=True)
+            self.erpnext_invoice = invoice.name
+            self.db_set("erpnext_invoice", invoice.name, update_modified=False)
+
+        except Exception as e:
+            frappe.log_error(frappe.get_traceback(), "ERPNext Invoice Creation Failed")
+            frappe.msgprint(f"Note: Invoice creation skipped due to configuration issue. Agreement saved successfully.", indicator="orange")
+            # Don't raise - allow agreement to be saved even if invoice fails
 
     def create_internal_invoice(self):
         """Create internal invoice if ERPNext not available."""

@@ -1,8 +1,14 @@
 frappe.ui.form.on('Rental Agreement', {
     refresh: function(frm) {
+        // Hide standard Submit button in Draft - force use of "Start Rental"
+        if (frm.doc.docstatus === 0 && frm.doc.agreement_status === 'Draft') {
+            frm.page.clear_primary_action();
+        }
+
         if (!frm.is_new()) {
             // Start Rental button
-            if (frm.doc.agreement_status === 'Draft') {
+            // Show if: (Draft AND not submitted) OR (Submitted but status still Draft)
+            if (frm.doc.agreement_status === 'Draft' && (frm.doc.docstatus === 0 || frm.doc.docstatus === 1)) {
                 frm.add_custom_button(__('Start Rental'), function() {
                     show_start_rental_dialog(frm);
                 }).addClass('btn-primary');

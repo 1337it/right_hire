@@ -14,7 +14,7 @@ class Vehicle(Document):
         if self.year and self.year > int(nowdate()[:4]) + 1:
             frappe.throw("Year cannot be in the future")
 
-        if self.odometer and self.odometer < 0:
+        if self.odometer and flt(self.odometer) < 0:
             frappe.throw("Odometer cannot be negative")
 
     def update_availability_status(self):
@@ -46,7 +46,7 @@ class Vehicle(Document):
 
     def update_odometer(self, reading, source="Manual"):
         """Update odometer reading."""
-        if reading < self.odometer:
+        if flt(reading) < flt(self.odometer or 0):
             frappe.throw("New odometer reading cannot be less than current reading")
 
         self.odometer = reading
