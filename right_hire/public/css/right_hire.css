@@ -52,6 +52,7 @@ box-shadow: 0 2px 2px #ffffff30 inset, /* top highlight */ 0 1px 4px #00000030,
 background-color: white !important;
 box-shadow: 0 2px 2px #ffffff3d inset, /* top highlight */ 0 1px 2px #0000001f,
 /* dark shadow */ 1px 1px 2px #00000008;
+    color:black;
 }
 .page-actions .btn:hover {
 background-color: white !important;
