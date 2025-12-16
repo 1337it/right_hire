@@ -1,0 +1,9 @@
+/* Hide the minimized dock from sidebar */
+#minimizedDock {
+    display: none !important;
+}
+
+.sidebar__minimized,
+.fallback__minimized {
+    display: none !important;
+}

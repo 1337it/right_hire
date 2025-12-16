@@ -6,557 +6,560 @@
     }
 
     .print-format {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-        color: #1a1a1a;
-        line-height: 1.6;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #000;
+        line-height: 1.4;
         max-width: 210mm;
         margin: 0 auto;
         background: white;
+        padding: 15px;
     }
 
     /* Header Section */
-    .document-header {
+    .gold-header {
+        background: white; border: 3px solid #B8860B;
+        padding: 15px 20px;
         display: flex;
-        align-items: center;
         justify-content: space-between;
-        padding: 40px 0 30px;
-        border-bottom: 1px solid #e0e0e0;
-        margin-bottom: 40px;
+        align-items: center;
+        margin-bottom: 10px;
     }
 
-    .logo-section {
+    .header-left {
+        color: #000;
         flex: 1;
     }
 
-    .company-logo {
-        width: 180px;
-        height: 60px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    .company-name {
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 3px;
+        text-transform: uppercase;
+    }
+
+    .company-address {
+        font-size: 9px;
+        line-height: 1.3;
+    }
+
+    .header-logo {
+        width: 150px;
+        height: 90px;
+        background: white;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 4px;
-        color: white;
-        font-weight: 700;
-        font-size: 24px;
-        letter-spacing: 1px;
+        border-radius: 3px;
+        font-weight: bold;
+        font-size: 11px;
+        color: #000;
     }
 
-    .header-info {
-        text-align: right;
+    /* Document Title */
+    .document-title {
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        margin: 20px 0 15px 0;
+    }
+
+    /* Agreement Header Row */
+    .agreement-header {
+        border: 2px solid #000;
+        display: flex;
+        margin-bottom: 2px;
+    }
+
+    .agreement-header-item {
+        padding: 8px 12px;
         flex: 1;
+        display: flex;
+        justify-content: space-between;
+        border-right: 2px solid #000;
     }
 
-    .document-type {
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        color: #666;
-        font-weight: 600;
-        margin-bottom: 8px;
+    .agreement-header-item:last-child {
+        border-right: none;
     }
 
-    .document-number {
-        font-size: 24px;
-        font-weight: 700;
-        color: #1a1a1a;
-        margin-bottom: 12px;
+    .agreement-header-label {
+        font-weight: bold;
+        font-size: 12px;
     }
 
-    .document-date {
-        font-size: 13px;
-        color: #666;
+    .agreement-header-value {
+        font-size: 12px;
     }
 
-    .status-indicator {
-        display: inline-block;
-        padding: 6px 16px;
-        border-radius: 20px;
-        font-size: 11px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-top: 12px;
+    /* Two Column Layout */
+    .two-column-container {
+        display: flex;
+        gap: 2px;
+        margin-bottom: 2px;
     }
 
-    .status-draft { background-color: #f5f5f5; color: #666; }
-    .status-active { background-color: #e8f5e9; color: #2e7d32; }
-    .status-completed { background-color: #e3f2fd; color: #1565c0; }
-    .status-terminated { background-color: #ffebee; color: #c62828; }
-    .status-cancelled { background-color: #fce4ec; color: #ad1457; }
+    .left-column {
+        flex: 1;
+        border: 2px solid #000;
+    }
 
-    /* Section Styles */
-    .content-section {
-        margin-bottom: 35px;
+    .right-column {
+        flex: 1;
+        border: 2px solid #000;
+    }
+
+    /* Section Boxes */
+    .section-box {
+        border: 2px solid #000;
+        margin-bottom: 2px;
     }
 
     .section-header {
-        font-size: 12px;
-        font-weight: 700;
+        background: white;
+        padding: 6px 12px;
+        font-weight: bold;
+        font-size: 13px;
         text-transform: uppercase;
-        letter-spacing: 1.5px;
-        color: #1a1a1a;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #1a1a1a;
+        border-bottom: 2px solid #000;
     }
 
-    .info-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 25px 40px;
+    .section-content {
+        padding: 10px 12px;
     }
 
-    .info-field {
+    .info-row {
         display: flex;
-        flex-direction: column;
-    }
-
-    .field-label {
-        font-size: 10px;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        color: #888;
-        font-weight: 600;
         margin-bottom: 6px;
+        font-size: 11px;
     }
 
-    .field-value {
-        font-size: 14px;
-        color: #1a1a1a;
-        font-weight: 500;
+    .info-label {
+        font-weight: bold;
+        min-width: 120px;
+    }
+
+    .info-value {
+        flex: 1;
     }
 
     /* Financial Table */
-    .financial-summary {
-        background: #fafafa;
-        border: 1px solid #e0e0e0;
-        border-radius: 4px;
-        overflow: hidden;
-        margin-top: 20px;
-    }
-
     .financial-table {
         width: 100%;
         border-collapse: collapse;
-    }
-
-    .financial-table thead {
-        background: #1a1a1a;
-        color: white;
-    }
-
-    .financial-table th {
-        padding: 14px 20px;
-        text-align: left;
         font-size: 11px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
     }
 
     .financial-table td {
-        padding: 14px 20px;
-        border-bottom: 1px solid #e0e0e0;
-        font-size: 13px;
-    }
-
-    .financial-table tr:last-child td {
-        border-bottom: none;
+        padding: 5px 8px;
+        text-align: left;
     }
 
     .financial-table .amount-col {
         text-align: right;
-        font-weight: 600;
-        font-variant-numeric: tabular-nums;
+        font-weight: bold;
     }
 
     .total-row {
-        background: #f5f5f5;
-        font-weight: 700;
-        font-size: 14px;
+        font-weight: bold;
+        font-size: 12px;
+        border-top: 1px solid #000;
     }
 
-    .total-row td {
-        padding: 16px 20px;
-        border-top: 2px solid #1a1a1a;
+    /* Notice Text */
+    .notice-section {
+        margin: 15px 0;
+        font-size: 9px;
+        line-height: 1.5;
+        text-align: justify;
+    }
+
+    .notice-section p {
+        margin-bottom: 8px;
     }
 
     /* Signature Section */
-    .signature-container {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 60px;
-        margin-top: 60px;
-        padding-top: 40px;
+    .signature-section {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 40px;
+        padding-top: 60px;
     }
 
-    .signature-block {
+    .signature-box {
         text-align: center;
+        width: 45%;
     }
 
     .signature-line {
-        border-top: 2px solid #1a1a1a;
-        margin-bottom: 12px;
-        padding-top: 80px;
-    }
-
-    .signature-name {
-        font-size: 14px;
-        font-weight: 700;
-        color: #1a1a1a;
-        margin-bottom: 4px;
+        border-bottom: 2px solid #000;
+        margin-bottom: 8px;
     }
 
     .signature-title {
         font-size: 11px;
-        color: #666;
+        font-weight: bold;
         text-transform: uppercase;
-        letter-spacing: 0.8px;
     }
 
-    .signature-date {
-        font-size: 10px;
-        color: #999;
-        margin-top: 8px;
-    }
-
-    /* Terms & Conditions Page */
+    /* Page Break */
     .page-break {
         page-break-before: always;
-        margin-top: 0;
-        padding-top: 0;
+        break-before: page;
+        display: block;
     }
 
-    .terms-header {
-        padding: 40px 0 30px;
-        border-bottom: 1px solid #e0e0e0;
-        margin-bottom: 40px;
-        text-align: center;
+    /* Terms Page */
+    .terms-page {
+        padding: 20px;
     }
 
     .terms-title {
-        font-size: 28px;
-        font-weight: 700;
-        letter-spacing: 1px;
-        color: #1a1a1a;
-        margin-bottom: 12px;
-    }
-
-    .terms-subtitle {
-        font-size: 12px;
-        color: #666;
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 25px;
         text-transform: uppercase;
-        letter-spacing: 1.5px;
     }
 
     .terms-content {
-        background: #fafafa;
-        padding: 30px;
-        border-left: 4px solid #1a1a1a;
-        border-radius: 2px;
+        font-size: 11px;
+        line-height: 1.6;
+        text-align: justify;
     }
 
     .terms-content ol {
-        counter-reset: term-counter;
-        list-style: none;
-        padding: 0;
+        padding-left: 20px;
     }
 
-    .terms-content ol li {
-        counter-increment: term-counter;
-        margin-bottom: 18px;
-        position: relative;
-        padding-left: 40px;
-        font-size: 13px;
-        line-height: 1.7;
-        color: #333;
+    .terms-content li {
+        margin-bottom: 12px;
     }
 
-    .terms-content ol li:before {
-        content: counter(term-counter);
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 28px;
-        height: 28px;
-        background: #1a1a1a;
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        font-size: 12px;
-    }
-
-    /* Footer */
-    .document-footer {
-        margin-top: 50px;
-        padding-top: 25px;
-        border-top: 1px solid #e0e0e0;
-        text-align: center;
-        font-size: 10px;
-        color: #999;
-        line-height: 1.6;
-    }
-
-    /* Print Specific */
     @media print {
         .page-break {
             page-break-before: always;
+            break-before: page;
+        }
+        .page-break {
+        page-break-before: always;
+        break-before: page;
+        display: block;
         }
         body {
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
     }
-
-    /* Highlight Box */
-    .highlight-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 25px 30px;
-        border-radius: 4px;
-        margin: 30px 0;
-    }
-
-    .highlight-card .info-grid {
-        gap: 20px 30px;
-    }
-
-    .highlight-card .field-label {
-        color: rgba(255,255,255,0.8);
-        font-size: 10px;
-    }
-
-    .highlight-card .field-value {
-        color: white;
-        font-size: 16px;
-        font-weight: 600;
-    }
 </style>
 
 <div class="print-format">
-    <!-- Document Header -->
-    <div class="document-header">
-        <div class="logo-section">
-            <div class="company-logo">
-                <!-- Replace with actual logo: <img src="/files/logo.png" style="max-height: 60px;"> -->
-                RIGHT HIRE
+    <!-- Gold Header -->
+    <div class="gold-header">
+        <div class="header-left">
+            <div class="company-name">{{ frappe.db.get_default("company") or "RIGHT HIRE" }}</div>
+            <div class="company-address">
+                {% set company_doc = frappe.get_doc("Company", frappe.db.get_default("company")) if frappe.db.get_default("company") else None %}
+                {% if company_doc %}
+                {{ company_doc.address or "" }}<br>
+                {{ company_doc.city or "" }} {{ company_doc.country or "" }}<br>
+                Office: {{ company_doc.phone or "+971 4 XXXXXXX" }}
+                {% else %}
+                Address Line 1<br>
+                Dubai, UAE<br>
+                Office: +971 4 XXXXXXX
+                {% endif %}
             </div>
-            <div style="margin-top: 8px; font-size: 11px; color: #666;">Premium Vehicle Rental Services</div>
         </div>
-        <div class="header-info">
-            <div class="document-type">Rental Agreement</div>
-            <div class="document-number">{{ doc.name }}</div>
-            <div class="document-date">{{ frappe.utils.formatdate(doc.agreement_date, "dd MMMM yyyy") }}</div>
-            <div class="status-indicator status-{{ doc.agreement_status.lower().replace(' ', '-') }}">
-                {{ doc.agreement_status }}
+        <div class="header-logo">
+            <img src="/files/logo.png" style="max-width: 100%; max-height: 90px;" alt="Company Logo">
+        </div>
+    </div>
+
+    <!-- Document Title -->
+    <div class="document-title">Rental Agreement</div>
+
+    <!-- Agreement Number and Date -->
+    <div class="agreement-header">
+        <div class="agreement-header-item">
+            <span class="agreement-header-label">Agreement Number:</span>
+            <span class="agreement-header-value">{{ doc.name }}</span>
+        </div>
+        <div class="agreement-header-item">
+            <span class="agreement-header-label">Start Date:</span>
+            <span class="agreement-header-value">{{ frappe.utils.formatdate(doc.start_datetime, "dd-MMM-yy") if doc.start_datetime else "" }}</span>
+        </div>
+    </div>
+
+    <!-- Two Column Layout: LESSOR and RENTED VEHICLE -->
+    <div class="two-column-container">
+        <!-- Left: LESSOR -->
+        <div class="left-column">
+            <div class="section-header">LESSOR</div>
+            <div class="section-content">
+                <div class="info-row">
+                    <div class="info-label">Company</div>
+                    <div class="info-value">{{ frappe.db.get_default("company") or "RIGHT HIRE" }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: RENTED VEHICLE -->
+        <div class="right-column">
+            <div class="section-header">RENTED VEHICLE</div>
+            <div class="section-content">
+                <div class="info-row">
+                    <div class="info-label">Type:</div>
+                    <div class="info-value">{{ doc.vehicle or "" }}</div>
+                </div>
+                {% if doc.plate_no %}
+                <div class="info-row">
+                    <div class="info-label">Plate No:</div>
+                    <div class="info-value">{{ doc.plate_no }}</div>
+                </div>
+                {% endif %}
+                {% if doc.vehicle_color %}
+                <div class="info-row">
+                    <div class="info-label">Color</div>
+                    <div class="info-value">{{ doc.vehicle_color }}</div>
+                </div>
+                {% endif %}
+                {% if doc.chassis_no %}
+                <div class="info-row">
+                    <div class="info-label">Chassis Number</div>
+                    <div class="info-value">{{ doc.chassis_no }}</div>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
 
-    <!-- Key Details Highlight -->
-    <div class="highlight-card">
-        <div class="info-grid">
-            <div class="info-field">
-                <div class="field-label">Rental Period</div>
-                <div class="field-value">{{ doc.planned_days or 0 }} Day{{ "s" if (doc.planned_days or 0) > 1 else "" }}</div>
+    <!-- Two Column Layout: LESSEE and OUT/IN DETAIL -->
+    <div class="two-column-container">
+        <!-- Left: LESSEE -->
+        <div class="left-column">
+            <div class="section-header">LESSEE</div>
+            <div class="section-content">
+                <div class="info-row">
+                    <div class="info-label">Name:</div>
+                    <div class="info-value">{{ doc.customer_name or doc.customer }}</div>
+                </div>
+                {% if doc.customer_code %}
+                <div class="info-row">
+                    <div class="info-label">Renter code:</div>
+                    <div class="info-value">{{ doc.customer_code }}</div>
+                </div>
+                {% endif %}
+                {% if doc.customer_address %}
+                <div class="info-row">
+                    <div class="info-label">Address</div>
+                    <div class="info-value">{{ doc.customer_address }}</div>
+                </div>
+                {% endif %}
+                {% if doc.customer_mobile %}
+                <div class="info-row">
+                    <div class="info-label">Mobile No</div>
+                    <div class="info-value">{{ doc.customer_mobile }}</div>
+                </div>
+                {% endif %}
+                {% if doc.customer_email %}
+                <div class="info-row">
+                    <div class="info-label">Email</div>
+                    <div class="info-value">{{ doc.customer_email }}</div>
+                </div>
+                {% endif %}
             </div>
-            <div class="info-field">
-                <div class="field-label">Total Amount</div>
-                <div class="field-value">AED {{ "{:,.2f}".format(doc.grand_total or 0) }}</div>
+        </div>
+
+        <!-- Right: OUT/IN DETAIL -->
+        <div class="right-column">
+            <div class="section-header">OUT DETAIL</div>
+            <div class="section-content" style="border-bottom: 2px solid #000; padding-bottom: 10px;">
+                <div class="info-row">
+                    <div class="info-label">Date & Time</div>
+                    <div class="info-value">{{ frappe.utils.format_datetime(doc.start_datetime, "dd-MMM-yy HH:mm") if doc.start_datetime else "" }}</div>
+                </div>
+                {% if doc.odometer_out %}
+                <div class="info-row">
+                    <div class="info-label">Km</div>
+                    <div class="info-value">{{ "{:,.0f}".format(doc.odometer_out) }}</div>
+                </div>
+                {% endif %}
+                {% if doc.fuel_out %}
+                <div class="info-row">
+                    <div class="info-label">Fuel</div>
+                    <div class="info-value">{{ doc.fuel_out }}</div>
+                </div>
+                {% endif %}
             </div>
-            <div class="info-field">
-                <div class="field-label">Rental Dates</div>
-                <div class="field-value">{{ frappe.utils.format_datetime(doc.start_datetime, "dd MMM") if doc.start_datetime else "" }} - {{ frappe.utils.format_datetime(doc.end_datetime, "dd MMM yyyy") if doc.end_datetime else "" }}</div>
-            </div>
-            <div class="info-field">
-                <div class="field-label">Vehicle</div>
-                <div class="field-value">{{ doc.vehicle }}</div>
+            <div class="section-header" style="border-top: none;">IN DETAIL</div>
+            <div class="section-content">
+                <div class="info-row">
+                    <div class="info-label">Date & Time Expected</div>
+                    <div class="info-value">{{ frappe.utils.format_datetime(doc.end_datetime, "dd-MMM-yy HH:mm") if doc.end_datetime else "" }}</div>
+                </div>
+                {% if doc.odometer_in %}
+                <div class="info-row">
+                    <div class="info-label">Km</div>
+                    <div class="info-value">{{ "{:,.0f}".format(doc.odometer_in) }}</div>
+                </div>
+                {% endif %}
+                {% if doc.fuel_in %}
+                <div class="info-row">
+                    <div class="info-label">Fuel</div>
+                    <div class="info-value">{{ doc.fuel_in }}</div>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
 
-    <!-- Customer Information -->
-    <div class="content-section">
-        <div class="section-header">Customer Information</div>
-        <div class="info-grid">
-            <div class="info-field">
-                <div class="field-label">Customer Name</div>
-                <div class="field-value">{{ doc.customer_name or doc.customer }}</div>
+    <!-- Two Column Layout: DRIVER and SERVICES & CHARGES -->
+    <div class="two-column-container">
+        <!-- Left: DRIVER -->
+        <div class="left-column">
+            <div class="section-header">Driver</div>
+            <div class="section-content">
+                {% if doc.driver_name %}
+                <div class="info-row">
+                    <div class="info-label">Name:</div>
+                    <div class="info-value">{{ doc.driver_name }}</div>
+                </div>
+                {% endif %}
+                {% if doc.driver_mobile %}
+                <div class="info-row">
+                    <div class="info-label">Mobile No:</div>
+                    <div class="info-value">{{ doc.driver_mobile }}</div>
+                </div>
+                {% endif %}
+                {% if doc.driver_license %}
+                <div class="info-row">
+                    <div class="info-label">Driving Lisence No:</div>
+                    <div class="info-value">{{ doc.driver_license }}</div>
+                </div>
+                {% endif %}
+                {% if doc.license_issued_date %}
+                <div class="info-row">
+                    <div class="info-label">Issued Date:</div>
+                    <div class="info-value">{{ frappe.utils.formatdate(doc.license_issued_date, "dd-MMM-yy") }}</div>
+                </div>
+                {% endif %}
+                {% if doc.license_issued_by %}
+                <div class="info-row">
+                    <div class="info-label">Issued By:</div>
+                    <div class="info-value">{{ doc.license_issued_by }}</div>
+                </div>
+                {% endif %}
             </div>
-            {% if doc.customer_mobile %}
-            <div class="info-field">
-                <div class="field-label">Mobile Number</div>
-                <div class="field-value">{{ doc.customer_mobile }}</div>
+            <div class="section-header" style="border-top: none;">Detail</div>
+            <div class="section-content">
+                {% if doc.notes %}
+                <div class="info-row">
+                    <div class="info-label">Notes:</div>
+                    <div class="info-value">{{ doc.notes }}</div>
+                </div>
+                {% endif %}
+                <div class="info-row">
+                    <div class="info-label">Additional Notes:</div>
+                    <div class="info-value"></div>
+                </div>
+                {% if doc.po_no %}
+                <div class="info-row">
+                    <div class="info-label">LPO NO:</div>
+                    <div class="info-value">{{ doc.po_no }}</div>
+                </div>
+                {% endif %}
             </div>
-            {% endif %}
-            {% if doc.driver_license %}
-            <div class="info-field">
-                <div class="field-label">Driver License</div>
-                <div class="field-value">{{ doc.driver_license }}</div>
-            </div>
-            {% endif %}
-            {% if doc.driver_name %}
-            <div class="info-field">
-                <div class="field-label">Driver Name</div>
-                <div class="field-value">{{ doc.driver_name }}</div>
-            </div>
-            {% endif %}
         </div>
-    </div>
 
-    <!-- Vehicle Details -->
-    <div class="content-section">
-        <div class="section-header">Vehicle Details</div>
-        <div class="info-grid">
-            <div class="info-field">
-                <div class="field-label">Vehicle</div>
-                <div class="field-value">{{ doc.vehicle }}</div>
-            </div>
-            {% if doc.plate_no %}
-            <div class="info-field">
-                <div class="field-label">Plate Number</div>
-                <div class="field-value">{{ doc.plate_no }}</div>
-            </div>
-            {% endif %}
-            {% if doc.odometer_out %}
-            <div class="info-field">
-                <div class="field-label">Odometer Reading (Out)</div>
-                <div class="field-value">{{ "{:,.0f}".format(doc.odometer_out) }} km</div>
-            </div>
-            {% endif %}
-            {% if doc.fuel_out %}
-            <div class="info-field">
-                <div class="field-label">Fuel Level (Out)</div>
-                <div class="field-value">{{ doc.fuel_out }}</div>
-            </div>
-            {% endif %}
-        </div>
-        {% if doc.condition_out %}
-        <div style="margin-top: 20px; padding: 15px; background: #fafafa; border-left: 4px solid #1a1a1a; border-radius: 2px;">
-            <div class="field-label" style="margin-bottom: 8px;">Vehicle Condition (Out)</div>
-            <div class="field-value" style="font-size: 13px;">{{ doc.condition_out }}</div>
-        </div>
-        {% endif %}
-        {% if doc.condition_in %}
-        <div style="margin-top: 20px; padding: 15px; background: #fafafa; border-left: 4px solid #1a1a1a; border-radius: 2px;">
-            <div class="field-label" style="margin-bottom: 8px;">Vehicle Condition (In)</div>
-            <div class="field-value" style="font-size: 13px;">{{ doc.condition_in }}</div>
-        </div>
-        {% endif %}
-    </div>
-
-    <!-- Rental Terms -->
-    <div class="content-section">
-        <div class="section-header">Rental Terms</div>
-        <div class="info-grid">
-            <div class="info-field">
-                <div class="field-label">Start Date & Time</div>
-                <div class="field-value">{{ frappe.utils.format_datetime(doc.start_datetime, "dd MMM yyyy, hh:mm a") if doc.start_datetime else "—" }}</div>
-            </div>
-            <div class="info-field">
-                <div class="field-label">End Date & Time</div>
-                <div class="field-value">{{ frappe.utils.format_datetime(doc.end_datetime, "dd MMM yyyy, hh:mm a") if doc.end_datetime else "—" }}</div>
-            </div>
-            <div class="info-field">
-                <div class="field-label">Planned Duration</div>
-                <div class="field-value">{{ doc.planned_days or 0 }} Day{{ "s" if (doc.planned_days or 0) > 1 else "" }}</div>
-            </div>
-            {% if doc.actual_days %}
-            <div class="info-field">
-                <div class="field-label">Actual Duration</div>
-                <div class="field-value">{{ doc.actual_days }} Day{{ "s" if doc.actual_days > 1 else "" }}</div>
-            </div>
-            {% endif %}
-        </div>
-    </div>
-
-    <!-- Financial Summary -->
-    <div class="content-section">
-        <div class="section-header">Financial Summary</div>
-        <div class="financial-summary">
-            <table class="financial-table">
-                <thead>
-                    <tr>
-                        <th>Description</th>
-                        <th style="width: 200px; text-align: right;">Amount (AED)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Base Rental Rate</td>
-                        <td class="amount-col">{{ "{:,.2f}".format(doc.base_rate or 0) }}</td>
-                    </tr>
-                    {% if doc.charges %}
-                        {% for charge in doc.charges %}
+        <!-- Right: SERVICES & CHARGES -->
+        <div class="right-column">
+            <div class="section-header">SERVICES & CHARGES</div>
+            <div class="section-content">
+                <table class="financial-table">
+                    <tbody>
                         <tr>
-                            <td>{{ charge.charge_type }}</td>
-                            <td class="amount-col">{{ "{:,.2f}".format(charge.amount or 0) }}</td>
+                            <td>Rent</td>
+                            <td>{{ doc.planned_days or 0 }} x {{ "{:,.2f}".format(doc.daily_rate or 0) }} /Day</td>
+                            <td class="amount-col">{{ "{:,.2f}".format(doc.base_rate or 0) }}</td>
                         </tr>
-                        {% endfor %}
-                    {% endif %}
-                    {% if doc.deposit_held %}
-                    <tr>
-                        <td>Security Deposit</td>
-                        <td class="amount-col">{{ "{:,.2f}".format(doc.deposit_held) }}</td>
-                    </tr>
-                    {% endif %}
-                    <tr class="total-row">
-                        <td>TOTAL AMOUNT</td>
-                        <td class="amount-col">{{ "{:,.2f}".format(doc.grand_total or 0) }}</td>
-                    </tr>
-                    {% if doc.amount_paid %}
-                    <tr>
-                        <td>Amount Paid</td>
-                        <td class="amount-col">{{ "{:,.2f}".format(doc.amount_paid) }}</td>
-                    </tr>
-                    <tr style="background: #fff3cd;">
-                        <td style="font-weight: 600;">Outstanding Balance</td>
-                        <td class="amount-col" style="font-weight: 700; color: #f57c00;">{{ "{:,.2f}".format(doc.outstanding_amount or 0) }}</td>
-                    </tr>
-                    {% endif %}
-                </tbody>
-            </table>
+                        {% if doc.charges %}
+                            {% for charge in doc.charges %}
+                            <tr>
+                                <td>{{ charge.charge_type }}</td>
+                                <td>{{ charge.description or "" }}</td>
+                                <td class="amount-col">{{ "{:,.2f}".format(charge.amount or 0) }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                        {% if doc.deposit_held %}
+                        <tr>
+                            <td>Security Deposit</td>
+                            <td></td>
+                            <td class="amount-col">{{ "{:,.2f}".format(doc.deposit_held) }}</td>
+                        </tr>
+                        {% endif %}
+                        {% if doc.discount_amount %}
+                        <tr>
+                            <td>Discount</td>
+                            <td></td>
+                            <td class="amount-col">({{ "{:,.2f}".format(doc.discount_amount) }})</td>
+                        </tr>
+                        {% endif %}
+                        {% if doc.tax_amount %}
+                        <tr>
+                            <td>Tax: 5%</td>
+                            <td></td>
+                            <td class="amount-col">{{ "{:,.0f}".format(doc.tax_amount) }}</td>
+                        </tr>
+                        {% endif %}
+                        <tr class="total-row">
+                            <td colspan="2">Total:</td>
+                            <td class="amount-col">AED {{ "{:,.2f}".format(doc.grand_total or 0) }}</td>
+                        </tr>
+                        {% if doc.amount_paid %}
+                        <tr>
+                            <td colspan="2">Received</td>
+                            <td class="amount-col">AED {{ "{:,.2f}".format(doc.amount_paid) }}</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <!-- Signatures -->
-    <div class="signature-container">
-        <div class="signature-block">
-            <div class="signature-line"></div>
-            <div class="signature-name">{{ doc.customer_name or doc.customer }}</div>
-            <div class="signature-title">Customer Signature</div>
-            {% if doc.terms_accepted_on %}
-            <div class="signature-date">Signed: {{ frappe.utils.format_datetime(doc.terms_accepted_on, "dd MMM yyyy, hh:mm a") }}</div>
-            {% endif %}
-        </div>
-        <div class="signature-block">
-            <div class="signature-line"></div>
-            <div class="signature-name">{{ frappe.db.get_default("company") or "Right Hire" }}</div>
-            <div class="signature-title">Authorized Representative</div>
-            <div class="signature-date">{{ frappe.utils.formatdate(doc.agreement_date, "dd MMM yyyy") }}</div>
-        </div>
+    <!-- Notice Section -->
+    <div class="notice-section">
+        <p><strong>Notice:</strong> Insurance coverage will be for drivers with minimum age of 25 years old and must be holding a valid U.A.E. driving license. For transit and/or Visit Visa holders, an international driving license is must to drive within the U.A.E.</p>
+
+        <p>Cost of fuel used while driving {{ frappe.db.get_default("company") or "RIGHT HIRE" }} replacement vehicle will be charged at cost. The leased vehicle will be delivered with ample amount of fuel and is expected to be returned in the same quantity.</p>
+
+        <p>The lease contract is considered open until such time {{ frappe.db.get_default("company") or "RIGHT HIRE" }} receives a written confirmation advising the termination date of the contract.</p>
+
+        <p>{{ frappe.db.get_default("company") or "RIGHT HIRE" }} reserves the right to acquire the vehicle should it be due for disposal (Average 18 Months) but with guaranteed replacement of the same vehicle category.</p>
+
+        <p>If payments are settled via Credit Card; the customer's signature below grants {{ frappe.db.get_default("company") or "RIGHT HIRE" }} the right to charge any total amount due; inclusive of refuelling cost, traffic fines, insurance excess, toll fees and other costs incurred by the customer during the lease period.</p>
+
+        <p>This is a legal and binding contract between the Lessor and the Lessee; who agree to the standard Terms and Conditions of the Lease printed on the reverse side of this contract.</p>
     </div>
 
-    <!-- Footer -->
-    <div class="document-footer">
-        <p>This document is generated electronically and is valid without a physical signature.</p>
-        <p>{{ frappe.db.get_default("company") or "Right Hire" }} • Premium Vehicle Rental Services • www.righthire.ae</p>
+    <!-- Signature Section -->
+    <div class="signature-section">
+        <div class="signature-box">
+            <div class="signature-line"></div>
+            <div class="signature-title">LESSEE OR<br>AUTHORIZED AGENT</div>
+        </div>
+        <div class="signature-box">
+            <div class="signature-line"></div>
+            <div class="signature-title">LESSOR OR<br>AUTHORIZED AGENT</div>
+        </div>
     </div>
 
     <!-- TERMS & CONDITIONS - NEW PAGE -->
     <div class="page-break">
-        <div class="terms-header">
-            <div class="company-logo" style="margin: 0 auto 20px;">RIGHT HIRE</div>
-            <div class="terms-title">TERMS & CONDITIONS</div>
-            <div class="terms-subtitle">Rental Agreement {{ doc.name }}</div>
-        </div>
+        <div class="terms-page">
+            <div class="terms-title">Terms and Conditions</div>
 
-        <div class="content-section">
-            <div class="section-header">Rental Agreement Terms</div>
             {% if doc.custom_terms %}
             <div class="terms-content">
                 {{ doc.custom_terms }}
@@ -564,40 +567,46 @@
             {% else %}
             <div class="terms-content">
                 <ol>
-                    <li>The customer agrees to return the vehicle in the same condition as received, normal wear and tear excepted. Any damage beyond normal usage will be charged to the customer.</li>
-                    <li>The customer is responsible for all damage to the vehicle during the rental period, including but not limited to collision damage, theft, vandalism, and environmental damage.</li>
-                    <li>The security deposit will be refunded within 7 business days upon satisfactory return of the vehicle and settlement of all outstanding charges.</li>
-                    <li>Late returns will incur additional charges as per the company's standard rates. Customers must notify the company at least 24 hours in advance if an extension is required.</li>
-                    <li>The customer must maintain valid comprehensive insurance throughout the rental period. Proof of insurance must be provided before vehicle handover.</li>
-                    <li>All traffic violations, fines, and penalties incurred during the rental period are the sole responsibility of the customer and must be settled promptly.</li>
-                    <li>The vehicle must not be used for any illegal purposes, racing, or off-road activities unless explicitly authorized in writing.</li>
-                    <li>The customer must not sublet, rent, or lend the vehicle to any third party without prior written consent from the company.</li>
-                    <li>The vehicle must be returned with the same fuel level as provided at the start of the rental. Otherwise, refueling charges will apply.</li>
-                    <li>This agreement is governed by the laws of the United Arab Emirates. Any disputes shall be subject to the exclusive jurisdiction of Dubai courts.</li>
+                    <li><strong>Vehicle Use:</strong> The Lessee agrees to use the vehicle in a careful and lawful manner, and will comply with all applicable laws and regulations. The vehicle shall not be used for racing, towing, pushing, or propelling anything, or for carrying passengers or property for hire.</li>
+
+                    <li><strong>Vehicle Condition:</strong> The Lessee acknowledges receiving the vehicle in good condition and agrees to return it in the same condition, ordinary wear and tear excepted. The Lessee will be responsible for all damage to the vehicle during the rental period.</li>
+
+                    <li><strong>Insurance:</strong> The vehicle is covered by comprehensive insurance with the deductible amount specified in this agreement. The Lessee is responsible for the deductible amount in case of any accident or damage.</li>
+
+                    <li><strong>Security Deposit:</strong> The security deposit will be refunded within 7 business days after the return of the vehicle, subject to deduction of any charges for damage, traffic fines, or other obligations under this agreement.</li>
+
+                    <li><strong>Fuel Policy:</strong> The vehicle is provided with fuel as indicated in the OUT DETAIL section. The Lessee must return the vehicle with the same fuel level. Any shortfall will be charged at prevailing rates plus a refueling service charge.</li>
+
+                    <li><strong>Traffic Violations:</strong> The Lessee is responsible for all traffic violations, fines, and penalties incurred during the rental period. The Lessor reserves the right to charge the Lessee for any such violations plus an administrative fee.</li>
+
+                    <li><strong>Extension and Late Return:</strong> Any extension of the rental period must be authorized in advance. Unauthorized late returns will incur additional charges at standard daily rates plus a late return penalty.</li>
+
+                    <li><strong>Prohibited Use:</strong> The vehicle must not be: (a) used by any person other than the named driver without prior authorization; (b) used while the driver is under the influence of alcohol or drugs; (c) used for any illegal purpose; (d) taken outside the UAE without written permission.</li>
+
+                    <li><strong>Accidents and Breakdowns:</strong> In case of accident, breakdown, or theft, the Lessee must immediately notify the Lessor and the police. The Lessee must obtain a police report for any accident or theft.</li>
+
+                    <li><strong>Maintenance:</strong> The Lessee is responsible for checking oil, water, and tire pressure. Any mechanical issues must be reported immediately to the Lessor. The Lessee must not undertake any repairs without prior authorization.</li>
+
+                    <li><strong>Termination:</strong> The Lessor reserves the right to terminate this agreement and repossess the vehicle without notice if: (a) the Lessee breaches any term of this agreement; (b) the vehicle is abandoned; (c) payments are not made as agreed.</li>
+
+                    <li><strong>Governing Law:</strong> This agreement shall be governed by and construed in accordance with the laws of the United Arab Emirates. Any disputes arising from this agreement shall be subject to the exclusive jurisdiction of the courts of Dubai, UAE.</li>
+
+                    <li><strong>Entire Agreement:</strong> This agreement constitutes the entire agreement between the parties and supersedes all prior understandings. No modification of this agreement shall be valid unless in writing and signed by both parties.</li>
                 </ol>
             </div>
             {% endif %}
-        </div>
 
-        <!-- Signatures on Terms Page -->
-        <div class="signature-container">
-            <div class="signature-block">
-                <div class="signature-line"></div>
-                <div class="signature-name">{{ doc.customer_name or doc.customer }}</div>
-                <div class="signature-title">Customer Acknowledgment</div>
-                <div class="signature-date">Date: _______________</div>
+            <!-- Signature Section on Terms Page -->
+            <div class="signature-section">
+                <div class="signature-box">
+                    <div class="signature-line"></div>
+                    <div class="signature-title">LESSEE OR<br>AUTHORIZED AGENT</div>
+                </div>
+                <div class="signature-box">
+                    <div class="signature-line"></div>
+                    <div class="signature-title">LESSOR OR<br>AUTHORIZED AGENT</div>
+                </div>
             </div>
-            <div class="signature-block">
-                <div class="signature-line"></div>
-                <div class="signature-name">{{ frappe.db.get_default("company") or "Right Hire" }}</div>
-                <div class="signature-title">Company Representative</div>
-                <div class="signature-date">{{ frappe.utils.formatdate(doc.agreement_date, "dd MMM yyyy") }}</div>
-            </div>
-        </div>
-
-        <div class="document-footer">
-            <p><strong>Important:</strong> By signing this agreement, you acknowledge that you have read, understood, and agree to be bound by these terms and conditions.</p>
-            <p>For assistance or inquiries, please contact our customer service team.</p>
         </div>
     </div>
 </div>

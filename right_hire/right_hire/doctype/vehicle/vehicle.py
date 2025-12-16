@@ -8,6 +8,7 @@ class Vehicle(Document):
         self.validate_basic_details()
         self.update_availability_status()
         self.calculate_book_value()
+        self.update_plate_art()
 
     def validate_basic_details(self):
         """Validate basic vehicle details."""
@@ -43,6 +44,22 @@ class Vehicle(Document):
                 * years_owned
             )
             self.current_book_value = max(0, flt(self.purchase_cost) - depreciation)
+
+    def update_plate_art(self):
+        """Update custom_plate_art when custom_plate_code or plate_no changes."""
+        if self.has_value_changed("custom_plate_code") or self.has_value_changed("plate_no"):
+            # Build plate art from plate_no and custom_plate_code
+            plate_code = self.custom_plate_code or ""
+            plate_no = self.plate_no or ""
+
+            if plate_code and plate_no:
+                self.custom_plate_art = f"{plate_code} {plate_no}"
+            elif plate_no:
+                self.custom_plate_art = plate_no
+            elif plate_code:
+                self.custom_plate_art = plate_code
+            else:
+                self.custom_plate_art = ""
 
     def update_odometer(self, reading, source="Manual"):
         """Update odometer reading."""

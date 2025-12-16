@@ -8,6 +8,14 @@ vertical-align: middle;
 margin-bottom: 3px;
 }
 @media only screen and (min-width: 992px) {
+
+.navbar-nav .dropdown-menu-right {
+right: 0px;
+left: 17vw!important;
+top: 5px!important;
+position: fixed !important;
+}
+
     .form-message {
 position: relative;
 border-radius: var(--border-radius);
@@ -306,10 +314,9 @@ padding: 0 10px!important;
   .sticky-top {
 height: 48px;
      width:16.6667%;
+z-index:1041;
 }
-[data-theme="light"] html, body {
-background-color: hsl(0, 0%, 95%) !important;
-}
+
 .navbar {
 
 position: fixed;
@@ -377,6 +384,7 @@ text-align: inherit;
 height: 40px;
 padding: 8px 8px !important;
 }
+
 
   .standard-sidebar-label {
 display: none !important;
@@ -467,10 +475,16 @@ display: block !important;
 
   position: fixed;
   left: 0;
-top: calc(var(--navbar-height) + 40px);
+top: calc(var(--navbar-height) + 12px);
+}
+.icon, .es-icon {
+fill: rgba(240, 181, 139, 0);
+stroke: #000000;
+--icon-stroke: unset;
+stroke-width: 0.5px;
 }
 #page-Workspaces .layout-side-section {
-top: calc(var(--navbar-height) + 40px);
+top: calc(var(--navbar-height) + 12px);
 display: block !important;
 position: fixed !important;
 left: 0;
@@ -540,6 +554,7 @@ max-width: 100%!important;
 position: absolute;
 top: var(--navbar-height);
 margin:0!important;
+border-bottom: 1px solid rgba(128, 128, 128, 0.21);
 }
 #page-Workspaces .layout-side-section {
 display: block !important;

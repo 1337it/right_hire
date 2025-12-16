@@ -493,5 +493,33 @@ frappe.ui.form.on('Vehicle', {
 				frappe.model.set_value(cdt, cdn, 'last_odometer_value', r.message);
 			}
 		});
+	},
+
+	// Live update custom_plate_art when custom_plate_code changes
+	custom_plate_code: function(frm) {
+		update_plate_art_live(frm);
+	},
+
+	// Live update custom_plate_art when plate_no changes
+	plate_no: function(frm) {
+		update_plate_art_live(frm);
 	}
 });
+
+// Function to update plate art in real-time
+function update_plate_art_live(frm) {
+	const plate_code = frm.doc.custom_plate_code || '';
+	const plate_no = frm.doc.plate_no || '';
+
+	let plate_art = '';
+
+	if (plate_code && plate_no) {
+		plate_art = `${plate_code} ${plate_no}`;
+	} else if (plate_no) {
+		plate_art = plate_no;
+	} else if (plate_code) {
+		plate_art = plate_code;
+	}
+
+	frm.set_value('custom_plate_art', plate_art);
+}

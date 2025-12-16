@@ -40,18 +40,18 @@ width: calc(16.6667%);
 
 /* Panel (flyout card) */
 #portal-settings-panel.portal-settings-panel {
-  position: fixed;
-  left: 16px;
-  bottom: 60px;
-  width: 320px;
-  max-width: calc(100vw - 32px);
-  background: var(--panel-bg, #fff);
-  color: var(--panel-fg, #111827);
-  border: 1px solid var(--border-color, #e5e7eb);
-  border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.12);
-  padding: 12px;
-  z-index: 9999;
+position: fixed;
+left: 17vw;
+bottom: 5px;
+width: 320px;
+max-width: calc(-32px + 100vw);
+background: var(--panel-bg, #fff);
+color: var(--panel-fg, #111827);
+border: 1px solid var(--border-color, #e5e7eb);
+border-radius: 14px;
+box-shadow: rgba(0, 0, 0, 0.12) 0px 10px 30px;
+padding: 12px;
+z-index: 9999;
 }
 
 #portal-settings-panel.hidden { display: none; }
@@ -64,10 +64,18 @@ width: calc(16.6667%);
 }
 .psp-title { font-weight: 700; }
 .psp-close {
-  border: 0;
-  background: transparent;
-  font-size: 16px;
-  cursor: pointer;
+border: 0px;
+background: none;
+font-size: 33px;
+cursor: pointer;
+/* height: 20px; */
+/* width: 40px; */
+/* vertical-align: top; */
+/* align-content: start; */
+/* justify-content: start; */
+position: absolute;
+top: 0px;
+right: 10px;
 }
 
 .psp-section { margin: 10px 0 12px; }

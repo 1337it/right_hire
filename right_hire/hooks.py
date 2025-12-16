@@ -10,6 +10,7 @@ app_include_css = [
 	"/assets/right_hire/css/right_hire.css",
 	"/assets/right_hire/css/portal-settings.css",
 	"/assets/right_hire/css/minimize-to-sidebar.css",
+	"/assets/right_hire/css/hide_minidock.css",
 	"/assets/right_hire/css/sidebar_toggle.css",
 	"/assets/right_hire/css/icons.css"
 ]
