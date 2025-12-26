@@ -10,6 +10,9 @@ margin-bottom: 3px;
 
 
 @media only screen and (min-width: 992px) {
+    .desk-sidebar .standard-sidebar-section {
+margin-bottom: 0 !important;
+}
     [data-theme="dark"] .es-icon.es-line.step-icon.icon-md {
 filter: invert() !important;
 }
