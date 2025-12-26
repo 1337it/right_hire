@@ -1,4 +1,6 @@
-
+[data-theme="dark"] img.aed {
+filter: invert();
+}
 img.aed {
 height: 11px;
 width: auto;
