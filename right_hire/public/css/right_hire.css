@@ -529,10 +529,13 @@ display: block !important;
   left: 0;
 top: calc(var(--navbar-height) + 42px);
 }
+    [data-theme="dark"] .toggle-arrow {
+filter: invert();
+}
 .icon, .es-icon {
 fill: rgba(240, 181, 139, 0);
 stroke: #000000;
---icon-stroke: unset;
+--icon-stroke: black;
 stroke-width: 1px;
 }
 #page-Workspaces .layout-side-section {
