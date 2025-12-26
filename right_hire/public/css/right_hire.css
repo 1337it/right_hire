@@ -14,7 +14,6 @@ margin-bottom: 3px;
 @media only screen and (min-width: 992px) {
     [data-theme="dark"] .btn.btn-default {
 background-color: #e7e7e7;
-color: var(--text-color);
 }
     .desk-sidebar .standard-sidebar-section {
 margin-bottom: 0 !important;
