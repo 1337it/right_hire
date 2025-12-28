@@ -26,7 +26,8 @@ app_include_js = [
 	"/assets/right_hire/js/vehicle_listview.js",
 	"/assets/right_hire/js/reservation.js",
 	"/assets/right_hire/js/vehicle.js",
-	"/assets/right_hire/js/vehicle_listview.js"
+	"/assets/right_hire/js/vehicle_listview.js",
+	"/assets/right_hire/js/navbar_back_button.js"
 ]
 
 # include js in doctype views

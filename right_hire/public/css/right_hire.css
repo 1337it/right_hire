@@ -12,6 +12,15 @@ margin-bottom: 3px;
 
 
 @media only screen and (min-width: 992px) {
+#page-head-back-btn {
+background-color: transparent;
+margin: 0 !important;
+margin-bottom: 3px !important;
+}
+#page-head-back-btn .icon.icon-sm {
+width: 21px !important;
+height: 21px !important;
+}
     [data-theme="dark"] .btn.btn-default {
 background-color: #828282;
 }

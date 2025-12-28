@@ -6,7 +6,6 @@ from frappe.utils import flt, add_months, getdate
 class LeaseQuotation(Document):
     def validate(self):
         self.validate_dates()
-        self.calculate_end_date()
         self.calculate_amounts()
 
     def validate_dates(self):
@@ -15,11 +14,6 @@ class LeaseQuotation(Document):
         if not self.valid_until:
             from frappe.utils import add_days
             self.valid_until = add_days(self.quotation_date, 7)
-
-    def calculate_end_date(self):
-        """Calculate lease end date."""
-        if self.start_date and self.lease_duration_months:
-            self.end_date = add_months(self.start_date, self.lease_duration_months)
 
     def calculate_amounts(self):
         """Calculate total lease amount."""
@@ -45,9 +39,7 @@ class LeaseQuotation(Document):
             "customer": self.customer,
             "driver": self.driver,
             "vehicle": self.vehicle,
-            "start_date": self.start_date,
             "lease_duration_months": self.lease_duration_months,
-            "end_date": self.end_date,
             "branch": self.branch,
             "rate_plan": self.rate_plan,
             "monthly_rate": self.monthly_rate,

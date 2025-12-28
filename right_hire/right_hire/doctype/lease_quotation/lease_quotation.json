@@ -20,12 +20,13 @@
   "driver_name",
   "driver_license",
   "lease_details_section",
-  "start_date",
   "lease_duration_months",
-  "end_date",
   "column_break_lease",
   "branch",
   "allowed_km_per_year",
+  "excess_insurance_amount",
+  "excess_salik_percentage",
+  "excess_traffic_fines_percentage",
   "vehicle_section",
   "vehicle_category",
   "vehicle",
@@ -44,6 +45,8 @@
   "terms_section",
   "terms_template",
   "custom_terms",
+  "important_notes_section",
+  "important_notes",
   "notes_section",
   "internal_notes",
   "linked_document_section",
@@ -139,23 +142,10 @@
    "label": "Lease Details"
   },
   {
-   "fieldname": "start_date",
-   "fieldtype": "Date",
-   "in_list_view": 1,
-   "label": "Lease Start Date",
-   "reqd": 1
-  },
-  {
    "fieldname": "lease_duration_months",
    "fieldtype": "Int",
    "label": "Lease Duration (Months)",
    "reqd": 1
-  },
-  {
-   "fieldname": "end_date",
-   "fieldtype": "Date",
-   "label": "Lease End Date",
-   "read_only": 1
   },
   {
    "fieldname": "column_break_lease",
@@ -173,6 +163,21 @@
    "fieldname": "allowed_km_per_year",
    "fieldtype": "Int",
    "label": "Allowed KM Per Year"
+  },
+  {
+   "fieldname": "excess_insurance_amount",
+   "fieldtype": "Currency",
+   "label": "Excess Insurance Amount"
+  },
+  {
+   "fieldname": "excess_salik_percentage",
+   "fieldtype": "Percent",
+   "label": "Excess Salik Percentage"
+  },
+  {
+   "fieldname": "excess_traffic_fines_percentage",
+   "fieldtype": "Percent",
+   "label": "Excess Traffic Fines Percentage"
   },
   {
    "fieldname": "vehicle_section",
@@ -278,6 +283,18 @@
   },
   {
    "collapsible": 1,
+   "fieldname": "important_notes_section",
+   "fieldtype": "Section Break",
+   "label": "Important Notes"
+  },
+  {
+   "fieldname": "important_notes",
+   "fieldtype": "Table",
+   "label": "Important Notes",
+   "options": "Lease Quotation Important Note"
+  },
+  {
+   "collapsible": 1,
    "fieldname": "notes_section",
    "fieldtype": "Section Break",
    "label": "Internal Notes"
@@ -309,7 +326,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-01-01 00:00:00",
+ "modified": "2025-12-27 05:10:29.762739",
  "modified_by": "Administrator",
  "module": "Right Hire",
  "name": "Lease Quotation",
@@ -341,6 +358,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
