@@ -17,6 +17,7 @@ frappe.realtime.on("vehicle_status_changed", function(data) {
     });
 });
 
+// Workspace cloning code
 frappe.provide('leet.ws');
 
 (function () {
@@ -55,7 +56,6 @@ frappe.provide('leet.ws');
   function mount_cloned_workspace() {
     const source = document.getElementById(PAGE_ID);
     if (!source) return;
-    if (source) return;
     const host = ensure_host();
 
     // mount once or refresh if empty

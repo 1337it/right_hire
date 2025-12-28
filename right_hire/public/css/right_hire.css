@@ -546,7 +546,7 @@ top: 0 !important;
 width: calc(100% - 16.6667%);
 right: 0;
 background: hsl(0,0%,95%);
-padding: 0 35px;
+padding: 0 30px;
 }
 #page-Workspaces[style="display: none;"] .layout-side-section {
 display: block !important;
@@ -594,8 +594,8 @@ width: calc(100vw - 16.66667vw);
 right: 0px;
 position: absolute;
 left: 16.66667%;
-  padding-left: 35px;
-padding-right: 35px;
+  padding-left: 20px;
+padding-right: 20px;
 top: 0 !important;
 }
 [data-page-route="Workspaces"] .layout-main .layout-main-section-wrapper {

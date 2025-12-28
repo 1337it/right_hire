@@ -25,8 +25,8 @@
   "branch",
   "allowed_km_per_year",
   "excess_insurance_amount",
-  "excess_salik_percentage",
-  "excess_traffic_fines_percentage",
+  "salik_percentage",
+  "traffic_fines_percentage",
   "vehicle_section",
   "vehicle_category",
   "vehicle",
@@ -168,16 +168,6 @@
    "fieldname": "excess_insurance_amount",
    "fieldtype": "Currency",
    "label": "Excess Insurance Amount"
-  },
-  {
-   "fieldname": "excess_salik_percentage",
-   "fieldtype": "Percent",
-   "label": "Excess Salik Percentage"
-  },
-  {
-   "fieldname": "excess_traffic_fines_percentage",
-   "fieldtype": "Percent",
-   "label": "Excess Traffic Fines Percentage"
   },
   {
    "fieldname": "vehicle_section",
@@ -322,11 +312,23 @@
    "fieldtype": "Datetime",
    "label": "Generated On",
    "read_only": 1
+  },
+  {
+   "fieldname": "salik_percentage",
+   "fieldtype": "Percent",
+   "label": "Salik Percentage",
+   "precision": "2"
+  },
+  {
+   "fieldname": "traffic_fines_percentage",
+   "fieldtype": "Percent",
+   "label": "Traffic Fines Percentage",
+   "precision": "2"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-12-27 05:10:29.762739",
+ "modified": "2025-12-28 06:07:22.849625",
  "modified_by": "Administrator",
  "module": "Right Hire",
  "name": "Lease Quotation",

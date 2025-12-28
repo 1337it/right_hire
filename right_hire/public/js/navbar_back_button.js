@@ -1,29 +1,13 @@
 // Add back button when page loads
 $(document).ready(function() {
-    // Wait a bit for page-head to be rendered
     setTimeout(add_navbar_back_button, 500);
-
-    // Set up continuous monitoring
-    setupBackButtonMonitoring();
 });
 
-// Listen for hash changes (route changes)
-$(window).on('hashchange', function() {
-    setTimeout(add_navbar_back_button, 300);
-});
-
-// Listen for Frappe route changes
-if (typeof frappe !== 'undefined') {
-    frappe.router && frappe.router.on && frappe.router.on('change', function() {
+// Listen for Frappe route changes only
+if (typeof frappe !== 'undefined' && frappe.router) {
+    frappe.router.on('change', function() {
         setTimeout(add_navbar_back_button, 300);
     });
-}
-
-function setupBackButtonMonitoring() {
-    // Check every 500ms and add button to visible page-heads
-    setInterval(function() {
-        add_navbar_back_button();
-    }, 500);
 }
 
 function add_navbar_back_button() {
@@ -47,10 +31,13 @@ function add_navbar_back_button() {
 
             // Add click handler to the newly added button
             $pageHead.find('.page-head-back-btn').off('click').on('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                window.history.back();
-                return false;
+                // Only prevent default and stop propagation for this specific button
+                if (e.target.closest('.page-head-back-btn')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.history.back();
+                    return false;
+                }
             });
         }
     });
