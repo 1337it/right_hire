@@ -12,7 +12,7 @@ margin-bottom: 3px;
 
 
 @media only screen and (min-width: 992px) {
-.page-head-back-btn.btn.btn-default.btn-sm:active {
+.page-head-back-btn:active {
 background: transparent !important;
 box-shadow: none !important;
 }
