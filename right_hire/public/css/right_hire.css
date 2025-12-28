@@ -12,6 +12,15 @@ margin-bottom: 3px;
 
 
 @media only screen and (min-width: 992px) {
+
+    .page-head-back-btn.btn.btn-default.btn-sm:focus {
+box-shadow: none !important;
+background: none !important;
+}
+    .page-head-back-btn.btn.btn-default.btn-sm:hover {
+scale: 1.2;
+color: rgb(159, 159, 159);
+}
 .page-head-back-btn {
 background-color: transparent;
 margin: 0 !important;
