@@ -12,17 +12,20 @@ margin-bottom: 3px;
 
 
 @media only screen and (min-width: 992px) {
-
-    .page-head-back-btn.btn.btn-default.btn-sm:focus {
+.page-head-back-btn.btn.btn-default.btn-sm:active {
+background: transparent !important;
+box-shadow: none !important;
+}
+    .page-head-back-btn:focus {
 box-shadow: none !important;
 background: none !important;
 }
-    .page-head-back-btn.btn.btn-default.btn-sm:hover {
+    .page-head-back-btn:hover {
 scale: 1.2;
 color: rgb(159, 159, 159);
 }
 .page-head-back-btn {
-background-color: transparent;
+background: transparent !important;
 margin: 0 !important;
 margin-bottom: 3px !important;
 }
