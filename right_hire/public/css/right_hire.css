@@ -1,3 +1,11 @@
+#page-Workspaces-cloned .layout-main-section-wrapper
+    {
+        display:none !important;
+    }
+    #page-Workspaces-cloned .page-head {
+display: none !important;
+}
+
 [data-theme="dark"] img.aed {
 filter: invert();
 }
@@ -12,6 +20,14 @@ margin-bottom: 3px;
 
 
 @media only screen and (min-width: 992px) {
+
+    #page-Workspaces-cloned .layout-main-section-wrapper
+    {
+        display:none !important;
+    }
+    #page-Workspaces-cloned .page-head {
+display: none !important;
+}
 .page-head-back-btn:active {
 background: transparent !important;
 box-shadow: none !important;
