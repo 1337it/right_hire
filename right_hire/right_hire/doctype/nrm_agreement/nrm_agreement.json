@@ -1,0 +1,345 @@
+{
+ "actions": [],
+ "autoname": "naming_series:",
+ "creation": "2026-02-03 12:00:00",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_basic",
+  "naming_series",
+  "movement_type",
+  "status",
+  "column_break_basic",
+  "date_out",
+  "date_in",
+  "total_days",
+  "destination",
+  "section_vehicle",
+  "vehicle",
+  "vehicle_plate",
+  "column_break_vehicle",
+  "make_and_model",
+  "vehicle_type",
+  "section_assignment",
+  "assigned_to_type",
+  "column_break_assignment",
+  "staff",
+  "driver",
+  "customer",
+  "other_name",
+  "section_assignment_details",
+  "assigned_person_name",
+  "staff_code",
+  "column_break_assignment_details",
+  "contact_number",
+  "section_odometer",
+  "odometer_out",
+  "odometer_in",
+  "column_break_odometer",
+  "km_travelled",
+  "section_fuel",
+  "fuel_level_out",
+  "column_break_fuel",
+  "fuel_level_in",
+  "section_details",
+  "purpose",
+  "remarks",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_basic",
+   "fieldtype": "Section Break",
+   "label": "NRM Details"
+  },
+  {
+   "default": "NRM-.YYYY.-",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "in_list_view": 1,
+   "label": "Series",
+   "options": "NRM-.YYYY.-",
+   "reqd": 1
+  },
+  {
+   "fieldname": "movement_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Movement Type",
+   "options": "\nStaff Movement\nWorkshop Movement\nCustody Movement\nTest Drive\nDelivery\nCollection\nOther",
+   "reqd": 1
+  },
+  {
+   "default": "Active",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Active\nCompleted\nCancelled",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_basic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date_out",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Date Out",
+   "reqd": 1
+  },
+  {
+   "description": "Leave empty if ongoing",
+   "fieldname": "date_in",
+   "fieldtype": "Datetime",
+   "label": "Date In"
+  },
+  {
+   "fieldname": "total_days",
+   "fieldtype": "Int",
+   "label": "Total Days",
+   "read_only": 1
+  },
+  {
+   "fieldname": "destination",
+   "fieldtype": "Data",
+   "label": "Send To (Destination)",
+   "in_list_view": 0
+  },
+  {
+   "fieldname": "section_vehicle",
+   "fieldtype": "Section Break",
+   "label": "Vehicle Information"
+  },
+  {
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Vehicle",
+   "options": "Vehicle",
+   "reqd": 1
+  },
+  {
+   "fieldname": "vehicle_plate",
+   "fieldtype": "Data",
+   "label": "Plate Number",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_vehicle",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "make_and_model",
+   "fieldtype": "Data",
+   "label": "Make and Model",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_assignment",
+   "fieldtype": "Section Break",
+   "label": "Assigned To"
+  },
+  {
+   "fieldname": "assigned_to_type",
+   "fieldtype": "Select",
+   "in_standard_filter": 1,
+   "label": "Assigned To Type",
+   "options": "\nStaff\nDriver\nCustomer\nOther",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_assignment",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.assigned_to_type=='Staff'",
+   "fieldname": "staff",
+   "fieldtype": "Link",
+   "label": "Staff",
+   "mandatory_depends_on": "eval:doc.assigned_to_type=='Staff'",
+   "options": "Employee"
+  },
+  {
+   "depends_on": "eval:doc.assigned_to_type=='Driver'",
+   "fieldname": "driver",
+   "fieldtype": "Link",
+   "label": "Driver",
+   "mandatory_depends_on": "eval:doc.assigned_to_type=='Driver'",
+   "options": "Driver"
+  },
+  {
+   "depends_on": "eval:doc.assigned_to_type=='Customer'",
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "mandatory_depends_on": "eval:doc.assigned_to_type=='Customer'",
+   "options": "Customer"
+  },
+  {
+   "depends_on": "eval:doc.assigned_to_type=='Other'",
+   "fieldname": "other_name",
+   "fieldtype": "Data",
+   "label": "Name",
+   "mandatory_depends_on": "eval:doc.assigned_to_type=='Other'"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_assignment_details",
+   "fieldtype": "Section Break",
+   "label": "Assignment Details"
+  },
+  {
+   "fieldname": "assigned_person_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Assigned Person Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "staff_code",
+   "fieldtype": "Data",
+   "label": "Staff/Employee Code",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_assignment_details",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "contact_number",
+   "fieldtype": "Data",
+   "label": "Contact Number",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_odometer",
+   "fieldtype": "Section Break",
+   "label": "Odometer"
+  },
+  {
+   "description": "Odometer reading when vehicle was given",
+   "fieldname": "odometer_out",
+   "fieldtype": "Int",
+   "label": "Odometer Out (KM)"
+  },
+  {
+   "description": "Odometer reading when vehicle was returned",
+   "fieldname": "odometer_in",
+   "fieldtype": "Int",
+   "label": "Odometer In (KM)"
+  },
+  {
+   "fieldname": "column_break_odometer",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "km_travelled",
+   "fieldtype": "Int",
+   "label": "KM Travelled",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_fuel",
+   "fieldtype": "Section Break",
+   "label": "Fuel Level"
+  },
+  {
+   "fieldname": "fuel_level_out",
+   "fieldtype": "Select",
+   "label": "Fuel Level Out",
+   "options": "\nEmpty\n1/8\n1/4\n3/8\n1/2\n5/8\n3/4\n7/8\nFull"
+  },
+  {
+   "fieldname": "column_break_fuel",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "fuel_level_in",
+   "fieldtype": "Select",
+   "label": "Fuel Level In",
+   "options": "\nEmpty\n1/8\n1/4\n3/8\n1/2\n5/8\n3/4\n7/8\nFull"
+  },
+  {
+   "fieldname": "section_details",
+   "fieldtype": "Section Break",
+   "label": "Additional Details"
+  },
+  {
+   "description": "Reason for the NRM movement",
+   "fieldname": "purpose",
+   "fieldtype": "Small Text",
+   "label": "Purpose"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "NRM Agreement",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "vehicle_type",
+   "fieldtype": "Data",
+   "label": "Vehicle Type",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-02-03 15:26:46.162423",
+ "modified_by": "Administrator",
+ "module": "Right Hire",
+ "name": "NRM Agreement",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fleet Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "vehicle",
+ "track_changes": 1,
+ "track_seen": 1
+}

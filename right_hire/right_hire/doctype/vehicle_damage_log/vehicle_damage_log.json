@@ -1,0 +1,118 @@
+{
+ "actions": [],
+ "creation": "2026-01-11 00:00:00",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item_number",
+  "zone",
+  "damage_type",
+  "column_break_1",
+  "severity",
+  "damage_state",
+  "x_coordinate",
+  "y_coordinate",
+  "section_break_details",
+  "description",
+  "section_break_images",
+  "damage_images"
+ ],
+ "fields": [
+  {
+   "fieldname": "item_number",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Item #",
+   "read_only": 1
+  },
+  {
+   "fieldname": "zone",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Zone",
+   "options": "Front Bumper\nRear Bumper\nFront Left Door\nFront Right Door\nRear Left Door\nRear Right Door\nFront Left Fender\nFront Right Fender\nRear Left Quarter Panel\nRear Right Quarter Panel\nHood\nRoof\nTrunk/Tailgate\nFront Left Wheel\nFront Right Wheel\nRear Left Wheel\nRear Right Wheel\nFront Left Rim\nFront Right Rim\nRear Left Rim\nRear Right Rim\nWindshield\nRear Window\nFront Left Window\nFront Right Window\nRear Left Window\nRear Right Window\nFront Left Side Mirror\nFront Right Side Mirror\nHeadlight Left\nHeadlight Right\nTaillight Left\nTaillight Right\nGrille\nUndercarriage\nInterior\nOther",
+   "reqd": 1
+  },
+  {
+   "fieldname": "damage_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Damage Type",
+   "options": "Scratch\nDent\nPaint Chip\nCrack\nBroken\nMissing Part\nRust\nScuff\nTear\nStain\nBurn\nOther",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Minor",
+   "fieldname": "severity",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Severity",
+   "options": "Minor\nModerate\nSevere\nCritical"
+  },
+  {
+   "default": "new",
+   "description": "Auto-detected: Green=existing damage, Yellow=worsened, Red=new damage",
+   "fieldname": "damage_state",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "State",
+   "options": "new\nexisting\nworsened",
+   "read_only": 1
+  },
+  {
+   "description": "X coordinate on vehicle image (percentage)",
+   "fieldname": "x_coordinate",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "X Coordinate"
+  },
+  {
+   "description": "Y coordinate on vehicle image (percentage)",
+   "fieldname": "y_coordinate",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Y Coordinate"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_details",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_images",
+   "fieldtype": "Section Break",
+   "label": "Photo Evidence"
+  },
+  {
+   "fieldname": "damage_images",
+   "fieldtype": "Table",
+   "label": "Damage Images",
+   "options": "Vehicle Damage Image"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-01-12 06:30:00",
+ "modified_by": "Administrator",
+ "module": "Right Hire",
+ "name": "Vehicle Damage Log",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

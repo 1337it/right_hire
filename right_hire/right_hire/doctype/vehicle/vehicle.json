@@ -10,6 +10,7 @@
   "basic_details_section",
   "vehicle_id",
   "chassis_number",
+  "plate_code",
   "plate_no",
   "column_break_basic",
   "make",
@@ -22,7 +23,7 @@
   "fuel_type",
   "seating_capacity",
   "column_break_specs",
-  "body_type",
+  "vehicle_type",
   "engine_capacity",
   "horsepower",
   "section_break_location",
@@ -51,13 +52,38 @@
   "total_revenue",
   "total_maintenance_cost",
   "net_profit",
+  "section_break_salik",
+  "salik_account_linked",
+  "salik_vehicle_id",
+  "column_break_salik",
+  "salik_tag_number",
+  "last_salik_sync",
+  "section_break_rta",
+  "rta_vehicle_id",
+  "rta_plate_category",
+  "column_break_rta",
+  "rta_registration_status",
+  "rta_last_sync",
+  "section_break_rta_images",
+  "rta_registration_front",
+  "column_break_rta_images",
+  "rta_registration_back",
   "section_break_insurance",
+  "insurance_document",
   "insurance_policy",
+  "policy_number",
+  "insured_name",
   "registration_expiry",
-  "insurance_expiry",
   "column_break_insurance",
   "insurance_provider",
-  "policy_number",
+  "policy_start_date",
+  "insurance_expiry",
+  "premium_amount",
+  "section_break_insurance_details",
+  "coverage_type",
+  "sum_insured",
+  "section_break_policy_conditions",
+  "insurance_policy_conditions",
   "section_break_photos",
   "photos",
   "section_break_documents",
@@ -69,7 +95,9 @@
   "section_break_damage",
   "damage_logs",
   "section_break_accessories",
-  "accessories"
+  "accessories",
+  "section_break_vin_decode",
+  "vin_decode_data"
  ],
  "fields": [
   {
@@ -86,6 +114,12 @@
    "unique": 1
   },
   {
+   "description": "Plate code/letter (e.g., FF, A, B)",
+   "fieldname": "plate_code",
+   "fieldtype": "Data",
+   "label": "Plate Code"
+  },
+  {
    "fieldname": "plate_no",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -99,16 +133,18 @@
   },
   {
    "fieldname": "make",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Make",
+   "options": "Vehicle Make",
    "reqd": 1
   },
   {
    "fieldname": "model",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Model",
+   "options": "Vehicle Model",
    "reqd": 1
   },
   {
@@ -146,12 +182,6 @@
   {
    "fieldname": "column_break_specs",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "body_type",
-   "fieldtype": "Select",
-   "label": "Body Type",
-   "options": "Sedan\nSUV\nHatchback\nCoupe\nConvertible\nWagon\nVan\nTruck\nPickup"
   },
   {
    "fieldname": "engine_capacity",
@@ -196,7 +226,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Status",
-   "options": "Available\nReserved\nOut for Delivery\nRented Out\nDue for Return\nCustody\nAt Garage\nUnder Maintenance\nAccident/Repair\nDeactivated",
+   "options": "Available\nReserved\nOut for Delivery\nRented Out\nLeased\nDue for Return\nCustody\nAt Garage\nUnder Maintenance\nAccident/Repair\nDeactivated",
    "reqd": 1
   },
   {
@@ -306,6 +336,92 @@
    "read_only": 1
   },
   {
+   "collapsible": 1,
+   "fieldname": "section_break_salik",
+   "fieldtype": "Section Break",
+   "label": "Salik Integration"
+  },
+  {
+   "default": "0",
+   "fieldname": "salik_account_linked",
+   "fieldtype": "Check",
+   "label": "Salik Account Linked"
+  },
+  {
+   "fieldname": "salik_vehicle_id",
+   "fieldtype": "Data",
+   "label": "Salik Vehicle ID",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_salik",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "salik_tag_number",
+   "fieldtype": "Data",
+   "label": "Salik Tag Number"
+  },
+  {
+   "fieldname": "last_salik_sync",
+   "fieldtype": "Datetime",
+   "label": "Last Salik Sync",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_rta",
+   "fieldtype": "Section Break",
+   "label": "RTA Registration Data"
+  },
+  {
+   "fieldname": "rta_vehicle_id",
+   "fieldtype": "Data",
+   "label": "RTA Vehicle ID",
+   "read_only": 1
+  },
+  {
+   "fieldname": "rta_plate_category",
+   "fieldtype": "Data",
+   "label": "RTA Plate Category",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_rta",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "rta_registration_status",
+   "fieldtype": "Data",
+   "label": "RTA Registration Status",
+   "read_only": 1
+  },
+  {
+   "fieldname": "rta_last_sync",
+   "fieldtype": "Datetime",
+   "label": "RTA Last Sync",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_rta_images",
+   "fieldtype": "Section Break",
+   "label": "Registration Card Images"
+  },
+  {
+   "fieldname": "rta_registration_front",
+   "fieldtype": "Attach Image",
+   "label": "Registration Card (Front)"
+  },
+  {
+   "fieldname": "column_break_rta_images",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "rta_registration_back",
+   "fieldtype": "Attach Image",
+   "label": "Registration Card (Back)"
+  },
+  {
    "fieldname": "section_break_insurance",
    "fieldtype": "Section Break",
    "label": "Insurance &amp; Registration"
@@ -341,9 +457,60 @@
    "label": "Policy Number"
   },
   {
+   "fieldname": "insured_name",
+   "fieldtype": "Data",
+   "label": "Insured Name"
+  },
+  {
+   "fieldname": "policy_start_date",
+   "fieldtype": "Date",
+   "label": "Policy Start Date"
+  },
+  {
+   "fieldname": "premium_amount",
+   "fieldtype": "Currency",
+   "label": "Premium Amount"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_insurance_details",
+   "fieldtype": "Section Break",
+   "label": "Insurance Coverage Details"
+  },
+  {
+   "fieldname": "coverage_type",
+   "fieldtype": "Select",
+   "label": "Coverage Type",
+   "options": "Comprehensive\nThird Party\nThird Party Fire & Theft"
+  },
+  {
+   "fieldname": "sum_insured",
+   "fieldtype": "Currency",
+   "label": "Sum Insured / Vehicle Value"
+  },
+  {
+   "description": "Upload insurance policy document - you will be asked if you want to scan and extract data automatically",
+   "fieldname": "insurance_document",
+   "fieldtype": "Attach",
+   "label": "Attach & Scan Insurance Policy"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_policy_conditions",
+   "fieldtype": "Section Break",
+   "label": "Policy Coverage & Conditions"
+  },
+  {
+   "fieldname": "insurance_policy_conditions",
+   "fieldtype": "Table",
+   "label": "Policy Conditions",
+   "options": "Insurance Policy Condition"
+  },
+  {
    "fieldname": "section_break_photos",
    "fieldtype": "Section Break",
-   "label": "Photos"
+   "label": "Photos",
+   "collapsible": 1
   },
   {
    "fieldname": "photos",
@@ -354,7 +521,8 @@
   {
    "fieldname": "section_break_documents",
    "fieldtype": "Section Break",
-   "label": "Documents"
+   "label": "Documents",
+   "collapsible": 1
   },
   {
    "fieldname": "documents",
@@ -421,11 +589,31 @@
    "fieldtype": "Int",
    "label": "Year",
    "reqd": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_vin_decode",
+   "fieldtype": "Section Break",
+   "hidden": 1,
+   "label": "VIN Decode Data"
+  },
+  {
+   "fieldname": "vin_decode_data",
+   "fieldtype": "Long Text",
+   "hidden": 1,
+   "label": "Complete VIN Decode Response",
+   "read_only": 1
+  },
+  {
+   "fieldname": "vehicle_type",
+   "fieldtype": "Select",
+   "label": "Vehicle Type",
+   "options": "Sedan\nSUV\nHatchback\nCoupe\nConvertible\nWagon\nVan\nTruck\nPickup"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-11-18 20:05:18.586868",
+ "modified": "2026-02-03 14:53:46.626556",
  "modified_by": "Administrator",
  "module": "Right Hire",
  "name": "Vehicle",

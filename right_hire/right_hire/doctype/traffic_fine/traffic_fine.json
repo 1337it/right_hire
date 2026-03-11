@@ -1,0 +1,418 @@
+{
+ "actions": [],
+ "autoname": "format:TF-{YYYY}-{#####}",
+ "creation": "2026-01-09 10:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "vehicle",
+  "fine_number",
+  "column_break_vehicle",
+  "fine_date",
+  "fine_time",
+  "section_break_plate",
+  "plate_source",
+  "plate_category",
+  "plate_code",
+  "column_break_plate",
+  "plate_number",
+  "vehicle_info",
+  "section_break_violation",
+  "location",
+  "source",
+  "details",
+  "column_break_violation",
+  "ticket_type",
+  "chassis_no",
+  "has_impound",
+  "has_declare",
+  "section_break_ticket_photo",
+  "ticket_photo",
+  "section_break_dispute",
+  "dispute_url",
+  "dispute_message",
+  "section_break_amount",
+  "amount",
+  "currency",
+  "black_points",
+  "column_break_amount",
+  "paid",
+  "paid_date",
+  "payment_reference",
+  "section_break_contract",
+  "lease_agreement",
+  "linked_contract",
+  "linked_agreement",
+  "charged_to_customer",
+  "column_break_contract",
+  "customer_charge_amount",
+  "customer_charged_date",
+  "invoice_reference",
+  "section_break_sync",
+  "scraped_at",
+  "api_fine_id",
+  "ticket_id",
+  "traffic_fine_id",
+  "column_break_sync",
+  "vehicle_id",
+  "traffic_file_id",
+  "raw_data"
+ ],
+ "fields": [
+  {
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Vehicle",
+   "options": "Vehicle",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fine_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Fine Number",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "column_break_vehicle",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "fine_date",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Fine Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fine_time",
+   "fieldtype": "Data",
+   "label": "Fine Time"
+  },
+  {
+   "fieldname": "section_break_plate",
+   "fieldtype": "Section Break",
+   "label": "Plate Information"
+  },
+  {
+   "fieldname": "plate_source",
+   "fieldtype": "Data",
+   "in_standard_filter": 1,
+   "label": "Plate Source (Emirate)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "plate_category",
+   "fieldtype": "Data",
+   "label": "Plate Category"
+  },
+  {
+   "fieldname": "plate_code",
+   "fieldtype": "Data",
+   "label": "Plate Code"
+  },
+  {
+   "fieldname": "column_break_plate",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "plate_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Plate Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "vehicle_info",
+   "fieldtype": "Data",
+   "label": "Vehicle Info (Make, Year, Color)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_violation",
+   "fieldtype": "Section Break",
+   "label": "Violation Details"
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Text",
+   "label": "Location"
+  },
+  {
+   "fieldname": "source",
+   "fieldtype": "Data",
+   "in_standard_filter": 1,
+   "label": "Source (Authority)"
+  },
+  {
+   "fieldname": "details",
+   "fieldtype": "Text",
+   "label": "Violation Details"
+  },
+  {
+   "fieldname": "column_break_violation",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ticket_type",
+   "fieldtype": "Data",
+   "label": "Ticket Type",
+   "read_only": 1
+  },
+  {
+   "fieldname": "chassis_no",
+   "fieldtype": "Data",
+   "label": "Chassis No",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "has_impound",
+   "fieldtype": "Check",
+   "label": "Has Impound",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "has_declare",
+   "fieldtype": "Check",
+   "label": "Has Declare",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_ticket_photo",
+   "fieldtype": "Section Break",
+   "label": "Ticket Photo"
+  },
+  {
+   "fieldname": "ticket_photo",
+   "fieldtype": "Attach Image",
+   "label": "Ticket Photo"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_dispute",
+   "fieldtype": "Section Break",
+   "label": "Dispute Information"
+  },
+  {
+   "fieldname": "dispute_url",
+   "fieldtype": "Data",
+   "label": "Dispute URL",
+   "options": "URL",
+   "read_only": 1
+  },
+  {
+   "fieldname": "dispute_message",
+   "fieldtype": "Small Text",
+   "label": "Dispute Message",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_amount",
+   "fieldtype": "Section Break",
+   "label": "Amount & Payment"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Fine Amount",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "default": "AED",
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "black_points",
+   "fieldtype": "Int",
+   "label": "Black Points"
+  },
+  {
+   "fieldname": "column_break_amount",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "paid",
+   "fieldtype": "Check",
+   "label": "Paid to RTA"
+  },
+  {
+   "depends_on": "eval:doc.paid==1",
+   "fieldname": "paid_date",
+   "fieldtype": "Date",
+   "label": "Paid Date"
+  },
+  {
+   "depends_on": "eval:doc.paid==1",
+   "fieldname": "payment_reference",
+   "fieldtype": "Data",
+   "label": "Payment Reference"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_contract",
+   "fieldtype": "Section Break",
+   "label": "Contract/Customer Details"
+  },
+  {
+   "fieldname": "lease_agreement",
+   "fieldtype": "Link",
+   "label": "Lease Agreement",
+   "options": "Lease Agreement"
+  },
+  {
+   "fieldname": "linked_contract",
+   "fieldtype": "Link",
+   "label": "Linked Lease Contract",
+   "options": "Lease Agreement"
+  },
+  {
+   "fieldname": "linked_agreement",
+   "fieldtype": "Link",
+   "label": "Linked Rental Agreement",
+   "options": "Rental Agreement"
+  },
+  {
+   "default": "0",
+   "fieldname": "charged_to_customer",
+   "fieldtype": "Check",
+   "label": "Charged to Customer"
+  },
+  {
+   "fieldname": "column_break_contract",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.charged_to_customer==1",
+   "fieldname": "customer_charge_amount",
+   "fieldtype": "Currency",
+   "label": "Amount Charged to Customer",
+   "precision": "2"
+  },
+  {
+   "depends_on": "eval:doc.charged_to_customer==1",
+   "fieldname": "customer_charged_date",
+   "fieldtype": "Date",
+   "label": "Customer Charged Date"
+  },
+  {
+   "depends_on": "eval:doc.charged_to_customer==1",
+   "fieldname": "invoice_reference",
+   "fieldtype": "Link",
+   "label": "Invoice Reference",
+   "options": "Sales Invoice"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_sync",
+   "fieldtype": "Section Break",
+   "label": "Sync Information"
+  },
+  {
+   "fieldname": "scraped_at",
+   "fieldtype": "Datetime",
+   "label": "Scraped At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "api_fine_id",
+   "fieldtype": "Data",
+   "label": "API Fine ID",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ticket_id",
+   "fieldtype": "Data",
+   "label": "Ticket ID",
+   "read_only": 1
+  },
+  {
+   "fieldname": "traffic_fine_id",
+   "fieldtype": "Data",
+   "label": "Traffic Fine ID",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_sync",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "vehicle_id",
+   "fieldtype": "Data",
+   "label": "Vehicle ID",
+   "read_only": 1
+  },
+  {
+   "fieldname": "traffic_file_id",
+   "fieldtype": "Data",
+   "label": "Traffic File ID",
+   "read_only": 1
+  },
+  {
+   "fieldname": "raw_data",
+   "fieldtype": "Long Text",
+   "label": "Raw Data",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-01-16 14:45:38.681187",
+ "modified_by": "Administrator",
+ "module": "Right Hire",
+ "name": "Traffic Fine",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fleet Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Counter Agent",
+   "share": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Right Hire Admin",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

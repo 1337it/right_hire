@@ -1,4 +1,15 @@
 frappe.ui.form.on('Reservation', {
+    setup: function(frm) {
+        // Filter vehicle field to only show available vehicles
+        frm.set_query('vehicle', function() {
+            return {
+                filters: {
+                    'status': 'Available'
+                }
+            };
+        });
+    },
+
     refresh: function(frm) {
         if (!frm.is_new()) {
             // Convert to Agreement button

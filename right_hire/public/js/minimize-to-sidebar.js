@@ -221,8 +221,17 @@ btn.addEventListener('dragstart', (ev) => {
     if (observer) return;
     observer = new MutationObserver((mutations) => {
       // Ignore mutations originated within the dock itself to prevent loops
+      // Also ignore mutations in sidebar sections to prevent interference with accordion behavior
       for (const m of mutations) {
         if (dock && (dock === m.target || (m.target && dock.contains(m.target)))) continue;
+
+        // Ignore mutations in sidebar sections (accordion behavior)
+        if (m.target && (
+          m.target.classList?.contains('standard-sidebar-section') ||
+          m.target.classList?.contains('nested-container') ||
+          m.target.closest?.('.standard-sidebar-section')
+        )) continue;
+
         debouncePlace();
         break;
       }

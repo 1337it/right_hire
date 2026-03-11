@@ -1,0 +1,51 @@
+{
+ "actions": [],
+ "creation": "2026-01-09 00:00:00",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item",
+  "condition",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "columns": 3,
+   "fieldname": "item",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Item",
+   "options": "Body\nWindshield\nHeadlights\nTaillights\nTires - Front Left\nTires - Front Right\nTires - Rear Left\nTires - Rear Right\nBumper - Front\nBumper - Rear\nDoors - Driver\nDoors - Passenger\nDoors - Rear Left\nDoors - Rear Right\nMirrors\nInterior - Seats\nInterior - Dashboard\nInterior - Upholstery\nFuel Level\nCleanliness\nOther",
+   "reqd": 1
+  },
+  {
+   "columns": 2,
+   "fieldname": "condition",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Condition",
+   "options": "Excellent\nGood\nFair\nPoor\nDamaged",
+   "reqd": 1
+  },
+  {
+   "columns": 3,
+   "fieldname": "remarks",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Remarks"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-01-09 00:00:00",
+ "modified_by": "Administrator",
+ "module": "Right Hire",
+ "name": "Vehicle Condition Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

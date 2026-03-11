@@ -1,0 +1,669 @@
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .print-format {
+        font-family: Arial, sans-serif;
+        color: #000;
+        line-height: 1.3;
+        max-width: 210mm;
+        margin: 0 auto;
+        background: white;
+    }
+
+    /* Page container */
+    .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 8mm 10mm;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .page-content {
+        flex: 1;
+    }
+
+    /* Header Section */
+    .gold-header {
+        background: white;
+        border: 2px solid #B8860B;
+        padding: 8px 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .header-left {
+        color: #000;
+        flex: 1;
+    }
+
+    .company-name {
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 2px;
+        text-transform: uppercase;
+    }
+
+    .company-address {
+        font-size: 9px;
+        line-height: 1.3;
+    }
+
+    .header-logo {
+        width: 120px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .header-logo img {
+        max-width: 100%;
+        max-height: 60px;
+    }
+
+    /* Document Title */
+    .document-title {
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+        margin: 8px 0;
+        text-transform: uppercase;
+        color: {% if doc.is_return %}#cc0000{% else %}#000{% endif %};
+    }
+
+    /* Invoice Header Row */
+    .invoice-header {
+        border: 1px solid #000;
+        display: flex;
+        margin-bottom: 6px;
+    }
+
+    .invoice-header-item {
+        padding: 5px 10px;
+        flex: 1;
+        display: flex;
+        justify-content: space-between;
+        border-right: 1px solid #000;
+        font-size: 10px;
+    }
+
+    .invoice-header-item:last-child {
+        border-right: none;
+    }
+
+    .header-label {
+        font-weight: bold;
+    }
+
+    /* Two Column Layout */
+    .two-column-container {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 6px;
+    }
+
+    .left-column, .right-column {
+        flex: 1;
+        border: 1px solid #000;
+    }
+
+    /* Section Boxes */
+    .section-box {
+        border: 1px solid #000;
+        margin-bottom: 6px;
+    }
+
+    .section-header {
+        background: #e8e8e8;
+        padding: 4px 8px;
+        font-weight: bold;
+        font-size: 10px;
+        text-transform: uppercase;
+        border-bottom: 1px solid #000;
+    }
+
+    .section-content {
+        padding: 6px 10px;
+    }
+
+    .info-row {
+        display: flex;
+        margin-bottom: 3px;
+        font-size: 10px;
+    }
+
+    .info-label {
+        font-weight: bold;
+        min-width: 85px;
+    }
+
+    .info-value {
+        flex: 1;
+    }
+
+    /* Compact info grid */
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3px 12px;
+    }
+
+    .info-grid-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 3px 12px;
+    }
+
+    /* Items Table */
+    .items-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 10px;
+    }
+
+    .items-table th {
+        background: #e8e8e8;
+        padding: 6px 8px;
+        text-align: left;
+        border: 1px solid #000;
+        font-weight: bold;
+    }
+
+    .items-table td {
+        padding: 5px 8px;
+        border: 1px solid #000;
+        vertical-align: top;
+    }
+
+    .items-table .text-right {
+        text-align: right;
+    }
+
+    .items-table .text-center {
+        text-align: center;
+    }
+
+    .items-table tbody tr:nth-child(even) {
+        background: #fafafa;
+    }
+
+    /* Totals Section */
+    .totals-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 6px;
+    }
+
+    .totals-table {
+        width: 50%;
+        border-collapse: collapse;
+        font-size: 10px;
+    }
+
+    .totals-table td {
+        padding: 4px 8px;
+        border: 1px solid #000;
+    }
+
+    .totals-table .label-col {
+        font-weight: bold;
+        text-align: right;
+        width: 60%;
+    }
+
+    .totals-table .amount-col {
+        text-align: right;
+        width: 40%;
+    }
+
+    .totals-table .grand-total {
+        background: #e8e8e8;
+        font-weight: bold;
+        font-size: 11px;
+    }
+
+    .totals-table .grand-total td {
+        border: 1px solid #000;
+        padding: 6px 8px;
+    }
+
+    /* Amount in words */
+    .amount-words {
+        margin-top: 6px;
+        padding: 6px 10px;
+        border: 1px solid #000;
+        font-size: 10px;
+        font-style: italic;
+    }
+
+    /* Remarks/Terms */
+    .remarks-section {
+        margin-top: 6px;
+        padding: 6px 10px;
+        border: 1px solid #ddd;
+        font-size: 9px;
+    }
+
+    .remarks-section strong {
+        display: block;
+        margin-bottom: 3px;
+    }
+
+    /* Footer */
+    .page-footer {
+        text-align: center;
+        font-size: 9px;
+        padding-top: 5px;
+        border-top: 1px solid #ccc;
+        margin-top: 10px;
+    }
+
+    /* Print styles */
+    @media print {
+        .page {
+            page-break-after: always;
+            break-after: page;
+        }
+        .page:last-child {
+            page-break-after: avoid;
+            break-after: avoid;
+        }
+        body {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    }
+
+    @page {
+        size: A4;
+        margin: 0;
+    }
+</style>
+
+<div class="print-format">
+    <div class="page">
+        <div class="page-content">
+            <!-- Header -->
+            <div class="gold-header">
+                <div class="header-left">
+                    <div class="company-name">{{ doc.company or frappe.db.get_default("company") or "RIGHT HIRE" }}</div>
+                    <div class="company-address">
+                        {% set company_doc = frappe.get_doc("Company", doc.company) if doc.company else None %}
+                        {% if company_doc %}
+                        {{ company_doc.address or "" }}{% if company_doc.city %} | {{ company_doc.city }}{% endif %}{% if company_doc.country %} {{ company_doc.country }}{% endif %}{% if company_doc.phone_no %} | Tel: {{ company_doc.phone_no }}{% endif %}
+                        {% if company_doc.tax_id %}<br>TRN: {{ company_doc.tax_id }}{% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="header-logo">
+                    <img src="/files/logo.png" alt="Logo">
+                </div>
+            </div>
+
+            <!-- Title -->
+            <div class="document-title">
+                {% if doc.is_return %}Credit Note{% else %}Invoice{% endif %}
+            </div>
+
+            <!-- Invoice Header -->
+            {% set schedule_line = frappe.db.get_value("Lease Schedule Line", {"invoice_ref": doc.name}, ["period_start", "period_end"], as_dict=True) %}
+            <div class="invoice-header">
+                <div class="invoice-header-item">
+                    <span class="header-label">Invoice No:</span>
+                    <span>{{ doc.name }}</span>
+                </div>
+                <div class="invoice-header-item">
+                    <span class="header-label">Date:</span>
+                    <span>{{ frappe.utils.formatdate(doc.posting_date, "dd-MMM-yyyy") if doc.posting_date else "" }}</span>
+                </div>
+                <div class="invoice-header-item">
+                    <span class="header-label">Period:</span>
+                    <span>{% if schedule_line %}{{ frappe.utils.formatdate(schedule_line.period_start, "dd-MMM") }} - {{ frappe.utils.formatdate(schedule_line.period_end, "dd-MMM-yyyy") }}{% else %}-{% endif %}</span>
+                </div>
+                <div class="invoice-header-item">
+                    <span class="header-label">Status:</span>
+                    <span>{{ doc.status or "Draft" }}</span>
+                </div>
+            </div>
+
+            <!-- Customer & Vehicle Details -->
+            <div class="two-column-container">
+                <div class="left-column">
+                    <div class="section-header">Bill To</div>
+                    <div class="section-content">
+                        <div class="info-row">
+                            <div class="info-label">Customer:</div>
+                            <div class="info-value">{{ doc.customer_name or doc.customer or "-" }}</div>
+                        </div>
+                        {% if doc.address_display %}
+                        <div class="info-row">
+                            <div class="info-label">Address:</div>
+                            <div class="info-value">{{ doc.address_display | replace("<br>", ", ") | striptags | truncate(80) }}</div>
+                        </div>
+                        {% endif %}
+                        {% if doc.contact_mobile %}
+                        <div class="info-row">
+                            <div class="info-label">Mobile:</div>
+                            <div class="info-value">{{ doc.contact_mobile }}</div>
+                        </div>
+                        {% endif %}
+                        {% if doc.contact_email %}
+                        <div class="info-row">
+                            <div class="info-label">Email:</div>
+                            <div class="info-value">{{ doc.contact_email }}</div>
+                        </div>
+                        {% endif %}
+                        {% if doc.tax_id %}
+                        <div class="info-row">
+                            <div class="info-label">TRN:</div>
+                            <div class="info-value">{{ doc.tax_id }}</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="right-column">
+                    <div class="section-header">Reference Details</div>
+                    <div class="section-content">
+                        {% if doc.vehicle %}
+                        {% set vehicle_model = frappe.db.get_value("Vehicle", doc.vehicle, "model") %}
+                        {% set plate_code = frappe.db.get_value("Vehicle", doc.vehicle, "custom_plate_code") %}
+                        {% set plate_no = frappe.db.get_value("Vehicle", doc.vehicle, "plate_no") %}
+                        <div class="info-row">
+                            <div class="info-label">Vehicle:</div>
+                            <div class="info-value">{{ vehicle_model or doc.vehicle }}</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Plate No:</div>
+                            <div class="info-value">{{ plate_code }} {{ plate_no }}</div>
+                        </div>
+                        {% endif %}
+                        {% if doc.lease_agreement %}
+                        <div class="info-row">
+                            <div class="info-label">Lease Agmt:</div>
+                            <div class="info-value">{{ doc.lease_agreement }}</div>
+                        </div>
+                        {% endif %}
+                        {% if doc.rental_agreement %}
+                        <div class="info-row">
+                            <div class="info-label">Rental Agmt:</div>
+                            <div class="info-value">{{ doc.rental_agreement }}</div>
+                        </div>
+                        {% endif %}
+                        {% if doc.rental_type %}
+                        <div class="info-row">
+                            <div class="info-label">Rental Type:</div>
+                            <div class="info-value">{{ doc.rental_type }}</div>
+                        </div>
+                        {% endif %}
+                        {% if doc.is_return and doc.return_against %}
+                        <div class="info-row">
+                            <div class="info-label">Return Against:</div>
+                            <div class="info-value">{{ doc.return_against }}</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mileage Details (if available) -->
+            {% if doc.odometer_out or doc.odometer_in or doc.km_driven %}
+            <div class="section-box">
+                <div class="section-header">Mileage Details</div>
+                <div class="section-content">
+                    <div class="info-grid-3">
+                        <div class="info-row">
+                            <div class="info-label">KM Out:</div>
+                            <div class="info-value">{{ "{:,}".format(doc.odometer_out|int) if doc.odometer_out else "-" }}</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">KM In:</div>
+                            <div class="info-value">{{ "{:,}".format(doc.odometer_in|int) if doc.odometer_in else "-" }}</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">KM Driven:</div>
+                            <div class="info-value">{{ "{:,}".format(doc.km_driven|int) if doc.km_driven else "-" }}</div>
+                        </div>
+                        {% if doc.free_km %}
+                        <div class="info-row">
+                            <div class="info-label">Free KM:</div>
+                            <div class="info-value">{{ "{:,}".format(doc.free_km|int) }}</div>
+                        </div>
+                        {% endif %}
+                        {% if doc.overage_km %}
+                        <div class="info-row">
+                            <div class="info-label">Overage KM:</div>
+                            <div class="info-value">{{ "{:,}".format(doc.overage_km|int) }}</div>
+                        </div>
+                        {% endif %}
+                        {% if doc.overage_rate %}
+                        <div class="info-row">
+                            <div class="info-label">Overage Rate:</div>
+                            <div class="info-value">{{ doc.currency or "AED" }} {{ "{:,.2f}".format(doc.overage_rate) }}/KM</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Items Table -->
+            <div class="section-box">
+                <div class="section-header">Invoice Items</div>
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">#</th>
+                            <th style="width: 45%;">Description</th>
+                            <th style="width: 15%;" class="text-center">Qty</th>
+                            <th style="width: 15%;" class="text-right">Rate</th>
+                            <th style="width: 20%;" class="text-right">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in doc.items %}
+                        <tr>
+                            <td class="text-center">{{ loop.index }}</td>
+                            <td>
+                                {{ item.item_name or item.item_code }}
+                                {% if item.description and item.description != item.item_name %}
+                                <br><small style="color: #666;">{{ item.description | striptags | truncate(100) }}</small>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">{{ item.qty }} {{ item.uom or "" }}</td>
+                            <td class="text-right">{{ "{:,.2f}".format(item.rate or 0) }}</td>
+                            <td class="text-right">{{ "{:,.2f}".format(item.amount or 0) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Totals -->
+            <div class="totals-container">
+                <table class="totals-table">
+                    <tr>
+                        <td class="label-col">Subtotal:</td>
+                        <td class="amount-col">{{ doc.currency or "AED" }} {{ "{:,.2f}".format(doc.net_total or doc.total or 0) }}</td>
+                    </tr>
+                    {% if doc.discount_amount %}
+                    <tr>
+                        <td class="label-col">Discount:</td>
+                        <td class="amount-col" style="color: #cc0000;">({{ "{:,.2f}".format(doc.discount_amount) }})</td>
+                    </tr>
+                    {% endif %}
+                    {% for tax in doc.taxes %}
+                    <tr>
+                        <td class="label-col">{{ tax.description or tax.account_head }}:</td>
+                        <td class="amount-col">{{ "{:,.2f}".format(tax.tax_amount or 0) }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% if doc.total_taxes_and_charges and not doc.taxes %}
+                    <tr>
+                        <td class="label-col">Tax:</td>
+                        <td class="amount-col">{{ "{:,.2f}".format(doc.total_taxes_and_charges) }}</td>
+                    </tr>
+                    {% endif %}
+                    <tr class="grand-total">
+                        <td class="label-col">Grand Total:</td>
+                        <td class="amount-col">{{ doc.currency or "AED" }} {{ "{:,.2f}".format(doc.rounded_total or doc.grand_total or 0) }}</td>
+                    </tr>
+                    {% if doc.outstanding_amount and doc.outstanding_amount != doc.grand_total %}
+                    <tr>
+                        <td class="label-col">Outstanding:</td>
+                        <td class="amount-col" style="font-weight: bold; color: {% if doc.outstanding_amount > 0 %}#cc0000{% else %}#008000{% endif %};">
+                            {{ doc.currency or "AED" }} {{ "{:,.2f}".format(doc.outstanding_amount) }}
+                        </td>
+                    </tr>
+                    {% endif %}
+                </table>
+            </div>
+
+            <!-- Amount in Words -->
+            {% if doc.in_words %}
+            <div class="amount-words">
+                <strong>Amount in Words:</strong> {{ doc.in_words }}
+            </div>
+            {% endif %}
+
+            <!-- Remarks -->
+            {% if doc.remarks %}
+            <div class="remarks-section">
+                <strong>Remarks:</strong>
+                {{ doc.remarks }}
+            </div>
+            {% endif %}
+
+            <!-- Bank Details and Terms Row -->
+            {% set bank_html = doc.bank_details_html %}
+            {% if not bank_html and doc.bank_account %}
+                {% set ba = frappe.get_doc("Bank Account", doc.bank_account) %}
+                {% set bank_html %}
+                    <b>Bank Name:</b> {{ ba.bank or "" }}<br>
+                    <b>Account Name:</b> {{ ba.account_name or "" }}<br>
+                    <b>Account No:</b> {{ ba.bank_account_no or "" }}<br>
+                    <b>IBAN:</b> {{ ba.iban or "" }}
+                {% endset %}
+            {% endif %}
+            {% if bank_html or doc.invoice_terms %}
+            <div class="two-column-container" style="margin-top: 6px;">
+                {% if bank_html %}
+                <div class="left-column">
+                    <div class="section-header">Bank Details</div>
+                    <div class="section-content" style="font-size: 9px;">
+                        {{ bank_html | safe }}
+                    </div>
+                </div>
+                {% endif %}
+                {% if doc.invoice_terms %}
+                <div class="{% if bank_html %}right-column{% else %}left-column{% endif %}">
+                    <div class="section-header">Terms</div>
+                    <div class="section-content" style="font-size: 9px;">
+                        <ol style="margin: 0; padding-left: 16px;">
+                            {% for term in doc.invoice_terms %}
+                            <li style="margin-bottom: 2px;">{{ term.term }}</li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Footer -->
+        <div class="page-footer">
+            {{ doc.name }} | {{ doc.company or frappe.db.get_default("company") or "RIGHT HIRE" }} | Printed: {{ frappe.utils.formatdate(frappe.utils.nowdate(), "dd-MMM-yyyy") }}
+        </div>
+    </div>
+
+    <!-- Page 2: Toll Transactions -->
+    {% set toll_schedule = frappe.db.get_value("Lease Schedule Line", {"invoice_ref": doc.name}, ["period_start", "period_end"], as_dict=True) %}
+    {% set toll_transactions = frappe.db.get_all("Salik Transaction", filters={"vehicle": doc.vehicle, "transaction_date": ["between", [toll_schedule.period_start, toll_schedule.period_end]]}, fields=["plate_number", "transaction_date", "transaction_time", "gate_location", "direction"], order_by="transaction_date, transaction_time") if doc.vehicle and toll_schedule else [] %}
+    {% if toll_transactions %}
+    <div class="page">
+        <div class="page-content">
+            <!-- Header -->
+            <div class="gold-header">
+                <div class="header-left">
+                    <div class="company-name">{{ doc.company or frappe.db.get_default("company") or "RIGHT HIRE" }}</div>
+                    <div class="company-address">
+                        {% set company_doc = frappe.get_doc("Company", doc.company) if doc.company else None %}
+                        {% if company_doc %}
+                        {{ company_doc.address or "" }}{% if company_doc.city %} | {{ company_doc.city }}{% endif %}{% if company_doc.country %} {{ company_doc.country }}{% endif %}{% if company_doc.phone_no %} | Tel: {{ company_doc.phone_no }}{% endif %}
+                        {% if company_doc.tax_id %}<br>TRN: {{ company_doc.tax_id }}{% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="header-logo">
+                    <img src="/files/logo.png" alt="Logo">
+                </div>
+            </div>
+
+            <!-- Title -->
+            <div class="document-title">Toll Charges Details</div>
+
+            <!-- Invoice Reference -->
+            <div class="invoice-header">
+                <div class="invoice-header-item">
+                    <span class="header-label">Invoice No:</span>
+                    <span>{{ doc.name }}</span>
+                </div>
+                <div class="invoice-header-item">
+                    <span class="header-label">Customer:</span>
+                    <span>{{ doc.customer_name or doc.customer }}</span>
+                </div>
+                <div class="invoice-header-item">
+                    <span class="header-label">Vehicle:</span>
+                    <span>{% if doc.vehicle %}{{ frappe.db.get_value("Vehicle", doc.vehicle, "custom_plate_code") }} {{ frappe.db.get_value("Vehicle", doc.vehicle, "plate_no") }}{% else %}-{% endif %}</span>
+                </div>
+                <div class="invoice-header-item">
+                    <span class="header-label">Total Tolls:</span>
+                    <span>{{ toll_transactions | length }}</span>
+                </div>
+            </div>
+
+            <!-- Toll Transactions Table -->
+            <div class="section-box" style="margin-top: 10px;">
+                <div class="section-header">Salik Toll Transactions</div>
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 6%;">#</th>
+                            <th style="width: 18%;">Plate No</th>
+                            <th style="width: 18%;">Date</th>
+                            <th style="width: 14%;">Time</th>
+                            <th style="width: 28%;">Gate</th>
+                            <th style="width: 16%;">Direction</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for toll in toll_transactions %}
+                        <tr>
+                            <td class="text-center">{{ loop.index }}</td>
+                            <td>{{ toll.plate_number or "-" }}</td>
+                            <td>{{ frappe.utils.formatdate(toll.transaction_date, "dd-MMM-yyyy") if toll.transaction_date else "-" }}</td>
+                            <td>{{ (toll.transaction_time | string).split(".")[0] if toll.transaction_time else "-" }}</td>
+                            <td>{{ toll.gate_location or "-" }}</td>
+                            <td>{{ toll.direction or "-" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="page-footer">
+            {{ doc.name }} - Toll Details | {{ doc.company or frappe.db.get_default("company") or "RIGHT HIRE" }} | Printed: {{ frappe.utils.formatdate(frappe.utils.nowdate(), "dd-MMM-yyyy") }}
+        </div>
+    </div>
+    {% endif %}
+</div>

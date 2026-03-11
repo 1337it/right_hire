@@ -1,0 +1,216 @@
+{
+ "actions": [],
+ "autoname": "field:api_name",
+ "creation": "2026-01-09 10:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "api_name",
+  "api_type",
+  "enabled",
+  "column_break_main",
+  "last_sync_time",
+  "next_sync_time",
+  "section_break_status",
+  "status",
+  "last_job_id",
+  "column_break_status",
+  "records_fetched",
+  "total_records",
+  "section_break_error",
+  "last_error_message",
+  "error_count",
+  "last_success_time",
+  "section_break_config",
+  "sync_frequency_hours",
+  "auto_sync",
+  "column_break_config",
+  "filter_days",
+  "rate_limit_info"
+ ],
+ "fields": [
+  {
+   "fieldname": "api_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "API Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "api_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "API Type",
+   "options": "RTA Traffic Fines\nSalik Trips\nDarb Tolls\nOther",
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Enabled"
+  },
+  {
+   "fieldname": "column_break_main",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_sync_time",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Last Sync Time",
+   "read_only": 1
+  },
+  {
+   "fieldname": "next_sync_time",
+   "fieldtype": "Datetime",
+   "label": "Next Sync Time",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_status",
+   "fieldtype": "Section Break",
+   "label": "Status"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Idle\nRunning\nSuccess\nFailed\nStarted",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_job_id",
+   "fieldtype": "Data",
+   "label": "Last Job ID",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_status",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "records_fetched",
+   "fieldtype": "Int",
+   "label": "Records Fetched (Last Sync)",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "total_records",
+   "fieldtype": "Int",
+   "label": "Total Records (All Time)",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "depends_on": "eval:doc.status=='Failed' || doc.last_error_message",
+   "fieldname": "section_break_error",
+   "fieldtype": "Section Break",
+   "label": "Error Information"
+  },
+  {
+   "fieldname": "last_error_message",
+   "fieldtype": "Text",
+   "label": "Last Error Message",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "error_count",
+   "fieldtype": "Int",
+   "label": "Consecutive Error Count",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_success_time",
+   "fieldtype": "Datetime",
+   "label": "Last Success Time",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_config",
+   "fieldtype": "Section Break",
+   "label": "Sync Configuration"
+  },
+  {
+   "default": "12",
+   "fieldname": "sync_frequency_hours",
+   "fieldtype": "Int",
+   "label": "Sync Frequency (Hours)"
+  },
+  {
+   "default": "1",
+   "fieldname": "auto_sync",
+   "fieldtype": "Check",
+   "label": "Auto Sync"
+  },
+  {
+   "fieldname": "column_break_config",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "7",
+   "depends_on": "eval:doc.api_type=='Salik Trips'",
+   "description": "For Salik API: 7, 30, 60, or 90 days",
+   "fieldname": "filter_days",
+   "fieldtype": "Select",
+   "label": "Filter Days",
+   "options": "7\n30\n60\n90"
+  },
+  {
+   "fieldname": "rate_limit_info",
+   "fieldtype": "Small Text",
+   "label": "Rate Limit Info",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-01-09 10:00:00",
+ "modified_by": "Administrator",
+ "module": "Right Hire",
+ "name": "API Status",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fleet Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Counter Agent"
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Right Hire Admin",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

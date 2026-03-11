@@ -1,0 +1,246 @@
+{
+ "actions": [],
+ "creation": "2026-01-09 10:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "enabled",
+  "section_break_api",
+  "api_base_url",
+  "api_key",
+  "column_break_api",
+  "test_connection",
+  "connection_status",
+  "section_break_sync",
+  "auto_sync_enabled",
+  "sync_frequency_hours",
+  "last_successful_sync",
+  "column_break_sync",
+  "sync_before_contract_closure",
+  "retry_failed_syncs",
+  "max_retry_attempts",
+  "section_break_vehicles",
+  "only_sync_enabled_vehicles",
+  "auto_enable_new_vehicles",
+  "section_break_notifications",
+  "notify_on_new_fines",
+  "notify_on_high_value_fines",
+  "column_break_notifications",
+  "high_value_threshold",
+  "notification_recipients",
+  "section_break_status",
+  "total_vehicles_synced",
+  "total_fines_fetched",
+  "last_error_message"
+ ],
+ "fields": [
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enable RTA Fines Integration"
+  },
+  {
+   "fieldname": "section_break_api",
+   "fieldtype": "Section Break",
+   "label": "API Configuration"
+  },
+  {
+   "default": "http://139.185.53.79:8000/api",
+   "description": "Base URL for RTA Traffic Fines API",
+   "fieldname": "api_base_url",
+   "fieldtype": "Data",
+   "label": "API Base URL",
+   "mandatory_depends_on": "eval:doc.enabled==1"
+  },
+  {
+   "description": "API Key for authentication (X-API-Key header)",
+   "fieldname": "api_key",
+   "fieldtype": "Password",
+   "label": "X-API-Key",
+   "mandatory_depends_on": "eval:doc.enabled==1"
+  },
+  {
+   "fieldname": "column_break_api",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "test_connection",
+   "fieldtype": "Button",
+   "label": "Test API Connection"
+  },
+  {
+   "fieldname": "connection_status",
+   "fieldtype": "Small Text",
+   "label": "Connection Status",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_sync",
+   "fieldtype": "Section Break",
+   "label": "Synchronization Settings"
+  },
+  {
+   "default": "1",
+   "fieldname": "auto_sync_enabled",
+   "fieldtype": "Check",
+   "label": "Enable Auto Sync"
+  },
+  {
+   "default": "12",
+   "description": "How often to sync fines automatically (in hours)",
+   "fieldname": "sync_frequency_hours",
+   "fieldtype": "Int",
+   "label": "Sync Frequency (Hours)",
+   "mandatory_depends_on": "eval:doc.auto_sync_enabled==1"
+  },
+  {
+   "fieldname": "last_successful_sync",
+   "fieldtype": "Datetime",
+   "label": "Last Successful Sync",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_sync",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "description": "Automatically sync fines before submitting contracts/agreements",
+   "fieldname": "sync_before_contract_closure",
+   "fieldtype": "Check",
+   "label": "Sync Before Contract Closure"
+  },
+  {
+   "default": "1",
+   "fieldname": "retry_failed_syncs",
+   "fieldtype": "Check",
+   "label": "Retry Failed Syncs"
+  },
+  {
+   "default": "3",
+   "fieldname": "max_retry_attempts",
+   "fieldtype": "Int",
+   "label": "Max Retry Attempts"
+  },
+  {
+   "fieldname": "section_break_vehicles",
+   "fieldtype": "Section Break",
+   "label": "Vehicle Settings"
+  },
+  {
+   "default": "1",
+   "description": "Only sync vehicles that have 'RTA Sync Enabled' checked",
+   "fieldname": "only_sync_enabled_vehicles",
+   "fieldtype": "Check",
+   "label": "Only Sync Enabled Vehicles"
+  },
+  {
+   "default": "0",
+   "description": "Automatically enable RTA sync for newly created vehicles",
+   "fieldname": "auto_enable_new_vehicles",
+   "fieldtype": "Check",
+   "label": "Auto Enable for New Vehicles"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_notifications",
+   "fieldtype": "Section Break",
+   "label": "Notifications"
+  },
+  {
+   "default": "0",
+   "description": "Send email notification when new fines are detected",
+   "fieldname": "notify_on_new_fines",
+   "fieldtype": "Check",
+   "label": "Notify on New Fines"
+  },
+  {
+   "default": "0",
+   "description": "Send email notification for high-value fines",
+   "fieldname": "notify_on_high_value_fines",
+   "fieldtype": "Check",
+   "label": "Notify on High Value Fines"
+  },
+  {
+   "fieldname": "column_break_notifications",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1000",
+   "depends_on": "eval:doc.notify_on_high_value_fines==1",
+   "description": "Threshold amount in AED for high-value fine alerts",
+   "fieldname": "high_value_threshold",
+   "fieldtype": "Currency",
+   "label": "High Value Threshold (AED)"
+  },
+  {
+   "depends_on": "eval:doc.notify_on_new_fines==1 || doc.notify_on_high_value_fines==1",
+   "description": "Comma-separated email addresses",
+   "fieldname": "notification_recipients",
+   "fieldtype": "Small Text",
+   "label": "Notification Recipients"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_status",
+   "fieldtype": "Section Break",
+   "label": "Sync Status"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_vehicles_synced",
+   "fieldtype": "Int",
+   "label": "Total Vehicles Synced",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "total_fines_fetched",
+   "fieldtype": "Int",
+   "label": "Total Fines Fetched",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_error_message",
+   "fieldtype": "Small Text",
+   "label": "Last Error Message",
+   "read_only": 1
+  }
+ ],
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-01-09 10:00:00",
+ "modified_by": "Administrator",
+ "module": "Right Hire",
+ "name": "RTA Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Right Hire Admin",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Fleet Manager"
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

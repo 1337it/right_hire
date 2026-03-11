@@ -2,47 +2,74 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "VM.#####",
- "creation": "2024-01-01 00:00:00",
+ "creation": "2026-01-13 03:28:27.996784",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "custom_general_info",
   "movement_id",
-  "agreement_no",
   "movement_type",
-  "manual_agreement_no",
+  "status",
   "date",
   "workshop",
   "vehicle",
+  "replacement_section",
+  "is_replacement",
+  "parent_movement",
+  "replacement_vehicle",
+  "column_break_replacement",
+  "workshop_purchase_invoice",
+  "column_break_zjbz",
+  "lease_agreement",
+  "agreement_type",
+  "agreement_no",
+  "manual_agreement_no",
   "io_section",
   "out_heading",
   "out_date_time",
-  "custom_column_break_xh4dg",
-  "custom_spacer",
-  "out_fuel_level",
-  "out_branch",
-  "out_notes",
-  "custom_column_break_f87lx",
-  "custom_spacer2",
-  "out_mileage",
   "out_staff",
   "out_customer",
   "out_driver",
+  "custom_column_break_xh4dg",
+  "out_fuel_level",
+  "out_fuel_gauge_html",
+  "out_branch",
+  "out_notes",
+  "out_quick_tags",
+  "custom_column_break_f87lx",
+  "out_fuel_percentage",
+  "out_mileage",
+  "out_vehicle_condition_section",
+  "out_damage_marker_html",
+  "column_break_omnd",
+  "out_vehicle_damage_logs",
+  "out_vehicle_condition_checklist",
+  "out_condition_images",
+  "section_break_fjro",
   "cb_io",
   "in_heading",
   "in_date_time",
-  "custom_column_break_1sywl",
-  "custom_spacer3",
-  "in_fuel_level",
-  "in_branch",
-  "in_notes",
-  "custom_column_break_ibo93",
-  "custom_spacer4",
-  "in_mileage",
   "in_staff",
   "in_customer",
   "in_driver",
+  "custom_column_break_1sywl",
+  "in_fuel_level",
+  "in_fuel_gauge_html",
+  "in_branch",
+  "in_notes",
+  "in_quick_tags",
+  "custom_column_break_ibo93",
+  "in_fuel_percentage",
+  "in_mileage",
+  "distance_traveled",
+  "in_vehicle_condition_section",
+  "in_damage_marker_html",
+  "condition_delta",
+  "column_break_dkgq",
+  "in_vehicle_damage_logs",
+  "in_vehicle_condition_checklist",
+  "in_condition_images",
   "workshop_section",
   "custom_column_break_0qy3e",
   "odometer_value",
@@ -54,7 +81,9 @@
   "drop_location",
   "pickup_location",
   "custom_column_break_18dmj",
-  "service_done"
+  "service_done",
+  "vehicle_condition_section",
+  "damage_marker_html"
  ],
  "fields": [
   {
@@ -69,19 +98,39 @@
    "read_only": 1
   },
   {
-   "fieldname": "agreement_no",
+   "fieldname": "lease_agreement",
    "fieldtype": "Link",
+   "label": "Lease Agreement",
+   "options": "Lease Agreement"
+  },
+  {
+   "fieldname": "agreement_type",
+   "fieldtype": "Link",
+   "label": "Agreement Type",
+   "options": "DocType"
+  },
+  {
+   "fieldname": "agreement_no",
+   "fieldtype": "Dynamic Link",
    "in_list_view": 1,
    "label": "Agreement No",
-   "options": "Rental Agreement"
+   "options": "agreement_type"
   },
   {
    "fieldname": "movement_type",
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Movement Type",
-   "options": "NRM - Normal\nStaff\nWorkshop\nCustody\nNRT - Non-Revenue Transfer\nDelivery\nRecovery\nTest Drive\nShowroom\nOther",
+   "options": "NRM - Administrative Movement\nStaff Car\nWorkshop\nCustody\nNRT - Non-Revenue Transfer\nDelivery\nRecovery\nTest Drive\nShowroom\nReplacement - Customer Return\nReplacement - Vehicle Out\nOther",
    "reqd": 1
+  },
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Draft\nOut Only\nReturned\nIssue Flagged"
   },
   {
    "fieldname": "manual_agreement_no",
@@ -112,6 +161,47 @@
    "reqd": 1
   },
   {
+   "collapsible": 1,
+   "collapsible_depends_on": "eval:doc.movement_type && (doc.movement_type.includes('Replacement') || doc.movement_type === 'Workshop')",
+   "depends_on": "eval:doc.movement_type && (doc.movement_type.includes('Replacement') || doc.movement_type === 'Workshop')",
+   "fieldname": "replacement_section",
+   "fieldtype": "Section Break",
+   "label": "Replacement & Workshop Details"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.movement_type && doc.movement_type.includes('Replacement')",
+   "fieldname": "is_replacement",
+   "fieldtype": "Check",
+   "label": "Is Replacement Flow"
+  },
+  {
+   "depends_on": "eval:doc.movement_type && (doc.movement_type.includes('Replacement') || doc.movement_type === 'Workshop')",
+   "fieldname": "parent_movement",
+   "fieldtype": "Link",
+   "label": "Parent Movement",
+   "options": "Movements"
+  },
+  {
+   "depends_on": "eval:doc.movement_type === 'Replacement - Vehicle Out'",
+   "fieldname": "replacement_vehicle",
+   "fieldtype": "Link",
+   "label": "Replacement Vehicle",
+   "options": "Vehicle"
+  },
+  {
+   "fieldname": "column_break_replacement",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.movement_type === 'Workshop'",
+   "description": "Purchase Invoice from workshop is mandatory for workshop movements",
+   "fieldname": "workshop_purchase_invoice",
+   "fieldtype": "Link",
+   "label": "Workshop Purchase Invoice",
+   "options": "Purchase Invoice"
+  },
+  {
    "fieldname": "io_section",
    "fieldtype": "Section Break"
   },
@@ -131,19 +221,27 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "custom_spacer",
-   "fieldtype": "HTML",
-   "label": "spacer"
-  },
-  {
    "fieldname": "out_fuel_level",
    "fieldtype": "Select",
    "label": "Out Fuel Level",
-   "options": "Empty\n1/4\n1/2\n3/4\nFull"
+   "options": "\n1/8\n2/8\n3/8\n4/8\n5/8\n6/8\n7/8\n8/8"
+  },
+  {
+   "fieldname": "out_fuel_gauge_html",
+   "fieldtype": "HTML",
+   "label": "Fuel Gauge"
+  },
+  {
+   "description": "Fuel level percentage (0-100%)",
+   "fieldname": "out_fuel_percentage",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Out Fuel Level (%)"
   },
   {
    "fieldname": "out_branch",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Out Branch",
    "options": "Branch"
   },
@@ -153,13 +251,13 @@
    "label": "Out Notes"
   },
   {
-   "fieldname": "custom_column_break_f87lx",
-   "fieldtype": "Column Break"
+   "fieldname": "out_quick_tags",
+   "fieldtype": "HTML",
+   "label": "Quick Tags"
   },
   {
-   "fieldname": "custom_spacer2",
-   "fieldtype": "HTML",
-   "label": "spacer2"
+   "fieldname": "custom_column_break_f87lx",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "out_mileage",
@@ -203,19 +301,27 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "custom_spacer3",
-   "fieldtype": "HTML",
-   "label": "spacer3"
-  },
-  {
    "fieldname": "in_fuel_level",
    "fieldtype": "Select",
    "label": "In Fuel Level",
-   "options": "Empty\n1/4\n1/2\n3/4\nFull"
+   "options": "\n1/8\n2/8\n3/8\n4/8\n5/8\n6/8\n7/8\n8/8"
+  },
+  {
+   "fieldname": "in_fuel_gauge_html",
+   "fieldtype": "HTML",
+   "label": "Fuel Gauge"
+  },
+  {
+   "description": "Fuel level percentage (0-100%)",
+   "fieldname": "in_fuel_percentage",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "In Fuel Level (%)"
   },
   {
    "fieldname": "in_branch",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "In Branch",
    "options": "Branch"
   },
@@ -225,14 +331,14 @@
    "label": "In Notes"
   },
   {
+   "fieldname": "in_quick_tags",
+   "fieldtype": "HTML",
+   "label": "Quick Tags"
+  },
+  {
    "fieldname": "custom_column_break_ibo93",
    "fieldtype": "Column Break",
    "hidden": 1
-  },
-  {
-   "fieldname": "custom_spacer4",
-   "fieldtype": "HTML",
-   "label": "spacer4"
   },
   {
    "fieldname": "in_mileage",
@@ -255,6 +361,90 @@
    "fieldname": "in_driver",
    "fieldtype": "Data",
    "label": "In Driver"
+  },
+  {
+   "description": "Auto-calculated: In Mileage - Out Mileage",
+   "fieldname": "distance_traveled",
+   "fieldtype": "Float",
+   "label": "Distance Traveled (km)",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "out_vehicle_condition_section",
+   "fieldtype": "Section Break",
+   "label": "Vehicle Condition (Out)"
+  },
+  {
+   "fieldname": "out_damage_marker_html",
+   "fieldtype": "HTML",
+   "label": "Interactive Damage Marker - Out Inspection"
+  },
+  {
+   "fieldname": "out_vehicle_damage_logs",
+   "fieldtype": "Table",
+   "label": "OUT Damage Logs",
+   "options": "Vehicle Damage Log"
+  },
+  {
+   "fieldname": "out_vehicle_condition_checklist",
+   "fieldtype": "Table",
+   "label": "OUT Condition Checklist",
+   "options": "Vehicle Condition Item"
+  },
+  {
+   "fieldname": "out_condition_images",
+   "fieldtype": "Table",
+   "label": "OUT Condition Images",
+   "options": "Vehicle Condition Image"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "in_vehicle_condition_section",
+   "fieldtype": "Section Break",
+   "label": "Vehicle Condition (In)"
+  },
+  {
+   "fieldname": "in_damage_marker_html",
+   "fieldtype": "HTML",
+   "label": "Interactive Damage Marker - In Inspection"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "vehicle_condition_section",
+   "fieldtype": "Section Break",
+   "label": "Vehicle Condition (Legacy)"
+  },
+  {
+   "fieldname": "damage_marker_html",
+   "fieldtype": "HTML",
+   "hidden": 1,
+   "label": "Interactive Damage Marker"
+  },
+  {
+   "fieldname": "in_vehicle_damage_logs",
+   "fieldtype": "Table",
+   "label": "IN Damage Logs",
+   "options": "Vehicle Damage Log"
+  },
+  {
+   "description": "Summary of condition changes between OUT and IN",
+   "fieldname": "condition_delta",
+   "fieldtype": "Small Text",
+   "label": "Condition Changes",
+   "read_only": 1
+  },
+  {
+   "fieldname": "in_vehicle_condition_checklist",
+   "fieldtype": "Table",
+   "label": "IN Condition Checklist",
+   "options": "Vehicle Condition Item"
+  },
+  {
+   "fieldname": "in_condition_images",
+   "fieldtype": "Table",
+   "label": "IN Condition Images",
+   "options": "Vehicle Condition Image"
   },
   {
    "collapsible": 1,
@@ -320,11 +510,27 @@
    "fieldname": "service_done",
    "fieldtype": "Small Text",
    "label": "Service Done"
+  },
+  {
+   "fieldname": "column_break_zjbz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_fjro",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_dkgq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_omnd",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-16 19:25:33.766530",
+ "modified": "2026-01-21 15:02:50.022825",
  "modified_by": "Administrator",
  "module": "Right Hire",
  "name": "Movements",

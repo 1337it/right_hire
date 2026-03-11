@@ -54,7 +54,6 @@
    "reqd": 1
   },
   {
-   "default": "user",
    "fieldname": "changed_by",
    "fieldtype": "Link",
    "label": "Changed By",

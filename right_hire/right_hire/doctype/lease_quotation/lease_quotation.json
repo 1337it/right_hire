@@ -1,0 +1,289 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:LQ-{YYYY}-{#####}",
+ "creation": "2025-01-01 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "quotation_info_section",
+  "quotation_status",
+  "column_break_status",
+  "quotation_date",
+  "valid_until",
+  "customer_section",
+  "customer",
+  "customer_name",
+  "customer_mobile",
+  "column_break_customer",
+  "driver",
+  "driver_name",
+  "driver_license",
+  "lease_details_section",
+  "lease_duration_months",
+  "column_break_lease",
+  "branch",
+  "allowed_km_per_year",
+  "excess_km_charges",
+  "excess_insurance_amount",
+  "salik_percentage",
+  "traffic_fines_amount",
+  "quotation_items_section",
+  "quotation_items",
+  "terms_section",
+  "terms_template",
+  "custom_terms",
+  "important_notes_section",
+  "important_notes",
+  "notes_section",
+  "internal_notes",
+  "linked_document_section",
+  "lease_agreement",
+  "generated_on"
+ ],
+ "fields": [
+  {
+   "fieldname": "quotation_info_section",
+   "fieldtype": "Section Break",
+   "label": "Quotation Information"
+  },
+  {
+   "default": "Draft",
+   "fieldname": "quotation_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Draft\nSent\nAccepted\nRejected\nExpired",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_status",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "quotation_date",
+   "fieldtype": "Date",
+   "label": "Quotation Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "valid_until",
+   "fieldtype": "Date",
+   "label": "Valid Until",
+   "reqd": 1
+  },
+  {
+   "fieldname": "customer_section",
+   "fieldtype": "Section Break",
+   "label": "Customer Information"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "customer.customer_name",
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "label": "Customer Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "customer.mobile",
+   "fieldname": "customer_mobile",
+   "fieldtype": "Data",
+   "label": "Customer Mobile",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_customer",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "driver",
+   "fieldtype": "Link",
+   "label": "Primary Driver",
+   "options": "Driver"
+  },
+  {
+   "fetch_from": "driver.driver_name",
+   "fieldname": "driver_name",
+   "fieldtype": "Data",
+   "label": "Driver Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "driver.license_no",
+   "fieldname": "driver_license",
+   "fieldtype": "Data",
+   "label": "Driver License",
+   "read_only": 1
+  },
+  {
+   "fieldname": "lease_details_section",
+   "fieldtype": "Section Break",
+   "label": "Lease Details"
+  },
+  {
+   "fieldname": "lease_duration_months",
+   "fieldtype": "Int",
+   "label": "Lease Duration (Months)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_lease",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch",
+   "reqd": 1
+  },
+  {
+   "default": "60000",
+   "fieldname": "allowed_km_per_year",
+   "fieldtype": "Int",
+   "label": "Allowed KM Per Year"
+  },
+  {
+   "fieldname": "excess_km_charges",
+   "fieldtype": "Currency",
+   "label": "Excess KM Charges",
+   "precision": "2"
+  },
+  {
+   "fieldname": "excess_insurance_amount",
+   "fieldtype": "Currency",
+   "label": "Excess Insurance Amount"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "terms_section",
+   "fieldtype": "Section Break",
+   "label": "Terms and Conditions"
+  },
+  {
+   "fieldname": "terms_template",
+   "fieldtype": "Link",
+   "label": "Terms Template",
+   "options": "Terms and Conditions"
+  },
+  {
+   "fieldname": "custom_terms",
+   "fieldtype": "Text Editor",
+   "label": "Custom Terms"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "important_notes_section",
+   "fieldtype": "Section Break",
+   "label": "Important Notes"
+  },
+  {
+   "fieldname": "important_notes",
+   "fieldtype": "Table",
+   "label": "Important Notes",
+   "options": "Lease Quotation Important Note"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break",
+   "label": "Internal Notes"
+  },
+  {
+   "fieldname": "internal_notes",
+   "fieldtype": "Text",
+   "label": "Internal Notes"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "linked_document_section",
+   "fieldtype": "Section Break",
+   "label": "Generated Document"
+  },
+  {
+   "fieldname": "lease_agreement",
+   "fieldtype": "Link",
+   "label": "Lease Agreement",
+   "options": "Lease Agreement",
+   "read_only": 1
+  },
+  {
+   "fieldname": "generated_on",
+   "fieldtype": "Datetime",
+   "label": "Generated On",
+   "read_only": 1
+  },
+  {
+   "fieldname": "salik_percentage",
+   "fieldtype": "Percent",
+   "label": "Salik Percentage",
+   "precision": "2"
+  },
+  {
+   "fieldname": "traffic_fines_amount",
+   "fieldtype": "Percent",
+   "label": "Excess Amount per Traffic Fine",
+   "precision": "2"
+  },
+  {
+   "fieldname": "quotation_items_section",
+   "fieldtype": "Section Break",
+   "label": "Vehicle Options"
+  },
+  {
+   "fieldname": "quotation_items",
+   "fieldtype": "Table",
+   "label": "Quotation Items",
+   "options": "Lease Quotation Item",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-01-16 14:17:34.017004",
+ "modified_by": "Administrator",
+ "module": "Right Hire",
+ "name": "Lease Quotation",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Counter Agent",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "LeetRental Admin",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

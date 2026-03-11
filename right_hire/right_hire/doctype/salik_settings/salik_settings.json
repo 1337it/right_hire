@@ -1,0 +1,244 @@
+{
+ "actions": [],
+ "creation": "2026-01-03 10:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "enabled",
+  "is_ramadan_timing",
+  "section_break_credentials",
+  "api_base_url",
+  "api_key",
+  "column_break_credentials",
+  "salik_filter_days",
+  "test_connection",
+  "section_break_rates",
+  "rate_info_html",
+  "section_break_sync",
+  "auto_sync_enabled",
+  "sync_frequency_hours",
+  "last_successful_sync",
+  "column_break_sync",
+  "sync_before_contract_closure",
+  "retry_failed_syncs",
+  "max_retry_attempts",
+  "section_break_accounting",
+  "auto_create_journal_entry",
+  "default_company",
+  "column_break_accounting",
+  "default_expense_account",
+  "default_cost_center",
+  "default_credit_account",
+  "section_break_status",
+  "total_vehicles_synced",
+  "total_transactions_fetched",
+  "last_error_message"
+ ],
+ "fields": [
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enable Salik Integration"
+  },
+  {
+   "default": "0",
+   "description": "Enable this during Ramadan to use Ramadan timing for toll rate calculation",
+   "fieldname": "is_ramadan_timing",
+   "fieldtype": "Check",
+   "label": "Ramadan Timing Active"
+  },
+  {
+   "fieldname": "section_break_credentials",
+   "fieldtype": "Section Break",
+   "label": "API Configuration"
+  },
+  {
+   "default": "http://139.185.53.79:8000",
+   "description": "Base URL for Salik Trips API",
+   "fieldname": "api_base_url",
+   "fieldtype": "Data",
+   "label": "API Base URL",
+   "mandatory_depends_on": "eval:doc.enabled==1"
+  },
+  {
+   "description": "API Key for authentication (X-API-Key header)",
+   "fieldname": "api_key",
+   "fieldtype": "Password",
+   "label": "API Key (X-API-Key)",
+   "mandatory_depends_on": "eval:doc.enabled==1"
+  },
+  {
+   "fieldname": "column_break_credentials",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "7",
+   "description": "Number of days to fetch (7, 30, 60, or 90)",
+   "fieldname": "salik_filter_days",
+   "fieldtype": "Select",
+   "label": "Salik Filter Days",
+   "options": "7\n30\n60\n90"
+  },
+  {
+   "fieldname": "test_connection",
+   "fieldtype": "Button",
+   "label": "Test API Connection"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_rates",
+   "fieldtype": "Section Break",
+   "label": "Toll Schedule Timing Reference"
+  },
+  {
+   "fieldname": "rate_info_html",
+   "fieldtype": "HTML",
+   "label": "Schedule Information",
+   "options": "<div class=\"schedule-info\" style=\"font-size: 12px;\">\n<style>.schedule-table { border-collapse: collapse; width: 100%; margin-bottom: 10px; } .schedule-table th, .schedule-table td { border: 1px solid #d1d8dd; padding: 6px 10px; text-align: left; } .schedule-table th { background: #f7f7f7; font-weight: bold; } .peak { background: #fff3cd; } .low-peak { background: #d4edda; } .off-peak { background: #e2e3e5; }</style>\n<h5>Normal Timing</h5>\n<table class=\"schedule-table\">\n<tr><th>Schedule</th><th>Time Slots</th></tr>\n<tr class=\"peak\"><td><b>Peak</b></td><td>6-10 AM, 4-8 PM</td></tr>\n<tr class=\"low-peak\"><td><b>Low-Peak</b></td><td>10 AM-4 PM, 8 PM-1 AM</td></tr>\n<tr class=\"off-peak\"><td><b>Off-Peak</b></td><td>1-6 AM</td></tr>\n</table>\n<h5>Ramadan Timing</h5>\n<table class=\"schedule-table\">\n<tr><th>Schedule</th><th>Time Slots</th></tr>\n<tr class=\"peak\"><td><b>Peak</b></td><td>9 AM-5 PM</td></tr>\n<tr class=\"low-peak\"><td><b>Low-Peak</b></td><td>7-9 AM, 5 PM-2 AM</td></tr>\n<tr class=\"off-peak\"><td><b>Off-Peak</b></td><td>2-7 AM</td></tr>\n</table>\n</div>"
+  },
+  {
+   "fieldname": "section_break_sync",
+   "fieldtype": "Section Break",
+   "label": "Synchronization Settings"
+  },
+  {
+   "default": "1",
+   "fieldname": "auto_sync_enabled",
+   "fieldtype": "Check",
+   "label": "Enable Auto Sync"
+  },
+  {
+   "default": "12",
+   "fieldname": "sync_frequency_hours",
+   "fieldtype": "Int",
+   "label": "Sync Frequency (Hours)",
+   "mandatory_depends_on": "eval:doc.auto_sync_enabled==1"
+  },
+  {
+   "fieldname": "last_successful_sync",
+   "fieldtype": "Datetime",
+   "label": "Last Successful Sync",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_sync",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "sync_before_contract_closure",
+   "fieldtype": "Check",
+   "label": "Sync Before Contract Closure"
+  },
+  {
+   "default": "1",
+   "fieldname": "retry_failed_syncs",
+   "fieldtype": "Check",
+   "label": "Retry Failed Syncs"
+  },
+  {
+   "default": "3",
+   "fieldname": "max_retry_attempts",
+   "fieldtype": "Int",
+   "label": "Max Retry Attempts"
+  },
+  {
+   "fieldname": "section_break_accounting",
+   "fieldtype": "Section Break",
+   "label": "Default Accounting Settings"
+  },
+  {
+   "default": "1",
+   "description": "Automatically create Journal Entry when a Salik transaction is marked as company expense",
+   "fieldname": "auto_create_journal_entry",
+   "fieldtype": "Check",
+   "label": "Auto Create Journal Entry"
+  },
+  {
+   "fieldname": "default_company",
+   "fieldtype": "Link",
+   "label": "Default Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "column_break_accounting",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Expense account to debit (e.g., Toll Expenses)",
+   "fieldname": "default_expense_account",
+   "fieldtype": "Link",
+   "label": "Default Expense Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "default_cost_center",
+   "fieldtype": "Link",
+   "label": "Default Cost Center",
+   "options": "Cost Center"
+  },
+  {
+   "description": "Account to credit (e.g., Cash, Bank, or Salik Prepaid Account)",
+   "fieldname": "default_credit_account",
+   "fieldtype": "Link",
+   "label": "Default Credit Account",
+   "options": "Account"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_status",
+   "fieldtype": "Section Break",
+   "label": "Sync Status"
+  },
+  {
+   "fieldname": "total_vehicles_synced",
+   "fieldtype": "Int",
+   "label": "Total Vehicles Synced",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_transactions_fetched",
+   "fieldtype": "Int",
+   "label": "Total Transactions Fetched",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_error_message",
+   "fieldtype": "Small Text",
+   "label": "Last Error Message",
+   "read_only": 1
+  }
+ ],
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-01-03 10:00:00",
+ "modified_by": "Administrator",
+ "module": "Right Hire",
+ "name": "Salik Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Right Hire Admin",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

@@ -1,0 +1,353 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:LOQ-{YYYY}-{#####}",
+ "creation": "2025-01-01 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "quotation_info_section",
+  "quotation_status",
+  "column_break_status",
+  "quotation_date",
+  "valid_until",
+  "customer_section",
+  "customer",
+  "customer_name",
+  "customer_mobile",
+  "column_break_customer",
+  "driver",
+  "driver_name",
+  "driver_license",
+  "lease_details_section",
+  "start_date",
+  "contract_duration_months",
+  "end_date",
+  "column_break_lease",
+  "branch",
+  "allowed_km_per_year",
+  "vehicle_section",
+  "vehicle_category",
+  "vehicle",
+  "vehicle_details",
+  "vehicle_value",
+  "column_break_vehicle",
+  "preferred_make",
+  "preferred_model",
+  "pricing_section",
+  "total_amount",
+  "down_payment",
+  "financed_amount",
+  "column_break_pricing",
+  "monthly_payment",
+  "number_of_payments",
+  "final_payment",
+  "terms_section",
+  "terms_template",
+  "custom_terms",
+  "notes_section",
+  "internal_notes",
+  "linked_document_section",
+  "lease_to_own",
+  "generated_on"
+ ],
+ "fields": [
+  {
+   "fieldname": "quotation_info_section",
+   "fieldtype": "Section Break",
+   "label": "Quotation Information"
+  },
+  {
+   "default": "Draft",
+   "fieldname": "quotation_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Draft\nSent\nAccepted\nRejected\nExpired",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_status",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "quotation_date",
+   "fieldtype": "Date",
+   "label": "Quotation Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "valid_until",
+   "fieldtype": "Date",
+   "label": "Valid Until",
+   "reqd": 1
+  },
+  {
+   "fieldname": "customer_section",
+   "fieldtype": "Section Break",
+   "label": "Customer Information"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "customer.customer_name",
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "label": "Customer Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "customer.mobile",
+   "fieldname": "customer_mobile",
+   "fieldtype": "Data",
+   "label": "Customer Mobile",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_customer",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "driver",
+   "fieldtype": "Link",
+   "label": "Primary Driver",
+   "options": "Driver"
+  },
+  {
+   "fetch_from": "driver.driver_name",
+   "fieldname": "driver_name",
+   "fieldtype": "Data",
+   "label": "Driver Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "driver.license_no",
+   "fieldname": "driver_license",
+   "fieldtype": "Data",
+   "label": "Driver License",
+   "read_only": 1
+  },
+  {
+   "fieldname": "lease_details_section",
+   "fieldtype": "Section Break",
+   "label": "Contract Details"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Contract Start Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "contract_duration_months",
+   "fieldtype": "Int",
+   "label": "Contract Duration (Months)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "Contract End Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_lease",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch",
+   "reqd": 1
+  },
+  {
+   "default": "60000",
+   "fieldname": "allowed_km_per_year",
+   "fieldtype": "Int",
+   "label": "Allowed KM Per Year"
+  },
+  {
+   "fieldname": "vehicle_section",
+   "fieldtype": "Section Break",
+   "label": "Vehicle Details"
+  },
+  {
+   "fieldname": "vehicle_category",
+   "fieldtype": "Select",
+   "label": "Vehicle Category",
+   "options": "\nEconomy\nCompact\nMid-Size\nFull-Size\nSUV\nLuxury\nSports\nVan"
+  },
+  {
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "label": "Specific Vehicle (Optional)",
+   "options": "Vehicle"
+  },
+  {
+   "fetch_from": "vehicle.make",
+   "fieldname": "vehicle_details",
+   "fieldtype": "Data",
+   "label": "Vehicle Details",
+   "read_only": 1
+  },
+  {
+   "fieldname": "vehicle_value",
+   "fieldtype": "Currency",
+   "label": "Vehicle Value",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_vehicle",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "preferred_make",
+   "fieldtype": "Data",
+   "label": "Preferred Make"
+  },
+  {
+   "fieldname": "preferred_model",
+   "fieldtype": "Data",
+   "label": "Preferred Model"
+  },
+  {
+   "fieldname": "pricing_section",
+   "fieldtype": "Section Break",
+   "label": "Payment Structure"
+  },
+  {
+   "bold": 1,
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "label": "Total Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "down_payment",
+   "fieldtype": "Currency",
+   "label": "Down Payment",
+   "reqd": 1
+  },
+  {
+   "fieldname": "financed_amount",
+   "fieldtype": "Currency",
+   "label": "Financed Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_pricing",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "monthly_payment",
+   "fieldtype": "Currency",
+   "label": "Monthly Payment",
+   "reqd": 1
+  },
+  {
+   "fieldname": "number_of_payments",
+   "fieldtype": "Int",
+   "label": "Number of Payments",
+   "read_only": 1
+  },
+  {
+   "fieldname": "final_payment",
+   "fieldtype": "Currency",
+   "label": "Final Payment (Balloon)"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "terms_section",
+   "fieldtype": "Section Break",
+   "label": "Terms and Conditions"
+  },
+  {
+   "fieldname": "terms_template",
+   "fieldtype": "Link",
+   "label": "Terms Template",
+   "options": "Terms and Conditions Template"
+  },
+  {
+   "fieldname": "custom_terms",
+   "fieldtype": "Text Editor",
+   "label": "Custom Terms"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break",
+   "label": "Internal Notes"
+  },
+  {
+   "fieldname": "internal_notes",
+   "fieldtype": "Text",
+   "label": "Internal Notes"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "linked_document_section",
+   "fieldtype": "Section Break",
+   "label": "Generated Document"
+  },
+  {
+   "fieldname": "lease_to_own",
+   "fieldtype": "Link",
+   "label": "Lease to Own Contract",
+   "options": "Lease to Own",
+   "read_only": 1
+  },
+  {
+   "fieldname": "generated_on",
+   "fieldtype": "Datetime",
+   "label": "Generated On",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-01 00:00:00",
+ "modified_by": "Administrator",
+ "module": "Right Hire",
+ "name": "Lease to Own Quotation",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Counter Agent",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "LeetRental Admin",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

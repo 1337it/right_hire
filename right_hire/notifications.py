@@ -14,7 +14,7 @@ def get_notification_config():
                 "status": "reservation_status"
             },
             "Maintenance Job": {
-                "status": "job_status"
+                "status": "status"
             }
         },
         "targets": {

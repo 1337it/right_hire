@@ -34,7 +34,7 @@ def calculate_vehicle_utilization(vehicle, date):
         FROM tabMaintenance Job
         WHERE vehicle = %s
         AND DATE(job_date) = %s
-        AND job_status = 'Completed'
+        AND status = 'Completed'
     """, (vehicle, date), as_dict=True)
     
     rented_hours = 0
@@ -117,6 +117,48 @@ def send_expiry_alerts():
     for customer in expiring_licenses:
         send_alert("Customer License Expiring",
                    f"Customer {customer.customer_name} license expires on {customer.license_expiry}")
+
+    # Company Credit Application expiring in 30 days
+    expiring_credit_apps = frappe.get_all(
+        "Customer",
+        filters={
+            "credit_application_expiry": ["between", [today(), add_days(today(), 30)]],
+            "customer_type": "Company"
+        },
+        fields=["name", "customer_name", "credit_application_expiry", "credit_application_number"]
+    )
+
+    for customer in expiring_credit_apps:
+        send_alert("Credit Application Expiring",
+                   f"Company {customer.customer_name} credit application ({customer.credit_application_number}) expires on {customer.credit_application_expiry}")
+
+    # Company TRN Certificate expiring in 30 days
+    expiring_trn = frappe.get_all(
+        "Customer",
+        filters={
+            "trn_certificate_expiry": ["between", [today(), add_days(today(), 30)]],
+            "customer_type": "Company"
+        },
+        fields=["name", "customer_name", "trn_certificate_expiry", "trn_number"]
+    )
+
+    for customer in expiring_trn:
+        send_alert("TRN Certificate Expiring",
+                   f"Company {customer.customer_name} TRN certificate ({customer.trn_number}) expires on {customer.trn_certificate_expiry}")
+
+    # Company Trade License expiring in 30 days
+    expiring_trade_license = frappe.get_all(
+        "Customer",
+        filters={
+            "trade_license_expiry": ["between", [today(), add_days(today(), 30)]],
+            "customer_type": "Company"
+        },
+        fields=["name", "customer_name", "trade_license_expiry", "trade_license_number"]
+    )
+
+    for customer in expiring_trade_license:
+        send_alert("Trade License Expiring",
+                   f"Company {customer.customer_name} trade license ({customer.trade_license_number}) expires on {customer.trade_license_expiry}")
 
 def check_maintenance_due():
     """Check vehicles due for maintenance"""

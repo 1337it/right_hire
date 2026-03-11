@@ -1,0 +1,120 @@
+[
+  {
+    "doctype": "Number Card",
+    "name": "Available Vehicles",
+    "label": "Available Vehicles",
+    "document_type": "Vehicle",
+    "function": "Count",
+    "filters_json": "[[\"Vehicle\", \"status\", \"=\", \"Available\"]]",
+    "is_public": 1,
+    "show_percentage_stats": 0,
+    "color": "#28a745",
+    "module": "Right Hire"
+  },
+  {
+    "doctype": "Number Card",
+    "name": "Vehicles Rented Out",
+    "label": "Rented Out",
+    "document_type": "Vehicle",
+    "function": "Count",
+    "filters_json": "[[\"Vehicle\", \"status\", \"=\", \"Rented Out\"]]",
+    "is_public": 1,
+    "show_percentage_stats": 0,
+    "color": "#007bff",
+    "module": "Right Hire"
+  },
+  {
+    "doctype": "Number Card",
+    "name": "Vehicles Under Maintenance",
+    "label": "Under Maintenance",
+    "document_type": "Vehicle",
+    "function": "Count",
+    "filters_json": "[[\"Vehicle\", \"status\", \"in\", [\"Under Maintenance\", \"At Garage\", \"Accident/Repair\"]]]",
+    "is_public": 1,
+    "show_percentage_stats": 0,
+    "color": "#dc3545",
+    "module": "Right Hire"
+  },
+  {
+    "doctype": "Number Card",
+    "name": "Vehicles Reserved",
+    "label": "Reserved",
+    "document_type": "Vehicle",
+    "function": "Count",
+    "filters_json": "[[\"Vehicle\", \"status\", \"=\", \"Reserved\"]]",
+    "is_public": 1,
+    "show_percentage_stats": 0,
+    "color": "#ffc107",
+    "module": "Right Hire"
+  },
+  {
+    "doctype": "Number Card",
+    "name": "Total Fleet Size",
+    "label": "Total Fleet",
+    "document_type": "Vehicle",
+    "function": "Count",
+    "filters_json": "[[\"Vehicle\", \"status\", \"!=\", \"Deactivated\"]]",
+    "is_public": 1,
+    "show_percentage_stats": 0,
+    "color": "#6c757d",
+    "module": "Right Hire"
+  },
+  {
+    "doctype": "Number Card",
+    "name": "Active Rental Agreements",
+    "label": "Active Rentals",
+    "document_type": "Rental Agreement",
+    "function": "Count",
+    "filters_json": "[[\"Rental Agreement\", \"status\", \"=\", \"Active\"]]",
+    "is_public": 1,
+    "show_percentage_stats": 0,
+    "color": "#17a2b8",
+    "module": "Right Hire"
+  },
+  {
+    "doctype": "Number Card",
+    "name": "Active Lease Agreements",
+    "label": "Active Leases",
+    "document_type": "Lease Agreement",
+    "function": "Count",
+    "filters_json": "[[\"Lease Agreement\", \"lease_status\", \"=\", \"Active\"]]",
+    "is_public": 1,
+    "show_percentage_stats": 0,
+    "color": "#6f42c1",
+    "module": "Right Hire"
+  },
+  {
+    "doctype": "Number Card",
+    "name": "Pending Reservations",
+    "label": "Pending Reservations",
+    "document_type": "Reservation",
+    "function": "Count",
+    "filters_json": "[[\"Reservation\", \"reservation_status\", \"in\", [\"Draft\", \"Confirmed\"]]]",
+    "is_public": 1,
+    "show_percentage_stats": 0,
+    "color": "#fd7e14",
+    "module": "Right Hire"
+  },
+  {
+    "doctype": "Number Card",
+    "name": "Salik API Status",
+    "label": "Salik Transactions",
+    "type": "Custom",
+    "method": "right_hire.right_hire.api_status_dashboard.get_salik_api_status",
+    "is_public": 1,
+    "show_percentage_stats": 0,
+    "color": "#28a745",
+    "module": "Right Hire"
+  },
+  {
+    "doctype": "Number Card",
+    "name": "Traffic Fines API Status",
+    "label": "Traffic Fines",
+    "type": "Custom",
+    "method": "right_hire.right_hire.api_status_dashboard.get_traffic_fines_api_status",
+    "is_public": 1,
+    "show_percentage_stats": 0,
+    "color": "#dc3545",
+    "module": "Right Hire"
+  }
+]

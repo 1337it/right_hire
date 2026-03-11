@@ -1,0 +1,35 @@
+/* Persistent Workspace Sidebar */
+#leet-ws-host {
+    position: fixed;
+    right: 0;
+    top: var(--navbar-height, 60px);
+    bottom: 0;
+    width: 300px;
+    background: var(--bg-color);
+    border-left: 1px solid var(--border-color);
+    overflow-y: auto;
+    z-index: 10;
+    display: none; /* Hidden by default */
+}
+
+body.leet-ws-has #leet-ws-host {
+    display: block;
+}
+
+/* Adjust main content when sidebar is visible */
+body.leet-ws-has .page-container {
+    margin-right: 300px;
+}
+
+/* Style the cloned sidebar content */
+#workspace-sidebar-cloned {
+    padding: 1rem;
+}
+
+#workspace-sidebar-cloned .workspace-footer {
+    position: sticky;
+    bottom: 0;
+    background: var(--bg-color);
+    padding: 1rem 0;
+    border-top: 1px solid var(--border-color);
+}

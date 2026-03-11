@@ -8,239 +8,201 @@ from frappe.utils import now_datetime, get_datetime
 
 class Movements(Document):
 	def validate(self):
-		self.validate_workshop_fields()
-		self.auto_populate_workshop_location()
-		
-	def on_submit(self):
-		if self.movement_type == "Workshop":
-			self.update_vehicle_status()
-			self.send_workshop_notifications()
-			self.create_workshop_log()
-	
-	def on_cancel(self):
-		if self.movement_type == "Workshop":
-			self.revert_vehicle_status()
-	
-	def validate_workshop_fields(self):
-		"""Validate mandatory fields when Workshop is selected"""
-		if self.movement_type == "Workshop":
-			settings = frappe.get_single("Workshop Settings")
-			
-			# Check if odometer reading is required
-			if settings.require_odometer_reading and not self.odometer_reading:
-				frappe.throw(_("Odometer Reading is mandatory for Workshop movements"))
-			
-			# Check if estimated completion date is required
-			if settings.require_estimated_completion_date and not self.estimated_completion_date:
-				frappe.throw(_("Estimated Completion Date is mandatory for Workshop movements"))
-			
-			# Validate workshop reason
-			if not self.workshop_reason:
-				frappe.throw(_("Workshop Reason is mandatory for Workshop movements"))
-			
-			# Validate purpose
-			if not self.purpose:
-				frappe.throw(_("Purpose is mandatory for Workshop movements"))
-			
-			# Validate estimated completion date is in future
-			if self.estimated_completion_date:
-				if get_datetime(self.estimated_completion_date) < get_datetime(self.movement_date):
-					frappe.throw(_("Estimated Completion Date cannot be before Movement Date"))
-	
-	def auto_populate_workshop_location(self):
-		"""Auto-populate workshop location from settings"""
-		if self.movement_type == "Workshop" and not self.to_location:
-			settings = frappe.get_single("Workshop Settings")
-			if settings.default_workshop_location:
-				self.to_location = settings.default_workshop_location
-	
-	def update_vehicle_status(self):
-		"""Update vehicle status to In Workshop"""
-		settings = frappe.get_single("Workshop Settings")
-		
-		if settings.auto_update_vehicle_status:
-			vehicle = frappe.get_doc("Vehicle", self.vehicle)
-			vehicle.db_set("status", "In Workshop", update_modified=False)
-			
-			# Add a comment to vehicle
-			vehicle.add_comment(
-				"Info",
-				_("Vehicle moved to workshop on {0}. Reason: {1}").format(
-					self.movement_date,
-					self.workshop_reason or "Not specified"
+		"""Validate and auto-calculate fields"""
+		self.validate_replacement_workflow()
+		self.validate_workshop_invoice()
+		self.calculate_distance_traveled()
+		self.auto_detect_damage_states()
+		self.update_status()
+		self.calculate_condition_delta()
+
+	def validate_replacement_workflow(self):
+		"""Validate replacement workflow requirements"""
+		# Auto-set is_replacement for replacement movement types
+		if self.movement_type and 'Replacement' in self.movement_type:
+			self.is_replacement = 1
+
+		# Validate replacement vehicle is set for "Replacement - Vehicle Out"
+		if self.movement_type == 'Replacement - Vehicle Out':
+			if not self.replacement_vehicle:
+				frappe.throw(_("Replacement Vehicle is mandatory for 'Replacement - Vehicle Out' movement type"))
+
+			# The replacement vehicle should be different from the main vehicle
+			if self.replacement_vehicle == self.vehicle:
+				frappe.throw(_("Replacement Vehicle must be different from the main Vehicle"))
+
+	def validate_workshop_invoice(self):
+		"""Validate workshop movements have Purchase Invoice when returned"""
+		if self.movement_type == 'Workshop':
+			# Only require Purchase Invoice when vehicle is returned (IN date/time is set)
+			if self.in_date_time and not self.workshop_purchase_invoice:
+				frappe.throw(
+					_("Workshop Purchase Invoice is mandatory when returning a vehicle from workshop. "
+					  "Please create a Purchase Invoice for the workshop repair/service and link it here.")
 				)
+
+	def auto_detect_damage_states(self):
+		"""
+		Auto-detect damage states by comparing IN damages with OUT damages from the same movement.
+		- 'existing': Damage was already present in OUT inspection with same severity
+		- 'worsened': Damage exists in OUT but severity increased
+		- 'new': Damage not found in OUT inspection
+		"""
+		if not self.in_vehicle_damage_logs:
+			return
+
+		# Map severity to numeric values for comparison
+		severity_map = {
+			'Minor': 1,
+			'Moderate': 2,
+			'Severe': 3,
+			'Critical': 4
+		}
+
+		# Get OUT damage logs from this movement
+		out_damages = self.out_vehicle_damage_logs or []
+
+		# Debug: Log comparison details
+		frappe.logger().debug(f"Comparing {len(self.in_vehicle_damage_logs)} IN damages with {len(out_damages)} OUT damages")
+
+		# Compare IN damages with OUT damages
+		for in_damage in self.in_vehicle_damage_logs:
+			damage_state = 'new'  # Default to new
+
+			# Look for matching damage in OUT inspection
+			for out_damage in out_damages:
+				frappe.logger().debug(f"Comparing IN: {in_damage.zone}/{in_damage.damage_type} with OUT: {out_damage.zone}/{out_damage.damage_type}")
+
+				if (in_damage.zone == out_damage.zone and
+					in_damage.damage_type == out_damage.damage_type):
+
+					# Found matching damage - check severity
+					in_severity = severity_map.get(in_damage.severity, 1)
+					out_severity = severity_map.get(out_damage.severity, 1)
+
+					frappe.logger().debug(f"Match found! IN severity: {in_damage.severity} ({in_severity}), OUT severity: {out_damage.severity} ({out_severity})")
+
+					if in_severity > out_severity:
+						damage_state = 'worsened'
+					else:
+						damage_state = 'existing'
+					break
+
+			frappe.logger().debug(f"Setting damage state for {in_damage.zone}/{in_damage.damage_type}: {damage_state}")
+			in_damage.damage_state = damage_state
+
+	def calculate_distance_traveled(self):
+		"""Auto-calculate distance based on mileage difference"""
+		if self.in_mileage and self.out_mileage:
+			distance = self.in_mileage - self.out_mileage
+			if distance >= 0:
+				self.distance_traveled = distance
+			else:
+				frappe.msgprint(_("Warning: IN mileage is less than OUT mileage"), indicator="orange")
+
+	def update_status(self):
+		"""Auto-update status based on movement data"""
+		if not self.status or self.status == "Draft":
+			# Check for critical damage flags in both OUT and IN
+			out_damages = self.out_vehicle_damage_logs or []
+			in_damages = self.in_vehicle_damage_logs or []
+
+			has_critical_damage = any(
+				d.severity == "Critical" for d in list(out_damages) + list(in_damages)
 			)
-	
-	def revert_vehicle_status(self):
-		"""Revert vehicle status when movement is cancelled"""
-		settings = frappe.get_single("Workshop Settings")
-		
-		if settings.auto_update_vehicle_status:
-			vehicle = frappe.get_doc("Vehicle", self.vehicle)
-			vehicle.db_set("status", "Available", update_modified=False)
-			
-			vehicle.add_comment(
-				"Info",
-				_("Workshop movement cancelled on {0}").format(now_datetime())
+
+			if has_critical_damage:
+				self.status = "Issue Flagged"
+			elif self.out_date_time and self.in_date_time:
+				self.status = "Returned"
+			elif self.out_date_time:
+				self.status = "Out Only"
+			else:
+				self.status = "Draft"
+
+	def calculate_condition_delta(self):
+		"""Compare OUT vs IN condition and generate delta summary"""
+		delta_items = []
+
+		# Fuel level comparison
+		if self.out_fuel_percentage is not None and self.in_fuel_percentage is not None:
+			fuel_diff = self.in_fuel_percentage - self.out_fuel_percentage
+			if fuel_diff < 0:
+				delta_items.append(f"⚠️ Fuel consumed: {abs(fuel_diff)}%")
+			elif fuel_diff > 0:
+				delta_items.append(f"✓ Fuel added: {fuel_diff}%")
+
+		# Mileage/distance check
+		if self.distance_traveled:
+			delta_items.append(f"📏 Distance: {self.distance_traveled} km")
+
+		# Damage analysis - Compare OUT vs IN
+		out_damages = self.out_vehicle_damage_logs or []
+		in_damages = self.in_vehicle_damage_logs or []
+
+		if out_damages or in_damages:
+			# Show OUT damage count
+			out_count = len(out_damages)
+			in_count = len(in_damages)
+			delta_items.append(f"📋 Damages: OUT {out_count} → IN {in_count}")
+
+			# Count IN damages by state
+			if in_damages:
+				state_counts = {'new': 0, 'existing': 0, 'worsened': 0}
+				for damage in in_damages:
+					state = damage.damage_state or 'new'
+					state_counts[state] = state_counts.get(state, 0) + 1
+
+				damage_parts = []
+				if state_counts['new'] > 0:
+					damage_parts.append(f"🔴 {state_counts['new']} New")
+				if state_counts['worsened'] > 0:
+					damage_parts.append(f"🟡 {state_counts['worsened']} Worsened")
+				if state_counts['existing'] > 0:
+					damage_parts.append(f"🟢 {state_counts['existing']} Existing")
+
+				if damage_parts:
+					delta_items.append(f"   └─ {', '.join(damage_parts)}")
+
+			# Flag critical damages (from both OUT and IN)
+			all_damages = list(out_damages) + list(in_damages)
+			critical_damages = [d for d in all_damages if d.severity == "Critical"]
+			if critical_damages:
+				for damage in critical_damages:
+					delta_items.append(f"❌ CRITICAL: {damage.zone} - {damage.damage_type}")
+
+		# Check notes for tags
+		out_tags = extract_tags(self.out_notes or "")
+		in_tags = extract_tags(self.in_notes or "")
+
+		if out_tags or in_tags:
+			if out_tags:
+				delta_items.append(f"OUT Tags: {', '.join(out_tags)}")
+			if in_tags:
+				delta_items.append(f"IN Tags: {', '.join(in_tags)}")
+
+		# Set condition delta
+		if delta_items:
+			self.condition_delta = "\n".join(delta_items)
+		else:
+			self.condition_delta = "No significant changes detected"
+
+	def before_submit(self):
+		"""Validation before submission"""
+		if not self.in_date_time:
+			frappe.throw(_("Cannot submit movement without IN date/time"))
+
+		if self.status == "Issue Flagged":
+			frappe.msgprint(
+				_("Warning: This movement has flagged issues. Please review before submission."),
+				indicator="orange",
+				alert=True
 			)
-	
-	def send_workshop_notifications(self):
-		"""Send notifications to maintenance team"""
-		settings = frappe.get_single("Workshop Settings")
-		
-		# Send email notifications
-		if settings.send_email_notifications:
-			self.send_email_notification(settings)
-		
-		# Send system notifications
-		if settings.send_system_notifications:
-			self.send_system_notification(settings)
-	
-	def send_email_notification(self, settings):
-		"""Send email to maintenance team"""
-		recipients = []
-		
-		# Add workshop manager
-		if settings.workshop_manager:
-			manager = frappe.get_doc("Employee", settings.workshop_manager)
-			if manager.user_id:
-				recipients.append(manager.user_id)
-		
-		# Add notification recipients
-		for recipient in settings.notification_recipients:
-			if recipient.email:
-				recipients.append(recipient.email)
-			elif recipient.employee:
-				emp = frappe.get_doc("Employee", recipient.employee)
-				if emp.user_id:
-					recipients.append(emp.user_id)
-		
-		if recipients:
-			message = """
-			<h3>Vehicle Workshop Entry Notification</h3>
-			<p>A vehicle has been moved to the workshop:</p>
-			<table style="border-collapse: collapse; width: 100%;">
-				<tr>
-					<td style="padding: 8px; border: 1px solid #ddd;"><strong>Vehicle:</strong></td>
-					<td style="padding: 8px; border: 1px solid #ddd;">{vehicle}</td>
-				</tr>
-				<tr>
-					<td style="padding: 8px; border: 1px solid #ddd;"><strong>Movement Date:</strong></td>
-					<td style="padding: 8px; border: 1px solid #ddd;">{movement_date}</td>
-				</tr>
-				<tr>
-					<td style="padding: 8px; border: 1px solid #ddd;"><strong>Workshop Reason:</strong></td>
-					<td style="padding: 8px; border: 1px solid #ddd;">{workshop_reason}</td>
-				</tr>
-				<tr>
-					<td style="padding: 8px; border: 1px solid #ddd;"><strong>Estimated Completion:</strong></td>
-					<td style="padding: 8px; border: 1px solid #ddd;">{estimated_completion}</td>
-				</tr>
-				<tr>
-					<td style="padding: 8px; border: 1px solid #ddd;"><strong>Odometer Reading:</strong></td>
-					<td style="padding: 8px; border: 1px solid #ddd;">{odometer}</td>
-				</tr>
-				<tr>
-					<td style="padding: 8px; border: 1px solid #ddd;"><strong>Purpose:</strong></td>
-					<td style="padding: 8px; border: 1px solid #ddd;">{purpose}</td>
-				</tr>
-			</table>
-			<p><a href="{url}">View Vehicle Movement</a></p>
-			""".format(
-				vehicle=self.vehicle,
-				movement_date=self.movement_date,
-				workshop_reason=self.workshop_reason or "Not specified",
-				estimated_completion=self.estimated_completion_date or "Not specified",
-				odometer=self.odometer_reading or "Not recorded",
-				purpose=self.purpose or "Not specified",
-				url=frappe.utils.get_url_to_form("Vehicle Movements", self.name)
-			)
-			
-			frappe.sendmail(
-				recipients=list(set(recipients)),
-				subject=_("Vehicle Workshop Entry: {0}").format(self.vehicle),
-				message=message,
-				reference_doctype=self.doctype,
-				reference_name=self.name
-			)
-	
-	def send_system_notification(self, settings):
-		"""Send system notification"""
-		recipients = []
-		
-		# Add workshop manager
-		if settings.workshop_manager:
-			manager = frappe.get_doc("Employee", settings.workshop_manager)
-			if manager.user_id:
-				recipients.append(manager.user_id)
-		
-		# Add notification recipients
-		for recipient in settings.notification_recipients:
-			if recipient.employee:
-				emp = frappe.get_doc("Employee", recipient.employee)
-				if emp.user_id:
-					recipients.append(emp.user_id)
-		
-		if recipients:
-			notification_doc = frappe.get_doc({
-				"doctype": "Notification Log",
-				"subject": _("Vehicle {0} moved to workshop").format(self.vehicle),
-				"for_user": "",
-				"type": "Alert",
-				"document_type": self.doctype,
-				"document_name": self.name,
-				"email_content": _("Vehicle {0} has been moved to workshop. Reason: {1}").format(
-					self.vehicle,
-					self.workshop_reason or "Not specified"
-				)
-			})
-			
-			for user in list(set(recipients)):
-				notification_doc_copy = frappe.copy_doc(notification_doc)
-				notification_doc_copy.for_user = user
-				notification_doc_copy.insert(ignore_permissions=True)
-	
-	def create_workshop_log(self):
-		"""Create a log entry for workshop history"""
-		frappe.get_doc({
-			"doctype": "Comment",
-			"comment_type": "Info",
-			"reference_doctype": "Vehicle",
-			"reference_name": self.vehicle,
-			"content": _("Workshop Entry: {0} | Reason: {1} | Est. Completion: {2}").format(
-				self.movement_date,
-				self.workshop_reason or "Not specified",
-				self.estimated_completion_date or "Not specified"
-			)
-		}).insert(ignore_permissions=True)
 
 
-@frappe.whitelist()
-def mark_workshop_completed(movement_name, actual_completion_date, workshop_notes=None, update_vehicle_status=True):
-	"""Mark a workshop movement as completed"""
-	doc = frappe.get_doc("Movements", movement_name)
-	
-	if doc.movement_type != "Workshop":
-		frappe.throw(_("This is not a workshop movement"))
-	
-	doc.workshop_status = "Completed"
-	doc.actual_completion_date = actual_completion_date
-	
-	if workshop_notes:
-		current_notes = doc.workshop_notes or ""
-		timestamp = now_datetime()
-		new_note = f"[{timestamp}] Completed\n{workshop_notes}\n\n"
-		doc.workshop_notes = new_note + current_notes
-	
-	doc.save(ignore_permissions=True)
-	
-	# Update vehicle status back to Available
-	if update_vehicle_status:
-		vehicle = frappe.get_doc("Vehicle", doc.vehicle)
-		vehicle.db_set("status", "Available", update_modified=False)
-		vehicle.add_comment(
-			"Info",
-			_("Vehicle returned from workshop on {0}").format(actual_completion_date)
-		)
-	
-	return doc
+def extract_tags(text):
+	"""Extract tags from notes field (e.g., [Dirty], [Fuel Low])"""
+	import re
+	if not text:
+		return []
+	return re.findall(r'\[(.*?)\]', text)

@@ -6,7 +6,7 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "job_status",
+  "status",
   "priority",
   "column_break_1",
   "job_date",
@@ -54,7 +54,7 @@
  "fields": [
   {
    "default": "Open",
-   "fieldname": "job_status",
+   "fieldname": "status",
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Status",

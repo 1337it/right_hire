@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Right Hire — Customer Portal</title>
+<style>
+/* ── Reset & Base ─────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  background:#f4f6f9;color:#1a1a2e;min-height:100vh;overflow-x:hidden}
+
+/* ── Header ───────────────────────────────────────── */
+.portal-header{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 20px;background:#fff;border-bottom:1px solid #e2e8f0;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
+}
+.portal-header .brand{display:flex;align-items:center;gap:10px}
+.portal-header .brand-icon{
+  width:36px;height:36px;background:#1e40af;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:700;font-size:14px;
+}
+.portal-header .brand-text{font-size:16px;font-weight:700;color:#1e40af}
+.portal-header .user-info{display:flex;align-items:center;gap:12px}
+.portal-header .user-name{font-size:13px;color:#64748b;display:none}
+@media(min-width:480px){.portal-header .user-name{display:block}}
+.btn-logout{
+  padding:6px 14px;border:1px solid #e2e8f0;border-radius:6px;
+  background:#fff;color:#64748b;font-size:12px;cursor:pointer;
+  transition:all .15s;
+}
+.btn-logout:hover{background:#f8fafc;border-color:#cbd5e1}
+
+/* ── Vehicle Cards ────────────────────────────────── */
+.vehicle-section{padding:16px 20px}
+.section-title{font-size:14px;font-weight:600;color:#64748b;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.vehicle-scroll{
+  display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;
+  -webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;
+}
+.vehicle-scroll::-webkit-scrollbar{height:4px}
+.vehicle-scroll::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
+
+.vehicle-card{
+  flex:0 0 auto;width:200px;scroll-snap-align:start;
+  background:#fff;border:2px solid transparent;border-radius:14px;
+  padding:16px;cursor:pointer;transition:all .2s;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
+}
+.vehicle-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.vehicle-card.active{border-color:#1e40af;box-shadow:0 4px 12px rgba(30,64,175,.2)}
+
+/* ── UAE Plate Art ────────────────────────────────── */
+.plate{
+  width:168px;height:52px;margin:0 auto 10px;border-radius:5px;
+  border:2px solid #333;position:relative;display:flex;
+  align-items:center;overflow:hidden;
+}
+.plate .plate-left{
+  flex:0 0 40px;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;font-size:8px;
+  font-weight:700;line-height:1.2;border-right:2px solid;
+  padding:2px;
+}
+.plate .plate-right{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:800;letter-spacing:2px;padding:0 6px;
+}
+.plate .plate-code{
+  position:absolute;top:2px;right:6px;font-size:8px;font-weight:700;
+  letter-spacing:1px;
+}
+
+/* Dubai plate */
+.plate-dubai{background:#fff;border-color:#c0392b}
+.plate-dubai .plate-left{background:#c0392b;color:#fff;border-color:#c0392b}
+.plate-dubai .plate-right{color:#333}
+.plate-dubai .plate-code{color:#c0392b}
+
+/* Abu Dhabi plate */
+.plate-abudhabi{background:#fff;border-color:#1a5276}
+.plate-abudhabi .plate-left{background:#1a5276;color:#fff;border-color:#1a5276}
+.plate-abudhabi .plate-right{color:#333}
+.plate-abudhabi .plate-code{color:#1a5276}
+
+/* Sharjah plate */
+.plate-sharjah{background:#fff;border-color:#196f3d}
+.plate-sharjah .plate-left{background:#196f3d;color:#fff;border-color:#196f3d}
+.plate-sharjah .plate-right{color:#333}
+.plate-sharjah .plate-code{color:#196f3d}
+
+/* Default / other emirates */
+.plate-default{background:#fff;border-color:#555}
+.plate-default .plate-left{background:#555;color:#fff;border-color:#555}
+.plate-default .plate-right{color:#333}
+.plate-default .plate-code{color:#555}
+
+.vehicle-info{text-align:center;font-size:12px;color:#475569;line-height:1.4}
+.vehicle-info .make-model{font-weight:600;color:#1a1a2e}
+.vehicle-info .year-color{color:#94a3b8;font-size:11px}
+.lease-badge{
+  display:inline-block;margin-top:6px;padding:2px 8px;
+  border-radius:10px;font-size:10px;font-weight:600;
+  background:#dbeafe;color:#1e40af;
+}
+
+/* ── Detail Panel ─────────────────────────────────── */
+.detail-panel{
+  display:none;padding:0 20px 20px;
+}
+.detail-panel.visible{display:block}
+
+/* Tab bar */
+.tab-bar{
+  display:flex;gap:0;background:#fff;border-radius:10px;
+  overflow:hidden;margin-bottom:16px;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
+  position:sticky;top:62px;z-index:50;
+}
+.tab-btn{
+  flex:1;padding:12px 8px;border:none;background:#fff;
+  font-size:13px;font-weight:600;color:#94a3b8;cursor:pointer;
+  transition:all .15s;border-bottom:3px solid transparent;
+}
+.tab-btn:hover{color:#475569;background:#f8fafc}
+.tab-btn.active{color:#1e40af;border-bottom-color:#1e40af;background:#eff6ff}
+
+/* Date range */
+.date-bar{
+  display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;
+}
+.date-bar label{font-size:12px;font-weight:600;color:#64748b}
+.date-bar input[type="date"]{
+  padding:8px 10px;border:1px solid #e2e8f0;border-radius:8px;
+  font-size:13px;color:#334155;background:#fff;
+}
+
+/* Summary cards */
+.summary-row{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;
+}
+.summary-card{
+  background:#fff;border-radius:10px;padding:14px;text-align:center;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
+}
+.summary-card .label{font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.summary-card .value{font-size:22px;font-weight:700;color:#1e40af}
+.summary-card .value.amount{font-size:18px}
+
+/* Data table */
+.data-table-wrap{
+  background:#fff;border-radius:10px;overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:16px;
+}
+.data-table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.data-table{width:100%;border-collapse:collapse;font-size:13px;min-width:500px}
+table.data-table th{
+  background:#f8fafc;padding:10px 12px;text-align:left;
+  font-weight:600;color:#64748b;font-size:11px;
+  text-transform:uppercase;letter-spacing:.5px;
+  position:sticky;top:0;border-bottom:1px solid #e2e8f0;
+}
+table.data-table td{
+  padding:10px 12px;border-bottom:1px solid #f1f5f9;color:#334155;
+}
+table.data-table tr:last-child td{border-bottom:none}
+table.data-table tr:hover{background:#f8fafc}
+
+.status-badge{
+  display:inline-block;padding:2px 8px;border-radius:10px;
+  font-size:11px;font-weight:600;
+}
+.status-paid,.status-Paid{background:#dcfce7;color:#16a34a}
+.status-unpaid,.status-Unpaid{background:#fee2e2;color:#dc2626}
+.status-disputed,.status-Disputed{background:#fef3c7;color:#d97706}
+.status-waived,.status-Waived{background:#e0e7ff;color:#6366f1}
+
+.empty-state{
+  text-align:center;padding:40px 20px;color:#94a3b8;font-size:14px;
+}
+
+/* Export bar */
+.export-bar{
+  display:flex;gap:10px;justify-content:flex-end;margin-bottom:30px;
+}
+.btn-export{
+  padding:10px 18px;border-radius:8px;border:none;font-size:13px;
+  font-weight:600;cursor:pointer;transition:all .15s;
+}
+.btn-csv{background:#ecfdf5;color:#059669}
+.btn-csv:hover{background:#d1fae5}
+.btn-pdf{background:#eff6ff;color:#1e40af}
+.btn-pdf:hover{background:#dbeafe}
+
+/* ── Photo button & modal ─────────────────────────── */
+.btn-view-photo{
+  background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;border-radius:6px;
+  padding:4px 10px;cursor:pointer;font-size:13px;transition:all .15s;
+}
+.btn-view-photo:hover{background:#dbeafe}
+.photo-modal-overlay{
+  position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);
+  display:flex;align-items:center;justify-content:center;z-index:9999;
+}
+.photo-modal{
+  background:#fff;border-radius:12px;max-width:90vw;max-height:90vh;overflow:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,0.3);
+}
+.photo-modal-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 16px;border-bottom:1px solid #e5e7eb;font-weight:600;font-size:15px;
+}
+.photo-modal-close{
+  background:none;border:none;font-size:22px;cursor:pointer;color:#6b7280;padding:0 4px;
+}
+.photo-modal-close:hover{color:#111}
+.photo-modal-body{padding:16px;text-align:center}
+
+/* ── Loading state ────────────────────────────────── */
+.loading-spinner{
+  display:none;text-align:center;padding:30px;
+}
+.loading-spinner.visible{display:block}
+.spinner{
+  width:30px;height:30px;border:3px solid #e2e8f0;
+  border-top-color:#1e40af;border-radius:50%;
+  animation:spin .6s linear infinite;margin:0 auto 8px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Desktop grid for vehicle cards ───────────────── */
+@media(min-width:768px){
+  .vehicle-scroll{flex-wrap:wrap;overflow-x:visible}
+  .vehicle-card{width:210px}
+  .detail-panel{max-width:900px}
+}
+@media(min-width:1024px){
+  .portal-body{max-width:1100px;margin:0 auto}
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="portal-header">
+  <div class="brand">
+    <div class="brand-icon">RH</div>
+    <span class="brand-text">Right Hire</span>
+  </div>
+  <div class="user-info">
+    <span class="user-name">{{ customer_name }}</span>
+    <button class="btn-logout" onclick="logout()">Logout</button>
+  </div>
+</header>
+
+<div class="portal-body">
+
+  {% if no_customer %}
+  <div style="text-align:center;padding:60px 20px;">
+    <div style="font-size:48px;margin-bottom:16px;">&#9888;</div>
+    <h2 style="color:#334155;margin-bottom:8px;">No Customer Account Found</h2>
+    <p style="color:#64748b;max-width:400px;margin:0 auto;">Your login is not linked to a customer account. Please contact Right Hire support for assistance.</p>
+  </div>
+  {% else %}
+
+  <!-- Vehicle Cards -->
+  <section class="vehicle-section">
+    <div class="section-title">Your Vehicles</div>
+    <div class="vehicle-scroll" id="vehicleScroll">
+      <div class="loading-spinner visible" id="vehicleLoader">
+        <div class="spinner"></div>
+        <div style="font-size:13px;color:#94a3b8">Loading vehicles...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Detail Panel -->
+  <section class="detail-panel" id="detailPanel">
+
+    <!-- Tabs -->
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="salik" onclick="switchTab('salik')">Salik</button>
+      <button class="tab-btn" data-tab="darb" onclick="switchTab('darb')">Darb</button>
+      <button class="tab-btn" data-tab="fines" onclick="switchTab('fines')">Fines</button>
+    </div>
+
+    <!-- Date range -->
+    <div class="date-bar">
+      <label>From</label>
+      <input type="date" id="fromDate" onchange="loadTabData()">
+      <label>To</label>
+      <input type="date" id="toDate" onchange="loadTabData()">
+    </div>
+
+    <!-- Summary -->
+    <div class="summary-row">
+      <div class="summary-card">
+        <div class="label">Total Records</div>
+        <div class="value" id="summaryCount">0</div>
+      </div>
+      <div class="summary-card">
+        <div class="label">Total Amount</div>
+        <div class="value amount" id="summaryAmount">AED 0.00</div>
+      </div>
+    </div>
+
+    <!-- Data table -->
+    <div class="data-table-wrap">
+      <div class="loading-spinner" id="dataLoader">
+        <div class="spinner"></div>
+        <div style="font-size:13px;color:#94a3b8">Loading data...</div>
+      </div>
+      <div class="data-table-scroll">
+        <table class="data-table" id="dataTable">
+          <thead id="tableHead"></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Export -->
+    <div class="export-bar">
+      <button class="btn-export btn-csv" onclick="exportData('csv')">Export CSV</button>
+      <button class="btn-export btn-pdf" onclick="exportData('pdf')">Export PDF</button>
+    </div>
+  </section>
+
+  {% endif %}
+</div>
+
+<script>
+// ── State ──────────────────────────────────────────
+var state = {
+  vehicles: [],
+  selectedVehicles: [],   // array of vehicle IDs
+  selectedLeases: [],     // array of lease objects for selected vehicles
+  currentTab: 'salik',
+  currentData: [],
+  multiVehicle: false
+};
+
+// ── API helper ─────────────────────────────────────
+function api(method, args) {
+  return new Promise(function(resolve, reject) {
+    var x = new XMLHttpRequest();
+    x.open('POST', '/api/method/right_hire.api.portal.' + method);
+    x.setRequestHeader('Content-Type', 'application/json');
+    x.setRequestHeader('Accept', 'application/json');
+    x.setRequestHeader('X-Frappe-CSRF-Token', getCookie('csrf_token') || '');
+    x.onload = function() {
+      if (x.status >= 200 && x.status < 300) {
+        try {
+          var resp = JSON.parse(x.responseText);
+          resolve(resp.message);
+        } catch(e) { reject(e); }
+      } else {
+        try {
+          var err = JSON.parse(x.responseText);
+          reject(new Error(err._server_messages || err.message || 'Request failed'));
+        } catch(e) {
+          reject(new Error('Request failed (' + x.status + ')'));
+        }
+      }
+    };
+    x.onerror = function() { reject(new Error('Network error')); };
+    x.send(JSON.stringify(args || {}));
+  });
+}
+
+function getCookie(name) {
+  var v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+  return v ? v.pop() : '';
+}
+
+// ── Init ───────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() { loadVehicles(); });
+
+function loadVehicles() {
+  document.getElementById('vehicleLoader').className = 'loading-spinner visible';
+  api('get_customer_vehicles').then(function(vehicles) {
+    state.vehicles = vehicles || [];
+    renderVehicles();
+  }).catch(function(err) {
+    document.getElementById('vehicleScroll').innerHTML =
+      '<div class="empty-state">Could not load vehicles. Please try again.</div>';
+  });
+}
+
+// ── Render vehicles ────────────────────────────────
+function renderVehicles() {
+  var wrap = document.getElementById('vehicleScroll');
+  if (!state.vehicles.length) {
+    wrap.innerHTML = '<div class="empty-state">No active leases found for your account.</div>';
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < state.vehicles.length; i++) {
+    var v = state.vehicles[i];
+    var plateClass = getPlateClass(v.plate_code);
+    var isActive = state.selectedVehicles.indexOf(v.vehicle) >= 0 ? ' active' : '';
+    html += '<div class="vehicle-card' + isActive + '" onclick="toggleVehicle(' + i + ')">'
+      + renderPlate(v, plateClass)
+      + '<div class="vehicle-info">'
+      + '<div class="make-model">' + esc(v.make || '') + ' ' + esc(v.model || '') + '</div>'
+      + '<div class="year-color">' + esc(v.year || '') + (v.color ? ' &middot; ' + esc(v.color) : '') + '</div>'
+      + '<span class="lease-badge">' + esc(v.lease_start || '') + ' &rarr; ' + esc(v.lease_end || 'Ongoing') + '</span>'
+      + '</div></div>';
+  }
+  wrap.innerHTML = html;
+}
+
+function getPlateClass(code) {
+  if (!code) return 'plate-default';
+  var c = (code + '').toLowerCase();
+  if (c.indexOf('dubai') >= 0 || c === 'dxb') return 'plate-dubai';
+  if (c.indexOf('abu') >= 0 || c === 'ad' || c === 'auh') return 'plate-abudhabi';
+  if (c.indexOf('sharjah') >= 0 || c === 'shj') return 'plate-sharjah';
+  return 'plate-default';
+}
+
+function renderPlate(v, cls) {
+  var emirateLabel = (v.plate_code || '').replace(/-/g, ' ');
+  if (emirateLabel.length > 7) emirateLabel = emirateLabel.substring(0, 7);
+  return '<div class="plate ' + cls + '">'
+    + '<div class="plate-left">' + esc(emirateLabel).toUpperCase() + '</div>'
+    + '<div class="plate-right">' + esc(v.plate_no || '') + '</div>'
+    + '</div>';
+}
+
+// ── Toggle vehicle selection (multi-select) ───────
+function toggleVehicle(idx) {
+  var v = state.vehicles[idx];
+  var pos = state.selectedVehicles.indexOf(v.vehicle);
+
+  if (pos >= 0) {
+    // Deselect
+    state.selectedVehicles.splice(pos, 1);
+    state.selectedLeases.splice(pos, 1);
+  } else {
+    // Select
+    state.selectedVehicles.push(v.vehicle);
+    state.selectedLeases.push(v);
+  }
+
+  state.multiVehicle = state.selectedVehicles.length > 1;
+
+  // Update active card styling
+  var cards = document.querySelectorAll('.vehicle-card');
+  for (var i = 0; i < cards.length; i++) {
+    var vid = state.vehicles[i].vehicle;
+    cards[i].classList.toggle('active', state.selectedVehicles.indexOf(vid) >= 0);
+  }
+
+  if (state.selectedVehicles.length === 0) {
+    document.getElementById('detailPanel').classList.remove('visible');
+    return;
+  }
+
+  // Set date range defaults to current month, clamped to widest lease range
+  var now = new Date();
+  var monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  var monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+  var earliestStart = null;
+  var latestEnd = null;
+  for (var i = 0; i < state.selectedLeases.length; i++) {
+    var sl = state.selectedLeases[i];
+    var ls = sl.lease_start ? new Date(sl.lease_start) : monthStart;
+    var le = sl.lease_end ? new Date(sl.lease_end) : new Date('2099-12-31');
+    if (!earliestStart || ls < earliestStart) earliestStart = ls;
+    if (!latestEnd || le > latestEnd) latestEnd = le;
+  }
+
+  var fd = monthStart < earliestStart ? earliestStart : monthStart;
+  var td = monthEnd > latestEnd ? latestEnd : monthEnd;
+
+  document.getElementById('fromDate').value = formatDate(fd);
+  document.getElementById('toDate').value = formatDate(td);
+  document.getElementById('fromDate').min = earliestStart ? formatDate(earliestStart) : '';
+  document.getElementById('fromDate').max = latestEnd ? formatDate(latestEnd) : '';
+  document.getElementById('toDate').min = earliestStart ? formatDate(earliestStart) : '';
+  document.getElementById('toDate').max = latestEnd ? formatDate(latestEnd) : '';
+
+  // Show detail panel and load data
+  document.getElementById('detailPanel').classList.add('visible');
+  loadTabData();
+}
+
+// ── Tabs ───────────────────────────────────────────
+function switchTab(tab) {
+  state.currentTab = tab;
+  var btns = document.querySelectorAll('.tab-btn');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.toggle('active', btns[i].getAttribute('data-tab') === tab);
+  }
+  loadTabData();
+}
+
+// ── Load data for current tab ──────────────────────
+function loadTabData() {
+  if (!state.selectedVehicles.length) return;
+
+  var fromDate = document.getElementById('fromDate').value;
+  var toDate = document.getElementById('toDate').value;
+
+  document.getElementById('dataLoader').className = 'loading-spinner visible';
+  document.getElementById('tableHead').innerHTML = '';
+  document.getElementById('tableBody').innerHTML = '';
+  document.getElementById('summaryCount').textContent = '...';
+  document.getElementById('summaryAmount').textContent = '...';
+
+  var methodMap = {salik: 'get_vehicle_salik', darb: 'get_vehicle_darb', fines: 'get_vehicle_fines'};
+  var method = methodMap[state.currentTab];
+
+  api(method, {
+    vehicle: state.selectedVehicles.join(','),
+    from_date: fromDate,
+    to_date: toDate
+  }).then(function(result) {
+    document.getElementById('dataLoader').className = 'loading-spinner';
+    state.currentData = result.data || [];
+    state.multiVehicle = result.multi_vehicle || false;
+
+    // Summary
+    document.getElementById('summaryCount').textContent = result.total_count || 0;
+    document.getElementById('summaryAmount').textContent = 'AED ' + formatNum(result.total_amount || 0);
+
+    renderTable(result.data || []);
+  }).catch(function(err) {
+    document.getElementById('dataLoader').className = 'loading-spinner';
+    document.getElementById('tableBody').innerHTML =
+      '<tr><td colspan="10" class="empty-state">Error loading data. Please try again.</td></tr>';
+  });
+}
+
+// ── Render table ───────────────────────────────────
+function renderTable(rows) {
+  var thead = document.getElementById('tableHead');
+  var tbody = document.getElementById('tableBody');
+
+  if (!rows.length) {
+    thead.innerHTML = '';
+    tbody.innerHTML = '<tr><td colspan="10" class="empty-state">No records found for this period.</td></tr>';
+    return;
+  }
+
+  var columns = getTabColumns();
+
+  // Prepend Vehicle column when multiple vehicles selected
+  if (state.multiVehicle) {
+    columns = [{key:'plate_no', label:'Vehicle'}].concat(columns);
+  }
+
+  var hHtml = '<tr>';
+  for (var c = 0; c < columns.length; c++) {
+    hHtml += '<th>' + columns[c].label + '</th>';
+  }
+  hHtml += '</tr>';
+  thead.innerHTML = hHtml;
+
+  var bHtml = '';
+  for (var r = 0; r < rows.length; r++) {
+    bHtml += '<tr>';
+    for (var c2 = 0; c2 < columns.length; c2++) {
+      var col = columns[c2];
+      var val = rows[r][col.key];
+      if (col.fmt === 'num') {
+        bHtml += '<td>' + formatNum(val || 0) + '</td>';
+      } else if (col.fmt === 'status') {
+        var cls = 'status-' + (val || 'unpaid');
+        bHtml += '<td><span class="status-badge ' + cls + '">' + esc(val || '') + '</span></td>';
+      } else if (col.fmt === 'photo') {
+        if (val) {
+          bHtml += '<td><button class="btn-view-photo" onclick="viewTicketPhoto(\'' + esc(rows[r].name) + '\')" title="View Photo">📷</button></td>';
+        } else {
+          bHtml += '<td>-</td>';
+        }
+      } else {
+        bHtml += '<td>' + esc(val != null ? val : '') + '</td>';
+      }
+    }
+    bHtml += '</tr>';
+  }
+  tbody.innerHTML = bHtml;
+}
+
+// ── Ticket Photo Viewer ───────────────────────────
+function viewTicketPhoto(fineName) {
+  api('get_ticket_photo', {fine_name: fineName}).then(function(result) {
+    if (result.photo_url) {
+      // Create modal overlay
+      var overlay = document.createElement('div');
+      overlay.className = 'photo-modal-overlay';
+      overlay.onclick = function() { document.body.removeChild(overlay); };
+      overlay.innerHTML =
+        '<div class="photo-modal" onclick="event.stopPropagation()">' +
+          '<div class="photo-modal-header">' +
+            '<span>Ticket Photo</span>' +
+            '<button onclick="this.closest(\'.photo-modal-overlay\').remove()" class="photo-modal-close">&times;</button>' +
+          '</div>' +
+          '<div class="photo-modal-body">' +
+            '<img src="' + result.photo_url + '" alt="Ticket Photo" style="max-width:100%;max-height:75vh;">' +
+          '</div>' +
+        '</div>';
+      document.body.appendChild(overlay);
+    } else {
+      alert('No photo available for this fine.');
+    }
+  }).catch(function() {
+    alert('Failed to load ticket photo.');
+  });
+}
+
+// ── Column definitions ─────────────────────────────
+function getTabColumns() {
+  if (state.currentTab === 'salik') {
+    return [
+      {key:'transaction_date', label:'Date'},
+      {key:'transaction_time', label:'Time'},
+      {key:'gate_location', label:'Location'},
+      {key:'direction', label:'Direction'},
+      {key:'toll_schedule', label:'Schedule'},
+      {key:'toll_amount', label:'Amount (AED)', fmt:'num'}
+    ];
+  } else if (state.currentTab === 'darb') {
+    return [
+      {key:'transaction_date', label:'Date'},
+      {key:'transaction_time', label:'Time'},
+      {key:'gate_location', label:'Location'},
+      {key:'direction', label:'Direction'},
+      {key:'toll_amount', label:'Amount (AED)', fmt:'num'}
+    ];
+  } else {
+    return [
+      {key:'fine_date', label:'Date'},
+      {key:'fine_time', label:'Time'},
+      {key:'fine_number', label:'Fine #'},
+      {key:'location', label:'Location'},
+      {key:'details', label:'Violation'},
+      {key:'amount', label:'Amount (AED)', fmt:'num'},
+      {key:'black_points', label:'Points'},
+      {key:'has_photo', label:'Photo', fmt:'photo'}
+    ];
+  }
+}
+
+function getExportColumns() {
+  var cols = getTabColumns();
+  if (state.multiVehicle) {
+    cols = [{key:'plate_no', label:'Vehicle'}].concat(cols);
+  }
+  return cols;
+}
+
+// ── Export ──────────────────────────────────────────
+function exportData(fmt) {
+  if (!state.selectedVehicles.length) return;
+
+  if (fmt === 'csv') {
+    downloadCSVClient();
+  } else {
+    // PDF — call server-side
+    var fromDate = document.getElementById('fromDate').value;
+    var toDate = document.getElementById('toDate').value;
+    var url = '/api/method/right_hire.api.portal.export_data'
+      + '?vehicle=' + encodeURIComponent(state.selectedVehicles.join(','))
+      + '&tab=' + encodeURIComponent(state.currentTab)
+      + '&from_date=' + encodeURIComponent(fromDate)
+      + '&to_date=' + encodeURIComponent(toDate)
+      + '&fmt=pdf';
+    window.open(url, '_blank');
+  }
+}
+
+function downloadCSVClient() {
+  var rows = state.currentData;
+  if (!rows || !rows.length) return;
+
+  var cols = getExportColumns();
+  var csvLines = [cols.map(function(c){ return '"' + c.label.replace(/"/g,'""') + '"'; }).join(',')];
+
+  for (var i = 0; i < rows.length; i++) {
+    var line = cols.map(function(c){
+      var v = rows[i][c.key];
+      if (v == null) v = '';
+      return '"' + String(v).replace(/"/g,'""') + '"';
+    }).join(',');
+    csvLines.push(line);
+  }
+
+  var blob = new Blob([csvLines.join('\r\n')], {type: 'text/csv;charset=utf-8;'});
+  var link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = state.currentTab + '_export.csv';
+  link.click();
+  URL.revokeObjectURL(link.href);
+}
+
+// ── Helpers ────────────────────────────────────────
+function esc(s) {
+  var d = document.createElement('div');
+  d.appendChild(document.createTextNode(s));
+  return d.innerHTML;
+}
+function formatNum(n) { return parseFloat(n || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+function formatDate(d) {
+  var y = d.getFullYear();
+  var m = ('0' + (d.getMonth()+1)).slice(-2);
+  var day = ('0' + d.getDate()).slice(-2);
+  return y + '-' + m + '-' + day;
+}
+function logout() {
+  var x = new XMLHttpRequest();
+  x.open('POST', '/api/method/logout');
+  x.setRequestHeader('Content-Type', 'application/json');
+  x.setRequestHeader('X-Frappe-CSRF-Token', getCookie('csrf_token') || '');
+  x.onload = function() { window.location.href = '/login'; };
+  x.send('{}');
+}
+</script>
+</body>
+</html>

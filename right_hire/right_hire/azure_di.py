@@ -129,8 +129,24 @@ def create_customer_from_scan(file_url: str, use_urlsource: int = 0, set_docname
     return {"name": created_name, "doc_type": doc_type, "customer_name": customer_name}
 
 def _cfg():
+    """Get Azure DI credentials. Priority: Settings DocType > site_config (fallback)"""
+    try:
+        if frappe.db.exists("Azure Document Intelligence Settings", "Azure Document Intelligence Settings"):
+            settings = frappe.get_single("Azure Document Intelligence Settings")
+            if settings.enabled and settings.endpoint and settings.api_key:
+                return settings.endpoint.rstrip('/'), settings.get_password("api_key")
+    except Exception as e:
+        frappe.log_error(f"Error reading Azure DI Settings: {e}", "Azure DI Config")
+
+    # Fallback to site_config
     sc = frappe.get_site_config()
-    return sc.get("azure_di_endpoint"), sc.get("azure_di_key")
+    endpoint = sc.get("azure_di_endpoint")
+    key = sc.get("azure_di_key")
+
+    if not (endpoint and key):
+        frappe.throw("Azure Document Intelligence not configured. Please configure in Settings or site_config.json")
+
+    return endpoint.rstrip('/') if endpoint else None, key
 
 def _post_analyze(endpoint, key, model, *, url_source=None, file_bytes=None, overload=None):
     base = f"{endpoint}/documentintelligence/documentModels/{model}:analyze"
@@ -389,3 +405,849 @@ def analyze_scan(file_url: str, use_urlsource: int = 0, debug: int = 0):
         frappe.log_error(json.dumps({"doc_type": mapped.get("doc_type"), "returned": filtered}, indent=2), "Analyze Scan – mapped")
 
     return {"fields": filtered, "doc_type": mapped.get("doc_type")}
+
+
+# ==================== COMPANY DOCUMENT SCANNING FUNCTIONS ====================
+
+@frappe.whitelist()
+def scan_credit_application(file_url: str, use_urlsource: int = 0, debug: int = 0):
+    """
+    Scan Credit Application form using Azure Document Intelligence
+    Returns: credit_application_number, credit_limit_approved, credit_application_expiry
+    """
+    frappe.only_for(("System Manager","Sales Manager","Sales User","Administrator"))
+    endpoint, key = _cfg()
+    if not (endpoint and key):
+        raise frappe.ValidationError("Azure endpoint/key missing")
+
+    url_source, file_bytes = _prepare_file_input(file_url, int(use_urlsource))
+
+    # Try prebuilt-layout model for business forms
+    try:
+        op = _post_analyze(endpoint, key, "prebuilt-layout", url_source=url_source, file_bytes=file_bytes)
+        res = _poll(op, key)
+        if res.get("status") == "succeeded":
+            mapped = _map_credit_application(res)
+            if mapped.get("credit_application_number") or mapped.get("credit_limit_approved"):
+                if int(debug):
+                    frappe.log_error(json.dumps(mapped, indent=2), "Credit Application - Structured")
+                return {"fields": mapped}
+    except Exception as e:
+        if int(debug):
+            frappe.log_error(f"prebuilt-document failed: {e}", "Credit Application Scan")
+
+    # Fallback to text extraction
+    try:
+        op = _post_analyze(endpoint, key, "prebuilt-read", url_source=url_source, file_bytes=file_bytes)
+        res = _poll(op, key)
+        if res.get("status") == "succeeded":
+            text = _read_text(res)
+            if int(debug):
+                frappe.log_error((text[:3000] + ("…" if len(text) > 3000 else "")), "Credit Application - Text")
+            mapped = _map_credit_application_text(text)
+            return {"fields": mapped}
+    except Exception as e:
+        if int(debug):
+            frappe.log_error(f"Text extraction failed: {e}", "Credit Application Scan")
+        raise frappe.ValidationError("Failed to scan credit application")
+
+
+@frappe.whitelist()
+def scan_trn_certificate(file_url: str, use_urlsource: int = 0, debug: int = 0):
+    """
+    Scan TRN Certificate using Azure Document Intelligence
+    Returns: trn_number, trn_certificate_expiry
+    """
+    frappe.only_for(("System Manager","Sales Manager","Sales User","Administrator"))
+    endpoint, key = _cfg()
+    if not (endpoint and key):
+        raise frappe.ValidationError("Azure endpoint/key missing")
+
+    url_source, file_bytes = _prepare_file_input(file_url, int(use_urlsource))
+
+    # Try prebuilt-layout model
+    try:
+        op = _post_analyze(endpoint, key, "prebuilt-layout", url_source=url_source, file_bytes=file_bytes)
+        res = _poll(op, key)
+        if res.get("status") == "succeeded":
+            mapped = _map_trn_certificate(res)
+            if mapped.get("trn_number"):
+                if int(debug):
+                    frappe.log_error(json.dumps(mapped, indent=2), "TRN Certificate - Structured")
+                return {"fields": mapped}
+    except Exception as e:
+        if int(debug):
+            frappe.log_error(f"prebuilt-document failed: {e}", "TRN Certificate Scan")
+
+    # Fallback to text extraction
+    try:
+        op = _post_analyze(endpoint, key, "prebuilt-read", url_source=url_source, file_bytes=file_bytes)
+        res = _poll(op, key)
+        if res.get("status") == "succeeded":
+            text = _read_text(res)
+            if int(debug):
+                frappe.log_error((text[:3000] + ("…" if len(text) > 3000 else "")), "TRN Certificate - Text")
+            mapped = _map_trn_certificate_text(text)
+            return {"fields": mapped}
+    except Exception as e:
+        if int(debug):
+            frappe.log_error(f"Text extraction failed: {e}", "TRN Certificate Scan")
+        raise frappe.ValidationError("Failed to scan TRN certificate")
+
+
+@frappe.whitelist()
+def scan_trade_license(file_url: str, use_urlsource: int = 0, debug: int = 0):
+    """
+    Scan Trade License using Azure Document Intelligence
+    Returns: trade_license_number, trade_license_expiry
+    """
+    frappe.only_for(("System Manager","Sales Manager","Sales User","Administrator"))
+    endpoint, key = _cfg()
+    if not (endpoint and key):
+        raise frappe.ValidationError("Azure endpoint/key missing")
+
+    url_source, file_bytes = _prepare_file_input(file_url, int(use_urlsource))
+
+    # Try prebuilt-layout model
+    mapped = {}
+    try:
+        op = _post_analyze(endpoint, key, "prebuilt-layout", url_source=url_source, file_bytes=file_bytes)
+        res = _poll(op, key)
+        if res.get("status") == "succeeded":
+            mapped = _map_trade_license(res)
+            # Always log for debugging
+            frappe.log_error(json.dumps({"method": "prebuilt-layout", "mapped": mapped}, indent=2), "Trade License Scan Debug")
+            if mapped.get("trade_license_number") or mapped.get("trade_license_expiry"):
+                return {"fields": mapped}
+    except Exception as e:
+        frappe.log_error(f"prebuilt-layout failed: {str(e)}", "Trade License Scan Error")
+
+    # Fallback to text extraction
+    try:
+        op = _post_analyze(endpoint, key, "prebuilt-read", url_source=url_source, file_bytes=file_bytes)
+        res = _poll(op, key)
+        if res.get("status") == "succeeded":
+            text = _read_text(res)
+            # Always log extracted text for debugging
+            frappe.log_error((text[:3000] + ("…" if len(text) > 3000 else "")), "Trade License - Extracted Text")
+            mapped = _map_trade_license_text(text)
+            frappe.log_error(json.dumps({"method": "text-fallback", "mapped": mapped}, indent=2), "Trade License Text Mapping")
+            return {"fields": mapped}
+    except Exception as e:
+        frappe.log_error(f"Text extraction failed: {str(e)}", "Trade License Scan Error")
+        raise frappe.ValidationError("Failed to scan trade license")
+
+
+# ==================== HELPER FUNCTIONS ====================
+
+def _prepare_file_input(file_url, use_urlsource):
+    """Prepare file input for Azure API - returns (url_source, file_bytes)"""
+    url_source, file_bytes = None, None
+    if use_urlsource and file_url.lower().startswith(("http://", "https://")):
+        url_source = file_url
+    else:
+        path = get_file_path(file_url)
+        if not os.path.exists(path):
+            raise frappe.ValidationError(f"File not found: {path}")
+        with open(path, "rb") as f:
+            file_bytes = f.read()
+    return url_source, file_bytes
+
+
+# ==================== STRUCTURED MAPPING FUNCTIONS ====================
+
+def _map_credit_application(res):
+    """Map Azure prebuilt-layout result for Credit Application"""
+    out = {
+        "credit_application_number": None,
+        "credit_limit_approved": None,
+        "credit_application_expiry": None
+    }
+
+    ar = res.get("analyzeResult") or {}
+
+    # First, try documents.fields structure
+    documents = ar.get("documents") or []
+    for doc in documents:
+        fields = doc.get("fields") or {}
+
+        # Check all fields for relevant data
+        for field_name, field_value in fields.items():
+            field_name_lower = field_name.lower()
+            content = field_value.get("content", "")
+
+            if not content:
+                continue
+
+            # Application number
+            if not out["credit_application_number"] and any(term in field_name_lower for term in ["application", "reference", "number"]):
+                out["credit_application_number"] = content.strip()
+
+            # Credit limit / Amount
+            if not out["credit_limit_approved"] and any(term in field_name_lower for term in ["credit", "limit", "amount"]):
+                amt = re.search(r"[\d,]+(?:\.\d{2})?", content.replace(",", ""))
+                if amt:
+                    out["credit_limit_approved"] = float(amt.group().replace(",", ""))
+
+            # Expiry date
+            if not out["credit_application_expiry"] and any(term in field_name_lower for term in ["expiry", "expiration", "valid"]):
+                normalized = _norm_date(content)
+                if normalized:
+                    out["credit_application_expiry"] = normalized
+
+    # Fallback to key-value pairs
+    if not all([out["credit_application_number"], out["credit_limit_approved"], out["credit_application_expiry"]]):
+        kv_pairs = ar.get("keyValuePairs") or []
+        for pair in kv_pairs:
+            key_content = (pair.get("key") or {}).get("content", "").lower()
+            value_content = (pair.get("value") or {}).get("content", "")
+
+            if not value_content:
+                continue
+
+            if not out["credit_application_number"] and any(term in key_content for term in ["application", "reference", "app no", "credit no", "number"]):
+                if re.search(r"[A-Z0-9]{4,}", value_content):
+                    out["credit_application_number"] = value_content.strip()
+
+            if not out["credit_limit_approved"] and any(term in key_content for term in ["credit limit", "approved limit", "limit approved", "amount"]):
+                amt = re.search(r"[\d,]+(?:\.\d{2})?", value_content.replace(",", ""))
+                if amt:
+                    out["credit_limit_approved"] = float(amt.group().replace(",", ""))
+
+            if not out["credit_application_expiry"] and any(term in key_content for term in ["expiry", "expiration", "valid until", "valid till"]):
+                out["credit_application_expiry"] = _norm_date(value_content)
+
+    return out
+
+
+def _map_trn_certificate(res):
+    """Map Azure prebuilt-layout result for TRN Certificate"""
+    out = {
+        "trn_number": None,
+        "trn_certificate_expiry": None
+    }
+
+    ar = res.get("analyzeResult") or {}
+
+    # First, try to extract from documents.fields (prebuilt-layout structure)
+    documents = ar.get("documents") or []
+    for doc in documents:
+        fields = doc.get("fields") or {}
+
+        # Look for TaxRegistrationNumber or TRN field (Azure's potential field names)
+        if "TaxRegistrationNumber" in fields:
+            trn_field = fields["TaxRegistrationNumber"]
+            if trn_field.get("content"):
+                trn_content = trn_field["content"].replace(" ", "")
+                trn_match = re.search(r"\d{15}", trn_content)
+                if trn_match:
+                    out["trn_number"] = trn_match.group()
+                    frappe.log_error(f"Found TaxRegistrationNumber: {out['trn_number']}", "TRN Certificate Mapping")
+
+        # Look for ExpiryDate field (Azure's standard field name)
+        if "ExpiryDate" in fields:
+            expiry = fields["ExpiryDate"]
+            if expiry.get("content"):
+                out["trn_certificate_expiry"] = _norm_date(expiry["content"])
+                frappe.log_error(f"Found ExpiryDate: {expiry['content']} -> {out['trn_certificate_expiry']}", "TRN Certificate Mapping")
+
+        # Also check common variations in field names
+        for field_name, field_value in fields.items():
+            field_name_lower = field_name.lower()
+            content = field_value.get("content", "")
+
+            if not content:
+                continue
+
+            # TRN number variations
+            if not out["trn_number"] and any(term in field_name_lower for term in ["trn", "tax", "registration", "number"]):
+                trn_match = re.search(r"\d{15}", content.replace(" ", ""))
+                if trn_match:
+                    out["trn_number"] = trn_match.group()
+                    frappe.log_error(f"Found TRN via field {field_name}: {content} -> {out['trn_number']}", "TRN Certificate Mapping")
+
+            # Expiry date variations
+            if not out["trn_certificate_expiry"] and any(term in field_name_lower for term in ["expiry", "expiration", "expire", "valid"]):
+                normalized = _norm_date(content)
+                if normalized:
+                    out["trn_certificate_expiry"] = normalized
+                    frappe.log_error(f"Found expiry via field {field_name}: {content} -> {normalized}", "TRN Certificate Mapping")
+
+    # If not found in documents, try key-value pairs (fallback)
+    if not out["trn_number"] or not out["trn_certificate_expiry"]:
+        kv_pairs = ar.get("keyValuePairs") or []
+        for pair in kv_pairs:
+            key_content = (pair.get("key") or {}).get("content", "").lower()
+            value_content = (pair.get("value") or {}).get("content", "")
+
+            if not value_content:
+                continue
+
+            # TRN number (15 digits in UAE)
+            if not out["trn_number"] and any(term in key_content for term in ["trn", "tax", "registration", "number"]):
+                trn_match = re.search(r"\d{15}", value_content.replace(" ", ""))
+                if trn_match:
+                    out["trn_number"] = trn_match.group()
+
+            # Expiry date
+            if not out["trn_certificate_expiry"] and any(term in key_content for term in ["expiry", "expiration", "valid until", "valid till"]):
+                normalized = _norm_date(value_content)
+                if normalized:
+                    out["trn_certificate_expiry"] = normalized
+
+    return out
+
+
+def _map_trade_license(res):
+    """Map Azure prebuilt-layout result for Trade License"""
+    out = {
+        "trade_license_number": None,
+        "trade_license_expiry": None
+    }
+
+    ar = res.get("analyzeResult") or {}
+
+    # First, try to extract from documents.fields (prebuilt-layout structure)
+    documents = ar.get("documents") or []
+    for doc in documents:
+        fields = doc.get("fields") or {}
+
+        # Look for MainLicenseNumber field (Azure's standard field name)
+        if "MainLicenseNumber" in fields:
+            main_lic = fields["MainLicenseNumber"]
+            if main_lic.get("content"):
+                out["trade_license_number"] = main_lic["content"].strip()
+                frappe.log_error(f"Found MainLicenseNumber: {out['trade_license_number']}", "Trade License Mapping")
+
+        # Look for ExpiryDate field (Azure's standard field name)
+        if "ExpiryDate" in fields:
+            expiry = fields["ExpiryDate"]
+            if expiry.get("content"):
+                out["trade_license_expiry"] = _norm_date(expiry["content"])
+                frappe.log_error(f"Found ExpiryDate: {expiry['content']} -> {out['trade_license_expiry']}", "Trade License Mapping")
+
+        # Also check common variations in field names
+        for field_name, field_value in fields.items():
+            field_name_lower = field_name.lower()
+            content = field_value.get("content", "")
+
+            if not content:
+                continue
+
+            # License number variations
+            if not out["trade_license_number"] and any(term in field_name_lower for term in ["license", "licence", "number", "registration"]):
+                out["trade_license_number"] = content.strip()
+                frappe.log_error(f"Found license via field {field_name}: {content}", "Trade License Mapping")
+
+            # Expiry date variations
+            if not out["trade_license_expiry"] and any(term in field_name_lower for term in ["expiry", "expiration", "expire", "valid"]):
+                normalized = _norm_date(content)
+                if normalized:
+                    out["trade_license_expiry"] = normalized
+                    frappe.log_error(f"Found expiry via field {field_name}: {content} -> {normalized}", "Trade License Mapping")
+
+    # If not found in documents, try key-value pairs (fallback)
+    if not out["trade_license_number"] or not out["trade_license_expiry"]:
+        kv_pairs = ar.get("keyValuePairs") or []
+        for pair in kv_pairs:
+            key_content = (pair.get("key") or {}).get("content", "").lower()
+            value_content = (pair.get("value") or {}).get("content", "")
+
+            if not value_content:
+                continue
+
+            # License number
+            if not out["trade_license_number"] and any(term in key_content for term in ["license", "licence", "number", "registration", "permit"]):
+                out["trade_license_number"] = value_content.strip()
+
+            # Expiry date
+            if not out["trade_license_expiry"] and any(term in key_content for term in ["expiry", "expiration", "expire", "valid", "end date"]):
+                normalized = _norm_date(value_content)
+                if normalized:
+                    out["trade_license_expiry"] = normalized
+
+    return out
+
+
+# ==================== TEXT-BASED MAPPING FUNCTIONS (FALLBACK) ====================
+
+def _map_credit_application_text(text):
+    """Fallback regex mapping for Credit Application from raw text"""
+    out = {
+        "credit_application_number": None,
+        "credit_limit_approved": None,
+        "credit_application_expiry": None
+    }
+
+    # Application number - look for patterns like "App No: ABC123" or "Reference: XYZ789"
+    app_patterns = [
+        r"(?:Application|Reference|App|Credit)\s*(?:No\.?|Number|#)\s*[:\-]?\s*([A-Z0-9\-/]{4,})",
+        r"\b([A-Z]{2,}\d{4,}|\d{4,}[A-Z]{2,})\b"  # Alphanumeric codes
+    ]
+    for pattern in app_patterns:
+        m = re.search(pattern, text, re.I)
+        if m:
+            out["credit_application_number"] = m.group(1).strip()
+            break
+
+    # Credit limit - look for currency amounts
+    limit_patterns = [
+        r"(?:Credit\s*Limit|Approved\s*Limit|Limit\s*Approved|Amount)\s*[:\-]?\s*(?:AED|USD|SAR)?\s*([\d,]+(?:\.\d{2})?)",
+        r"(?:AED|USD|SAR)\s*([\d,]+(?:\.\d{2})?)"
+    ]
+    for pattern in limit_patterns:
+        m = re.search(pattern, text, re.I)
+        if m:
+            out["credit_limit_approved"] = float(m.group(1).replace(",", ""))
+            break
+
+    # Expiry date
+    DATE_RX = r"(\d{4}[./-]\d{1,2}[./-]\d{1,2}|\d{1,2}[./-]\d{1,2}[./-]\d{2,4})"
+    m = re.search(r"(?:Expiry|Expiration|Valid\s*Until|Valid\s*Till)\s*[:\-]?\s*" + DATE_RX, text, re.I)
+    if m:
+        out["credit_application_expiry"] = _norm_date(m.group(1))
+
+    return out
+
+
+def _map_trn_certificate_text(text):
+    """Fallback regex mapping for TRN Certificate from raw text"""
+    out = {
+        "trn_number": None,
+        "trn_certificate_expiry": None
+    }
+
+    # TRN number (15 digits in UAE)
+    trn_patterns = [
+        r"(?:TRN|Tax\s*Registration\s*Number)\s*[:\-]?\s*(\d{15})",
+        r"\b(\d{15})\b"  # 15-digit standalone number
+    ]
+    for pattern in trn_patterns:
+        m = re.search(pattern, text, re.I)
+        if m:
+            out["trn_number"] = m.group(1)
+            break
+
+    # Expiry date
+    DATE_RX = r"(\d{4}[./-]\d{1,2}[./-]\d{1,2}|\d{1,2}[./-]\d{1,2}[./-]\d{2,4})"
+    m = re.search(r"(?:Expiry|Expiration|Valid\s*Until|Valid\s*Till)\s*[:\-]?\s*" + DATE_RX, text, re.I)
+    if m:
+        out["trn_certificate_expiry"] = _norm_date(m.group(1))
+
+    return out
+
+
+def _map_trade_license_text(text):
+    """Fallback regex mapping for Trade License from raw text"""
+    out = {
+        "trade_license_number": None,
+        "trade_license_expiry": None
+    }
+
+    # License number - look for patterns (more flexible)
+    lic_patterns = [
+        # Pattern 1: "License No: 123456" or "License Number: CN-123456"
+        r"(?:Trade\s*License|License|Licence|Permit|Certificate)\s*(?:No\.?|Number|#|:)\s*[:\-]?\s*([A-Z0-9\.\-/\s]{3,25})",
+        # Pattern 2: "Registration No: DED/123/2024"
+        r"(?:Registration|Reg\.?|DED)\s*(?:No\.?|Number|#|:)\s*[:\-]?\s*([A-Z0-9\.\-/\s]{3,25})",
+        # Pattern 3: Look for common UAE formats (CN-xxxxxxx, DED/xxx/xxxx, etc.)
+        r"\b(CN[\-\s]?\d{5,10})\b",
+        r"\b(DED[/\-\s]?\d+[/\-\s]?\d+)\b",
+        # Pattern 4: Standalone alphanumeric with dashes/slashes (fallback)
+        r"\b([A-Z]{2,5}[\-/]?\d{5,10})\b"
+    ]
+
+    for pattern in lic_patterns:
+        m = re.search(pattern, text, re.I)
+        if m:
+            license_num = m.group(1).strip()
+            # Filter out common false positives
+            if len(license_num) >= 3 and license_num not in ['P.O', 'TEL', 'FAX', 'BOX']:
+                out["trade_license_number"] = license_num
+                break
+
+    # Expiry date - multiple patterns
+    DATE_RX = r"(\d{4}[./-]\d{1,2}[./-]\d{1,2}|\d{1,2}[./-]\d{1,2}[./-]\d{2,4})"
+    expiry_patterns = [
+        r"(?:Expiry|Expiration|Expire\s*Date|Expires)\s*[:\-]?\s*" + DATE_RX,
+        r"(?:Valid\s*Until|Valid\s*Till|Valid\s*To|Validity)\s*[:\-]?\s*" + DATE_RX,
+        r"(?:End\s*Date|End)\s*[:\-]?\s*" + DATE_RX,
+        r"(?:Date\s*of\s*Expiry)\s*[:\-]?\s*" + DATE_RX
+    ]
+
+    for pattern in expiry_patterns:
+        m = re.search(pattern, text, re.I)
+        if m:
+            # Get the date group (might be group 1 or 2 depending on pattern)
+            date_str = m.group(1) if m.lastindex >= 1 else None
+            if date_str:
+                normalized = _norm_date(date_str)
+                if normalized:
+                    out["trade_license_expiry"] = normalized
+                    break
+
+    return out
+
+
+# ==================== INSURANCE POLICY SCANNING ====================
+
+@frappe.whitelist()
+def scan_insurance_policy(file_url: str, use_urlsource: int = 0, debug: int = 0):
+    """
+    Scan Insurance Policy document using Azure Document Intelligence
+    Returns: policy_number, insurance_provider, insured_name, policy_start_date,
+             insurance_expiry, premium_amount, coverage_type, sum_insured,
+             policy_conditions (array)
+    """
+    frappe.only_for(("System Manager","Fleet Manager","Right Hire Admin","Administrator"))
+    endpoint, key = _cfg()
+    if not (endpoint and key):
+        raise frappe.ValidationError("Azure endpoint/key missing")
+
+    url_source, file_bytes = _prepare_file_input(file_url, int(use_urlsource))
+
+    # Try prebuilt-layout model first
+    mapped = {}
+    try:
+        op = _post_analyze(endpoint, key, "prebuilt-layout", url_source=url_source, file_bytes=file_bytes)
+        res = _poll(op, key)
+        if res.get("status") == "succeeded":
+            mapped = _map_insurance_policy(res)
+            if int(debug):
+                frappe.log_error(json.dumps({"method": "prebuilt-layout", "mapped": mapped}, indent=2), "Insurance Policy Scan Debug")
+            if mapped.get("policy_number") or mapped.get("insurance_provider"):
+                return {"fields": mapped}
+    except Exception as e:
+        if int(debug):
+            frappe.log_error(f"prebuilt-layout failed: {str(e)}", "Insurance Policy Scan Error")
+
+    # Fallback to text extraction
+    try:
+        op = _post_analyze(endpoint, key, "prebuilt-read", url_source=url_source, file_bytes=file_bytes)
+        res = _poll(op, key)
+        if res.get("status") == "succeeded":
+            text = _read_text(res)
+            if int(debug):
+                frappe.log_error((text[:3000] + ("…" if len(text) > 3000 else "")), "Insurance Policy - Extracted Text")
+            mapped = _map_insurance_policy_text(text)
+            if int(debug):
+                frappe.log_error(json.dumps({"method": "text-fallback", "mapped": mapped}, indent=2), "Insurance Policy Text Mapping")
+            return {"fields": mapped}
+    except Exception as e:
+        if int(debug):
+            frappe.log_error(f"Text extraction failed: {str(e)}", "Insurance Policy Scan Error")
+        raise frappe.ValidationError("Failed to scan insurance policy")
+
+
+def _map_insurance_policy(res):
+    """Map Azure prebuilt-layout result for Insurance Policy"""
+    out = {
+        "policy_number": None,
+        "insurance_provider": None,
+        "insured_name": None,
+        "policy_start_date": None,
+        "insurance_expiry": None,
+        "premium_amount": None,
+        "coverage_type": None,
+        "sum_insured": None,
+        "policy_conditions": []
+    }
+
+    ar = res.get("analyzeResult") or {}
+
+    # Try to extract from documents.fields (prebuilt-layout structure)
+    documents = ar.get("documents") or []
+    for doc in documents:
+        fields = doc.get("fields") or {}
+
+        # Check all fields for relevant insurance data
+        for field_name, field_value in fields.items():
+            field_name_lower = field_name.lower()
+            content = field_value.get("content", "")
+
+            if not content:
+                continue
+
+            # Policy number
+            if not out["policy_number"] and any(term in field_name_lower for term in ["policy", "number", "certificate"]):
+                # Look for alphanumeric policy number pattern
+                policy_match = re.search(r"[A-Z0-9]{5,}", content.replace(" ", ""))
+                if policy_match:
+                    out["policy_number"] = policy_match.group()
+
+            # Insurance provider / Company name
+            if not out["insurance_provider"] and any(term in field_name_lower for term in ["insurer", "provider", "company", "underwriter"]):
+                out["insurance_provider"] = content.strip()
+
+            # Insured name
+            if not out["insured_name"] and any(term in field_name_lower for term in ["insured", "policyholder", "owner", "name"]):
+                # Skip if it's a company name or provider
+                if "company" not in content.lower() and "insurance" not in content.lower():
+                    out["insured_name"] = content.strip()
+
+            # Premium amount
+            if not out["premium_amount"] and any(term in field_name_lower for term in ["premium", "amount", "cost", "fee"]):
+                amt = re.search(r"[\d,]+(?:\.\d{2})?", content.replace(",", ""))
+                if amt:
+                    out["premium_amount"] = float(amt.group().replace(",", ""))
+
+            # Sum insured / Vehicle value
+            if not out["sum_insured"] and any(term in field_name_lower for term in ["sum", "insured", "value", "vehicle value", "market value"]):
+                amt = re.search(r"[\d,]+(?:\.\d{2})?", content.replace(",", ""))
+                if amt:
+                    out["sum_insured"] = float(amt.group().replace(",", ""))
+
+            # Coverage type
+            if not out["coverage_type"] and any(term in field_name_lower for term in ["coverage", "type", "plan", "package"]):
+                content_lower = content.lower()
+                if "comprehensive" in content_lower:
+                    out["coverage_type"] = "Comprehensive"
+                elif "third party" in content_lower:
+                    if "fire" in content_lower or "theft" in content_lower:
+                        out["coverage_type"] = "Third Party Fire & Theft"
+                    else:
+                        out["coverage_type"] = "Third Party"
+
+            # Policy start date
+            if not out["policy_start_date"] and any(term in field_name_lower for term in ["start", "effective", "from", "inception"]):
+                normalized = _norm_date(content)
+                if normalized:
+                    out["policy_start_date"] = normalized
+
+            # Policy expiry date
+            if not out["insurance_expiry"] and any(term in field_name_lower for term in ["expiry", "expiration", "expire", "end", "till", "until"]):
+                normalized = _norm_date(content)
+                if normalized:
+                    out["insurance_expiry"] = normalized
+
+    # Try key-value pairs as fallback
+    if not all([out["policy_number"], out["insurance_provider"]]):
+        kv_pairs = ar.get("keyValuePairs") or []
+        for pair in kv_pairs:
+            key_content = (pair.get("key") or {}).get("content", "").lower()
+            value_content = (pair.get("value") or {}).get("content", "")
+
+            if not value_content:
+                continue
+
+            # Policy number
+            if not out["policy_number"] and any(term in key_content for term in ["policy", "certificate", "number"]):
+                policy_match = re.search(r"[A-Z0-9]{5,}", value_content.replace(" ", ""))
+                if policy_match:
+                    out["policy_number"] = policy_match.group()
+
+            # Insurance provider
+            if not out["insurance_provider"] and any(term in key_content for term in ["insurer", "provider", "company"]):
+                out["insurance_provider"] = value_content.strip()
+
+            # Insured name
+            if not out["insured_name"] and any(term in key_content for term in ["insured", "policyholder", "owner"]):
+                out["insured_name"] = value_content.strip()
+
+            # Premium
+            if not out["premium_amount"] and any(term in key_content for term in ["premium", "amount", "cost"]):
+                amt = re.search(r"[\d,]+(?:\.\d{2})?", value_content.replace(",", ""))
+                if amt:
+                    out["premium_amount"] = float(amt.group().replace(",", ""))
+
+            # Sum insured
+            if not out["sum_insured"] and any(term in key_content for term in ["sum", "value", "insured"]):
+                amt = re.search(r"[\d,]+(?:\.\d{2})?", value_content.replace(",", ""))
+                if amt:
+                    out["sum_insured"] = float(amt.group().replace(",", ""))
+
+            # Dates
+            if not out["policy_start_date"] and any(term in key_content for term in ["start", "effective", "from"]):
+                out["policy_start_date"] = _norm_date(value_content)
+
+            if not out["insurance_expiry"] and any(term in key_content for term in ["expiry", "expiration", "end"]):
+                out["insurance_expiry"] = _norm_date(value_content)
+
+    # Extract policy conditions from tables
+    tables = ar.get("tables") or []
+    for table in tables:
+        cells = table.get("cells") or []
+
+        # Try to identify coverage/conditions table
+        for cell in cells:
+            content = (cell.get("content") or "").lower()
+            if any(term in content for term in ["coverage", "benefit", "condition", "insured", "limit"]):
+                # This looks like a coverage table, parse it
+                out["policy_conditions"] = _parse_coverage_table(table)
+                break
+
+        if out["policy_conditions"]:
+            break
+
+    return out
+
+
+def _map_insurance_policy_text(text):
+    """Fallback regex mapping for Insurance Policy from raw text"""
+    out = {
+        "policy_number": None,
+        "insurance_provider": None,
+        "insured_name": None,
+        "policy_start_date": None,
+        "insurance_expiry": None,
+        "premium_amount": None,
+        "coverage_type": None,
+        "sum_insured": None,
+        "policy_conditions": []
+    }
+
+    # Policy number - look for patterns
+    policy_patterns = [
+        r"(?:Policy|Certificate)\s*(?:No\.?|Number|#)\s*[:\-]?\s*([A-Z0-9\-/]{5,25})",
+        r"\b([A-Z]{2,5}\d{5,15})\b"  # Alphanumeric policy numbers
+    ]
+    for pattern in policy_patterns:
+        m = re.search(pattern, text, re.I)
+        if m:
+            out["policy_number"] = m.group(1).strip()
+            break
+
+    # Insurance provider - look for company names
+    provider_patterns = [
+        r"(?:Insurer|Insurance\s*Company|Provider|Underwriter)\s*[:\-]?\s*([A-Za-z\s&]{5,50})",
+        r"^([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\s+Insurance)",  # "ABC Insurance"
+    ]
+    for pattern in provider_patterns:
+        m = re.search(pattern, text, re.I | re.M)
+        if m:
+            provider = m.group(1).strip()
+            # Validate it's not a generic term
+            if len(provider) > 5 and provider.lower() not in ["the insurance", "insurance company"]:
+                out["insurance_provider"] = provider
+                break
+
+    # Insured name - look after "Insured" or "Policyholder"
+    name_patterns = [
+        r"(?:Insured\s*Name|Policyholder|Owner)\s*[:\-]?\s*([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,3})",
+    ]
+    for pattern in name_patterns:
+        m = re.search(pattern, text, re.I)
+        if m:
+            out["insured_name"] = m.group(1).strip()
+            break
+
+    # Premium amount
+    premium_patterns = [
+        r"(?:Premium|Total\s*Premium|Annual\s*Premium)\s*[:\-]?\s*(?:AED|USD|SAR)?\s*([\d,]+(?:\.\d{2})?)",
+    ]
+    for pattern in premium_patterns:
+        m = re.search(pattern, text, re.I)
+        if m:
+            out["premium_amount"] = float(m.group(1).replace(",", ""))
+            break
+
+    # Sum insured / Vehicle value
+    value_patterns = [
+        r"(?:Sum\s*Insured|Vehicle\s*Value|Market\s*Value|Insured\s*Value)\s*[:\-]?\s*(?:AED|USD|SAR)?\s*([\d,]+(?:\.\d{2})?)",
+    ]
+    for pattern in value_patterns:
+        m = re.search(pattern, text, re.I)
+        if m:
+            out["sum_insured"] = float(m.group(1).replace(",", ""))
+            break
+
+    # Coverage type
+    if re.search(r"\bComprehensive\b", text, re.I):
+        out["coverage_type"] = "Comprehensive"
+    elif re.search(r"Third\s*Party\s*Fire\s*(?:and|&)?\s*Theft", text, re.I):
+        out["coverage_type"] = "Third Party Fire & Theft"
+    elif re.search(r"Third\s*Party", text, re.I):
+        out["coverage_type"] = "Third Party"
+
+    # Dates
+    DATE_RX = r"(\d{4}[./-]\d{1,2}[./-]\d{1,2}|\d{1,2}[./-]\d{1,2}[./-]\d{2,4})"
+
+    # Start date
+    start_patterns = [
+        r"(?:Policy\s*Start|Effective\s*Date|Effective\s*From|Inception)\s*[:\-]?\s*" + DATE_RX,
+        r"(?:From)\s*[:\-]?\s*" + DATE_RX
+    ]
+    for pattern in start_patterns:
+        m = re.search(pattern, text, re.I)
+        if m:
+            out["policy_start_date"] = _norm_date(m.group(1))
+            break
+
+    # Expiry date
+    expiry_patterns = [
+        r"(?:Expiry|Expiration|Expire\s*Date|Policy\s*End|Valid\s*Until)\s*[:\-]?\s*" + DATE_RX,
+    ]
+    for pattern in expiry_patterns:
+        m = re.search(pattern, text, re.I)
+        if m:
+            out["insurance_expiry"] = _norm_date(m.group(1))
+            break
+
+    # Extract coverage items from text (simplified - look for common terms)
+    coverage_keywords = [
+        "Comprehensive Coverage", "Third Party Liability", "Collision",
+        "Personal Accident", "Passenger Coverage", "Roadside Assistance",
+        "Agency Repair", "Natural Disasters", "Theft", "Fire",
+        "GCC Coverage", "Replacement Vehicle"
+    ]
+
+    for keyword in coverage_keywords:
+        if re.search(r"\b" + re.escape(keyword) + r"\b", text, re.I):
+            out["policy_conditions"].append({
+                "coverage_item": keyword,
+                "description": f"Covered as per policy terms"
+            })
+
+    return out
+
+
+def _parse_coverage_table(table):
+    """Parse a table structure to extract policy conditions/coverage items"""
+    conditions = []
+    cells = table.get("cells") or []
+
+    # Group cells by row
+    rows = {}
+    for cell in cells:
+        row_index = cell.get("rowIndex", 0)
+        if row_index not in rows:
+            rows[row_index] = []
+        rows[row_index].append(cell)
+
+    # Skip header row (row 0), process data rows
+    for row_index in sorted(rows.keys()):
+        if row_index == 0:  # Skip header
+            continue
+
+        row_cells = sorted(rows[row_index], key=lambda c: c.get("columnIndex", 0))
+
+        if len(row_cells) >= 2:
+            # Assume first column is coverage item, rest are details
+            coverage_item = row_cells[0].get("content", "").strip()
+            description = " ".join([c.get("content", "") for c in row_cells[1:]]).strip()
+
+            # Try to extract amount from description
+            coverage_amount = None
+            deductible = None
+
+            amt_match = re.search(r"(?:AED|USD|SAR)?\s*([\d,]+(?:\.\d{2})?)", description)
+            if amt_match:
+                coverage_amount = float(amt_match.group(1).replace(",", ""))
+
+            ded_match = re.search(r"(?:Deductible|Excess)[:\-]?\s*(?:AED|USD|SAR)?\s*([\d,]+(?:\.\d{2})?)", description, re.I)
+            if ded_match:
+                deductible = float(ded_match.group(1).replace(",", ""))
+
+            if coverage_item and len(coverage_item) > 2:
+                condition = {
+                    "coverage_item": coverage_item if len(coverage_item) < 100 else "Other",
+                    "description": description[:500],  # Limit description length
+                }
+                if coverage_amount:
+                    condition["coverage_amount"] = coverage_amount
+                if deductible:
+                    condition["deductible"] = deductible
+
+                conditions.append(condition)
+
+    return conditions

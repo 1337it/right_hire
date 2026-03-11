@@ -1,0 +1,26 @@
+{
+ "content": null,
+ "creation": "2024-01-01 00:00:00",
+ "doctype": "Page",
+ "icon": "fa fa-car",
+ "idx": 0,
+ "modified": "2024-01-01 00:00:00",
+ "modified_by": "Administrator",
+ "module": "Right Hire",
+ "name": "vehicle-kanban",
+ "owner": "Administrator",
+ "page_name": "vehicle-kanban",
+ "roles": [
+  {
+   "role": "Fleet Manager"
+  },
+  {
+   "role": "LeetRental Admin"
+  }
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "Vehicle Kanban"
+}

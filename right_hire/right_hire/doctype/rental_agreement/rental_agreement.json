@@ -8,6 +8,7 @@
  "field_order": [
   "agreement_status",
   "workflow_state",
+  "amended_from",
   "column_break_1",
   "agreement_date",
   "reservation",
@@ -59,6 +60,10 @@
   "overage_amount",
   "section_break_charges",
   "charges",
+  "section_break_excess",
+  "salik_percentage",
+  "column_break_excess",
+  "excess_per_traffic_fine",
   "section_break_totals",
   "subtotal",
   "discount_percent",
@@ -80,6 +85,8 @@
   "erpnext_invoice",
   "erpnext_payment_entry",
   "section_break_terms",
+  "terms_template",
+  "custom_terms",
   "terms_accepted",
   "terms_accepted_by",
   "terms_accepted_on",
@@ -91,6 +98,7 @@
  ],
  "fields": [
   {
+   "allow_on_submit": 1,
    "default": "Draft",
    "fieldname": "agreement_status",
    "fieldtype": "Select",
@@ -104,6 +112,15 @@
    "fieldtype": "Link",
    "label": "Workflow State",
    "options": "Workflow State",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Rental Agreement",
+   "print_hide": 1,
    "read_only": 1
   },
   {
@@ -238,6 +255,7 @@
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "actual_return_datetime",
    "fieldtype": "Datetime",
    "label": "Actual Return Date/Time"
@@ -254,6 +272,7 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "actual_days",
    "fieldtype": "Float",
    "label": "Actual Days",
@@ -261,6 +280,7 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "default": "0",
    "fieldname": "is_overdue",
    "fieldtype": "Check",
@@ -293,11 +313,13 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "odometer_in",
    "fieldtype": "Int",
    "label": "Odometer In (KM)"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "fuel_in",
    "fieldtype": "Percent",
    "label": "Fuel In (%)"
@@ -363,6 +385,7 @@
    "label": "Base Rate"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "rental_amount",
    "fieldtype": "Currency",
    "label": "Rental Amount",
@@ -379,18 +402,21 @@
    "label": "Free KM"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "km_driven",
    "fieldtype": "Int",
    "label": "KM Driven",
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "overage_km",
    "fieldtype": "Int",
    "label": "Overage KM",
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "overage_amount",
    "fieldtype": "Currency",
    "label": "Overage Amount",
@@ -402,10 +428,35 @@
    "label": "Charges & Fees"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "charges",
    "fieldtype": "Table",
    "label": "Charges",
    "options": "Agreement Charge"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_excess",
+   "fieldtype": "Section Break",
+   "label": "Excess Charges (Salik & Fines)"
+  },
+  {
+   "default": "0",
+   "description": "Percentage markup to add when charging Salik tolls to customer",
+   "fieldname": "salik_percentage",
+   "fieldtype": "Percent",
+   "label": "Salik Markup %"
+  },
+  {
+   "fieldname": "column_break_excess",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "Fixed amount to add per traffic fine when charging to customer",
+   "fieldname": "excess_per_traffic_fine",
+   "fieldtype": "Currency",
+   "label": "Excess per Traffic Fine"
   },
   {
    "fieldname": "section_break_totals",
@@ -413,6 +464,7 @@
    "label": "Totals"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "subtotal",
    "fieldtype": "Currency",
    "label": "Subtotal",
@@ -424,6 +476,7 @@
    "label": "Discount %"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "discount_amount",
    "fieldtype": "Currency",
    "label": "Discount Amount",
@@ -439,6 +492,7 @@
    "label": "Tax Amount"
   },
   {
+   "allow_on_submit": 1,
    "bold": 1,
    "fieldname": "grand_total",
    "fieldtype": "Currency",
@@ -446,6 +500,7 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "rounded_total",
    "fieldtype": "Currency",
    "label": "Rounded Total",
@@ -462,12 +517,14 @@
    "label": "Deposit Held"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "deposit_applied",
    "fieldtype": "Currency",
    "label": "Deposit Applied",
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "deposit_refunded",
    "fieldtype": "Currency",
    "label": "Deposit Refunded",
@@ -478,18 +535,21 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "amount_due",
    "fieldtype": "Currency",
    "label": "Amount Due",
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "amount_paid",
    "fieldtype": "Currency",
    "label": "Amount Paid",
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "outstanding_amount",
    "fieldtype": "Currency",
    "label": "Outstanding Amount",
@@ -502,6 +562,7 @@
    "label": "Payment Integration"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "payment_status",
    "fieldtype": "Select",
    "label": "Payment Status",
@@ -527,6 +588,17 @@
    "label": "Terms & Conditions"
   },
   {
+   "fieldname": "terms_template",
+   "fieldtype": "Link",
+   "label": "Terms Template",
+   "options": "Terms and Conditions Template"
+  },
+  {
+   "fieldname": "custom_terms",
+   "fieldtype": "Text Editor",
+   "label": "Custom Terms & Conditions"
+  },
+  {
    "default": "0",
    "fieldname": "terms_accepted",
    "fieldtype": "Check",
@@ -548,7 +620,7 @@
   },
   {
    "fieldname": "signature",
-   "fieldtype": "Attach Image",
+   "fieldtype": "Signature",
    "label": "Customer Signature"
   },
   {

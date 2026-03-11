@@ -1,0 +1,1 @@
+# RTA Settings DocType

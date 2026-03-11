@@ -10,6 +10,7 @@
   "basic_section",
   "customer_name",
   "customer_type",
+  "account_id",
   "column_break_basic",
   "mobile",
   "email",
@@ -18,20 +19,6 @@
   "company_name",
   "trade_license_no",
   "tax_id",
-  "section_break_kyc_individual",
-  "id_type",
-  "id_no",
-  "id_expiry_2",
-  "column_break_kyc",
-  "passport_no",
-  "passport_expiry_2",
-  "nationality",
-  "section_break_license",
-  "license_no",
-  "license_country",
-  "license_expiry_2",
-  "column_break_license",
-  "license_type",
   "is_blacklisted",
   "blacklist_reason",
   "section_break_address",
@@ -52,22 +39,66 @@
   "sync_with_erpnext",
   "section_break_notes",
   "notes",
-  "kyc_tab",
+  "section_break_portal_account",
+  "portal_user",
+  "portal_user_enabled",
+  "column_break_portal",
+  "set_portal_password_btn",
+  "create_portal_user_btn",
+  "documents_tab",
+  "section_break_company_documents",
+  "column_break_credit_app",
+  "credit_application_file",
+  "scan_credit_application_btn",
+  "credit_application_number",
+  "credit_limit_approved",
+  "credit_application_expiry",
+  "column_break_trn",
+  "trn_certificate_file",
+  "scan_trn_certificate_btn",
+  "trn_number",
+  "trn_certificate_expiry",
+  "column_break_trade_license",
+  "trade_license_file",
+  "scan_trade_license_btn",
+  "trade_license_number",
+  "trade_license_expiry",
+  "column_break_status",
+  "company_documents_status",
+  "last_scanned_date",
+  "section_break_individual_documents",
   "passport_column",
   "passport_image",
   "attach_passport",
+  "scan_passport_btn",
   "passport_number",
   "passport_expiry",
   "driving_license_column",
   "license_image",
   "attach_license",
+  "scan_license_btn",
   "license_number",
   "license_expiry",
   "national_id_column",
   "id_image",
   "attach_id",
+  "scan_id_btn",
   "id_number",
-  "id_expiry"
+  "id_expiry",
+  "section_break_kyc_individual",
+  "id_type",
+  "id_no",
+  "id_expiry_2",
+  "column_break_kyc",
+  "passport_no",
+  "passport_expiry_2",
+  "nationality",
+  "section_break_license",
+  "license_no",
+  "license_country",
+  "license_expiry_2",
+  "column_break_license",
+  "license_type"
  ],
  "fields": [
   {
@@ -89,6 +120,14 @@
    "label": "Customer Type",
    "options": "Individual\nCompany",
    "reqd": 1
+  },
+  {
+   "fieldname": "account_id",
+   "fieldtype": "Data",
+   "label": "Account ID",
+   "read_only": 1,
+   "unique": 1,
+   "in_list_view": 1
   },
   {
    "fieldname": "column_break_basic",
@@ -138,6 +177,119 @@
    "label": "Tax ID"
   },
   {
+   "collapsible": 1,
+   "depends_on": "eval:doc.customer_type=='Company'",
+   "fieldname": "section_break_company_documents",
+   "fieldtype": "Section Break",
+   "label": "Company Documents"
+  },
+  {
+   "fieldname": "column_break_credit_app",
+   "fieldtype": "Column Break",
+   "label": "Credit Application"
+  },
+  {
+   "fieldname": "credit_application_file",
+   "fieldtype": "Attach",
+   "label": "Credit Application File"
+  },
+  {
+   "depends_on": "credit_application_file",
+   "fieldname": "scan_credit_application_btn",
+   "fieldtype": "Button",
+   "label": "Scan Credit Application"
+  },
+  {
+   "fieldname": "credit_application_number",
+   "fieldtype": "Data",
+   "label": "Application Number",
+   "read_only": 1
+  },
+  {
+   "fieldname": "credit_limit_approved",
+   "fieldtype": "Currency",
+   "label": "Credit Limit Approved",
+   "read_only": 1
+  },
+  {
+   "fieldname": "credit_application_expiry",
+   "fieldtype": "Date",
+   "label": "Expiry Date"
+  },
+  {
+   "fieldname": "column_break_trn",
+   "fieldtype": "Column Break",
+   "label": "TRN Certificate"
+  },
+  {
+   "fieldname": "trn_certificate_file",
+   "fieldtype": "Attach",
+   "label": "TRN Certificate File"
+  },
+  {
+   "depends_on": "trn_certificate_file",
+   "fieldname": "scan_trn_certificate_btn",
+   "fieldtype": "Button",
+   "label": "Scan TRN Certificate"
+  },
+  {
+   "fieldname": "trn_number",
+   "fieldtype": "Data",
+   "label": "TRN Number",
+   "read_only": 1
+  },
+  {
+   "fieldname": "trn_certificate_expiry",
+   "fieldtype": "Date",
+   "label": "Expiry Date"
+  },
+  {
+   "fieldname": "column_break_trade_license",
+   "fieldtype": "Column Break",
+   "label": "Trade License"
+  },
+  {
+   "fieldname": "trade_license_file",
+   "fieldtype": "Attach",
+   "label": "Trade License File"
+  },
+  {
+   "depends_on": "trade_license_file",
+   "fieldname": "scan_trade_license_btn",
+   "fieldtype": "Button",
+   "label": "Scan Trade License"
+  },
+  {
+   "fieldname": "trade_license_number",
+   "fieldtype": "Data",
+   "label": "License Number",
+   "read_only": 1
+  },
+  {
+   "fieldname": "trade_license_expiry",
+   "fieldtype": "Date",
+   "label": "Expiry Date"
+  },
+  {
+   "fieldname": "column_break_status",
+   "fieldtype": "Column Break",
+   "label": "Status"
+  },
+  {
+   "default": "Not Applicable",
+   "fieldname": "company_documents_status",
+   "fieldtype": "Select",
+   "label": "Overall Status",
+   "options": "All Valid\nExpiring Soon\nExpired\nMissing Documents\nNot Applicable",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_scanned_date",
+   "fieldtype": "Datetime",
+   "label": "Last Scanned",
+   "read_only": 1
+  },
+  {
    "depends_on": "eval:doc.customer_type=='Individual'",
    "fieldname": "section_break_kyc_individual",
    "fieldtype": "Section Break",
@@ -158,6 +310,12 @@
    "label": "ID Number"
   },
   {
+   "depends_on": "eval:doc.customer_type=='Individual'",
+   "fieldname": "id_expiry_2",
+   "fieldtype": "Date",
+   "label": "ID Expiry"
+  },
+  {
    "fieldname": "column_break_kyc",
    "fieldtype": "Column Break"
   },
@@ -166,6 +324,12 @@
    "fieldname": "passport_no",
    "fieldtype": "Data",
    "label": "Passport Number"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Individual'",
+   "fieldname": "passport_expiry_2",
+   "fieldtype": "Date",
+   "label": "Passport Expiry"
   },
   {
    "depends_on": "eval:doc.customer_type=='Individual'",
@@ -192,6 +356,12 @@
    "fieldtype": "Link",
    "label": "License Country",
    "options": "Country"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Individual'",
+   "fieldname": "license_expiry_2",
+   "fieldtype": "Date",
+   "label": "License Expiry"
   },
   {
    "fieldname": "column_break_license",
@@ -313,9 +483,51 @@
    "label": "Notes"
   },
   {
-   "fieldname": "kyc_tab",
+   "fieldname": "section_break_portal_account",
+   "fieldtype": "Section Break",
+   "label": "Portal Account"
+  },
+  {
+   "fieldname": "portal_user",
+   "fieldtype": "Link",
+   "label": "Portal User",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "depends_on": "portal_user",
+   "fieldname": "portal_user_enabled",
+   "fieldtype": "Check",
+   "label": "Portal User Enabled",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_portal",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "portal_user",
+   "fieldname": "set_portal_password_btn",
+   "fieldtype": "Button",
+   "label": "Set New Password"
+  },
+  {
+   "depends_on": "eval:!doc.portal_user && doc.email",
+   "fieldname": "create_portal_user_btn",
+   "fieldtype": "Button",
+   "label": "Create Portal User"
+  },
+  {
+   "fieldname": "documents_tab",
    "fieldtype": "Tab Break",
-   "label": "KYC"
+   "label": "Documents"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_individual_documents",
+   "fieldtype": "Section Break",
+   "label": "Individual Documents"
   },
   {
    "fieldname": "passport_column",
@@ -334,9 +546,21 @@
    "label": "Attach Passport"
   },
   {
+   "depends_on": "attach_passport",
+   "fieldname": "scan_passport_btn",
+   "fieldtype": "Button",
+   "label": "Scan Passport"
+  },
+  {
    "fieldname": "passport_number",
    "fieldtype": "Data",
    "label": "Passport Number",
+   "read_only": 1
+  },
+  {
+   "fieldname": "passport_expiry",
+   "fieldtype": "Date",
+   "label": "Passport Expiry (Scanned)",
    "read_only": 1
   },
   {
@@ -356,9 +580,21 @@
    "label": "Attach License"
   },
   {
+   "depends_on": "attach_license",
+   "fieldname": "scan_license_btn",
+   "fieldtype": "Button",
+   "label": "Scan License"
+  },
+  {
    "fieldname": "license_number",
    "fieldtype": "Data",
    "label": "License Number",
+   "read_only": 1
+  },
+  {
+   "fieldname": "license_expiry",
+   "fieldtype": "Date",
+   "label": "License Expiry (Scanned)",
    "read_only": 1
   },
   {
@@ -378,51 +614,27 @@
    "label": "Attach ID"
   },
   {
+   "depends_on": "attach_id",
+   "fieldname": "scan_id_btn",
+   "fieldtype": "Button",
+   "label": "Scan ID"
+  },
+  {
    "fieldname": "id_number",
    "fieldtype": "Data",
    "label": "ID Number",
    "read_only": 1
   },
   {
-   "depends_on": "eval:doc.customer_type=='Individual'",
-   "fieldname": "id_expiry_2",
-   "fieldtype": "Date",
-   "label": "ID Expiry"
-  },
-  {
-   "depends_on": "eval:doc.customer_type=='Individual'",
-   "fieldname": "passport_expiry_2",
-   "fieldtype": "Date",
-   "label": "Passport Expiry"
-  },
-  {
-   "depends_on": "eval:doc.customer_type=='Individual'",
-   "fieldname": "license_expiry_2",
-   "fieldtype": "Date",
-   "label": "License Expiry"
-  },
-  {
-   "fieldname": "passport_expiry",
-   "fieldtype": "Date",
-   "label": "Passport Expiry",
-   "read_only": 1
-  },
-  {
-   "fieldname": "license_expiry",
-   "fieldtype": "Date",
-   "label": "License Expiry",
-   "read_only": 1
-  },
-  {
    "fieldname": "id_expiry",
    "fieldtype": "Date",
-   "label": "ID Expiry",
+   "label": "ID Expiry (Scanned)",
    "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-14 17:17:44.216019",
+ "modified": "2026-02-18 12:00:00.000000",
  "modified_by": "Administrator",
  "module": "Right Hire",
  "name": "Customer",
@@ -455,8 +667,11 @@
   }
  ],
  "row_format": "Dynamic",
+ "show_name_in_global_search": 1,
+ "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
+ "title_field": "customer_name",
  "track_changes": 1
 }

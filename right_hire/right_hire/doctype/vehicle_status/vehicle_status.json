@@ -1,0 +1,119 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:status_name",
+ "creation": "2024-01-01 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_display_order": [
+  "status_name",
+  "display_order",
+  "color",
+  "column_break_1",
+  "is_terminal",
+  "is_available_for_booking",
+  "description",
+  "section_break_transitions",
+  "allowed_transitions"
+ ],
+ "fields": [
+  {
+   "fieldname": "status_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Status Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "default": "0",
+   "description": "Order for display in Kanban columns (lower = left)",
+   "fieldname": "display_order",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Display Order"
+  },
+  {
+   "default": "gray",
+   "description": "Color for Kanban column header",
+   "fieldname": "color",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Color",
+   "options": "gray\ngreen\nblue\norange\nred\npurple\nyellow\npink"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "Terminal statuses cannot transition to other statuses",
+   "fieldname": "is_terminal",
+   "fieldtype": "Check",
+   "label": "Is Terminal Status"
+  },
+  {
+   "default": "0",
+   "description": "Vehicle can be booked/reserved when in this status",
+   "fieldname": "is_available_for_booking",
+   "fieldtype": "Check",
+   "label": "Available for Booking"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "section_break_transitions",
+   "fieldtype": "Section Break",
+   "label": "Allowed Transitions"
+  },
+  {
+   "description": "Define which statuses this status can transition to",
+   "fieldname": "allowed_transitions",
+   "fieldtype": "Table",
+   "label": "Allowed Transitions",
+   "options": "Vehicle Status Transition"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-01-01 00:00:00",
+ "modified_by": "Administrator",
+ "module": "Right Hire",
+ "name": "Vehicle Status",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fleet Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "LeetRental Admin",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "display_order",
+ "sort_display_order": "ASC",
+ "states": [],
+ "track_changes": 1
+}

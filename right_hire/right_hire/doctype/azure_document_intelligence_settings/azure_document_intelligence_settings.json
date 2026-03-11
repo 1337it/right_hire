@@ -1,0 +1,84 @@
+{
+ "actions": [],
+ "creation": "2025-01-01 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "enabled",
+  "section_break_config",
+  "endpoint",
+  "api_key",
+  "column_break_optional",
+  "region",
+  "api_version"
+ ],
+ "fields": [
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enable Azure Document Intelligence"
+  },
+  {
+   "fieldname": "section_break_config",
+   "fieldtype": "Section Break",
+   "label": "Configuration"
+  },
+  {
+   "description": "Azure Document Intelligence endpoint URL (e.g., https://xxx.cognitiveservices.azure.com/)",
+   "fieldname": "endpoint",
+   "fieldtype": "Data",
+   "label": "Azure Endpoint",
+   "reqd": 1
+  },
+  {
+   "description": "Azure Document Intelligence subscription key",
+   "fieldname": "api_key",
+   "fieldtype": "Password",
+   "label": "API Key",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_optional",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Azure region (e.g., eastus, westeurope) - Optional",
+   "fieldname": "region",
+   "fieldtype": "Data",
+   "label": "Region"
+  },
+  {
+   "default": "2024-11-30",
+   "description": "Azure Document Intelligence API version",
+   "fieldname": "api_version",
+   "fieldtype": "Data",
+   "label": "API Version",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-01-01 00:00:00",
+ "modified_by": "Administrator",
+ "module": "Right Hire",
+ "name": "Azure Document Intelligence Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

@@ -4,6 +4,48 @@
 import frappe
 from frappe.utils import now, now_datetime, add_to_date
 
+
+def sync_all_apis():
+    """Run Salik, Darb, and RTA fines sync — only between 5 AM and 6 PM (UAE time).
+
+    Called hourly by the scheduler. Skips silently outside the allowed window.
+    """
+    from datetime import datetime
+    import pytz
+
+    uae_tz = pytz.timezone("Asia/Dubai")
+    uae_now = datetime.now(uae_tz)
+    current_hour = uae_now.hour
+
+    if current_hour < 5 or current_hour > 18:
+        frappe.logger().info(
+            f"Skipping API sync — outside allowed window (5 AM–6 PM UAE). Current hour: {current_hour}"
+        )
+        return
+
+    frappe.logger().info(f"Running hourly API sync (UAE hour: {current_hour})")
+
+    # Salik
+    try:
+        from right_hire.right_hire.salik_integration import sync_salik_data
+        sync_salik_data()
+    except Exception as e:
+        frappe.log_error(f"Hourly Salik sync failed: {str(e)}", "Scheduled Sync")
+
+    # Darb
+    try:
+        from right_hire.right_hire.darb_integration import sync_darb_data
+        sync_darb_data()
+    except Exception as e:
+        frappe.log_error(f"Hourly Darb sync failed: {str(e)}", "Scheduled Sync")
+
+    # RTA Fines
+    try:
+        from right_hire.right_hire.rta_fines_integration import sync_all_vehicles_fines
+        sync_all_vehicles_fines()
+    except Exception as e:
+        frappe.log_error(f"Hourly RTA fines sync failed: {str(e)}", "Scheduled Sync")
+
 def check_reservation_conflicts():
     """Check for reservation conflicts hourly"""
     # Get reservations starting in next 24 hours

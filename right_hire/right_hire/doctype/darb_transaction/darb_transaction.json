@@ -1,0 +1,272 @@
+{
+ "actions": [],
+ "autoname": "format:DARB-{YYYY}-{#####}",
+ "creation": "2026-01-19 10:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "vehicle",
+  "plate_number",
+  "column_break_vehicle",
+  "transaction_date",
+  "transaction_time",
+  "gate_location",
+  "direction",
+  "section_break_amount",
+  "toll_amount",
+  "currency",
+  "status",
+  "column_break_amount",
+  "paid",
+  "paid_date",
+  "payment_reference",
+  "section_break_contract",
+  "lease_agreement",
+  "linked_contract",
+  "linked_agreement",
+  "charge_type",
+  "charged_to_customer",
+  "column_break_contract",
+  "customer_charge_amount",
+  "customer_charged_date",
+  "invoice_reference",
+  "section_break_sync",
+  "sync_date",
+  "darb_transaction_id",
+  "raw_data"
+ ],
+ "fields": [
+  {
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Vehicle",
+   "options": "Vehicle",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "vehicle.plate_no",
+   "fieldname": "plate_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Plate Number",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_vehicle",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "transaction_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Transaction Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "transaction_time",
+   "fieldtype": "Time",
+   "label": "Transaction Time"
+  },
+  {
+   "fieldname": "gate_location",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Gate Location"
+  },
+  {
+   "fieldname": "direction",
+   "fieldtype": "Select",
+   "label": "Direction",
+   "options": "Entry\nExit"
+  },
+  {
+   "fieldname": "section_break_amount",
+   "fieldtype": "Section Break",
+   "label": "Amount Details"
+  },
+  {
+   "fieldname": "toll_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Toll Amount",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "default": "AED",
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "default": "Unpaid",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Unpaid\nPaid\nDisputed\nWaived"
+  },
+  {
+   "fieldname": "column_break_amount",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "paid",
+   "fieldtype": "Check",
+   "label": "Paid to Darb"
+  },
+  {
+   "depends_on": "eval:doc.paid==1",
+   "fieldname": "paid_date",
+   "fieldtype": "Date",
+   "label": "Paid Date"
+  },
+  {
+   "depends_on": "eval:doc.paid==1",
+   "fieldname": "payment_reference",
+   "fieldtype": "Data",
+   "label": "Payment Reference"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_contract",
+   "fieldtype": "Section Break",
+   "label": "Contract/Customer Details"
+  },
+  {
+   "fieldname": "lease_agreement",
+   "fieldtype": "Link",
+   "label": "Lease Agreement",
+   "options": "Lease Agreement"
+  },
+  {
+   "fieldname": "linked_contract",
+   "fieldtype": "Link",
+   "label": "Linked Lease Contract",
+   "options": "Lease Agreement"
+  },
+  {
+   "fieldname": "charge_type",
+   "fieldtype": "Select",
+   "label": "Charge Type",
+   "options": "\nRevenue\nNon-Revenue",
+   "default": "Revenue",
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "linked_agreement",
+   "fieldtype": "Link",
+   "label": "Linked Rental Agreement",
+   "options": "Rental Agreement"
+  },
+  {
+   "default": "0",
+   "fieldname": "charged_to_customer",
+   "fieldtype": "Check",
+   "label": "Charged to Customer"
+  },
+  {
+   "fieldname": "column_break_contract",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.charged_to_customer==1",
+   "fieldname": "customer_charge_amount",
+   "fieldtype": "Currency",
+   "label": "Amount Charged to Customer",
+   "precision": "2"
+  },
+  {
+   "depends_on": "eval:doc.charged_to_customer==1",
+   "fieldname": "customer_charged_date",
+   "fieldtype": "Date",
+   "label": "Customer Charged Date"
+  },
+  {
+   "depends_on": "eval:doc.charged_to_customer==1",
+   "fieldname": "invoice_reference",
+   "fieldtype": "Link",
+   "label": "Invoice Reference",
+   "options": "Sales Invoice"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_sync",
+   "fieldtype": "Section Break",
+   "label": "Sync Information"
+  },
+  {
+   "fieldname": "sync_date",
+   "fieldtype": "Datetime",
+   "label": "Sync Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "darb_transaction_id",
+   "fieldtype": "Data",
+   "label": "Darb Transaction ID",
+   "unique": 1
+  },
+  {
+   "fieldname": "raw_data",
+   "fieldtype": "Long Text",
+   "label": "Raw Data",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-01-19 10:00:00",
+ "modified_by": "Administrator",
+ "module": "Right Hire",
+ "name": "Darb Transaction",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fleet Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Counter Agent",
+   "share": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Right Hire Admin",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

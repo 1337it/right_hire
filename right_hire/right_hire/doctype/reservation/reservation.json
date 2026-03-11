@@ -7,6 +7,7 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "status",
   "reservation_status",
   "column_break_1",
   "reservation_date",
@@ -53,6 +54,13 @@
   "converted_on"
  ],
  "fields": [
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Status (System)",
+   "options": "Draft\nConfirmed\nAllocated\nConverted\nExpired\nCancelled"
+  },
   {
    "fieldname": "reservation_status",
    "fieldtype": "Select",
